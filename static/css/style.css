@@ -26,6 +26,10 @@ main.main-content {
   flex: 1;
 }
 
+.main-content {
+  min-height: 50vh;
+}
+
 /* Fixed navigation bar at the top */
 .navbar {
   display: flex;

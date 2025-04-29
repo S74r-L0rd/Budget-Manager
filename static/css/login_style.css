@@ -181,7 +181,6 @@
     vertical-align: middle;
   }
 
-  /* 修改对号的容器样式 */
   .check-icon {
     display: flex;
     align-items: center;

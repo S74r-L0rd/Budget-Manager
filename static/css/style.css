@@ -1,0 +1,60 @@
+/* Reset default browser styles */
+body, h1, ul, li, a {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  /* Set base styles and theme colors */
+  body {
+    font-family: 'Arial', sans-serif;
+    background-color: #DAD7CD;
+    color: #000;
+  }
+  
+  /* Enable smooth scrolling behavior */
+  body, html {
+    scroll-behavior: smooth;
+  }
+  
+  /* Fixed navigation bar at the top */
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    position: fixed;
+    width: 100%;
+    align-items: center;
+    background-color: #344E41;
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-bottom: 2px solid #b1b1b1;
+    z-index: 1000;
+  }
+  
+  .navbar .logo {
+    height: 70px;
+    width: auto;
+  }
+  
+  .navbar ul {
+    display: flex;
+    gap: 4rem;
+  }
+  
+  .navbar a {
+    font-size: 1.5rem;
+    color: #fff;
+    font-weight: bold;
+    transition: color 0.3s;
+  }
+  
+  .navbar a:hover {
+    color: #A3B18A;
+  }
+  
+  .navbar a.active {
+    color: #A3B18A;
+    cursor: pointer;
+  }  

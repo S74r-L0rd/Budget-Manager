@@ -2,6 +2,7 @@
 .vscode/
 .history/
 .venv/
+venv/
 .DS_Store
 static/.DS_Store
 static/media/.DS_Store

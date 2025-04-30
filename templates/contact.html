@@ -1,1 +1,40 @@
 {% extends "layout.html" %}
+{% block title %}Contact Us{% endblock %}
+{% block content %}
+<!-- adding external js and css -->
+<script src="{{ url_for('static', filename='js/contact.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script>
+    // Initialize EmailJS with public key
+    (function() {
+        emailjs.init("aHYc_wqESe1OCccIK");
+    })();
+</script>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/login_style.css') }}">
+
+<!-- Contact Form Section -->
+<div class="login-container d-flex align-items-center justify-content-center">
+    <div class="login-form-section" style="max-width: 600px; width: 100%; margin: 120px 0 80px 0;">
+        <h2 class="login-logo text-center">Contact Us</h2>
+        <form id="contactForm" onsubmit="event.preventDefault(); handleSubmit();">
+            <div class="mb-4">
+                <label for="firstName" class="form-label">First Name</label>
+                <input type="text" class="form-control" id="firstName" required>
+            </div>
+            <div class="mb-4">
+                <label for="lastName" class="form-label">Last Name</label>
+                <input type="text" class="form-control" id="lastName" required>
+            </div>
+            <div class="mb-4">
+                <label for="email" class="form-label">Email Address</label>
+                <input type="email" class="form-control" id="email" required>
+            </div>
+            <div class="mb-4">
+                <label for="message" class="form-label">Message</label>
+                <textarea class="form-control" id="message" rows="5" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Send Message</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

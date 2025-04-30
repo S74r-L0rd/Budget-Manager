@@ -27,7 +27,7 @@ main.main-content {
 }
 
 .main-content {
-  min-height: 50vh;
+  min-height: 100vh;
 }
 
 /* Fixed navigation bar at the top */

@@ -5,15 +5,14 @@
 {% block content %} 
 <!-- Hero Section -->
 <section class="container-fluid bg-light d-flex justify-content-center align-items-center text-center text-dark pt-5 py-5 hero-section" id="hero-section">
-    <div class="row align-items-center">
+    <div class="row align-items-center hero-row">
         <!-- Left column: Texts and buttons for hero section  -->
         <div class="col-md-6 text-center text-md-start ps-md-5">
-            <h1 class="display-5 fw-bold">No worries.<br>Your private budget manager will take care.</h1>
+            <h1 class="display-3 fw-bold mb-4">No worries.<br>Your private budget manager will take care.</h1>
             <p class="lead">Track your expenses, achieve saving goals, and enlighten your finance with BudgetManager.</p>
-            <div class="d-flex justify-content-center mt-3 buttons">
-                <!-- TODO: Change href ID name -->
-                <a href="{{ url_for('login') }}" class="btn btn-dark btn-lg mt-5">Get started</a>
-                <a href="{{ url_for('services') }}" class="btn btn-outline-dark btn-lg mt-5 ms-3">Learn more</a>
+            <div class="d-flex mt-3 gap-3 buttons">
+                <a href="{{ url_for('login') }}" class="btn btn-dark btn-lg mt-4 get-started-btn">Get started</a>
+                <a href="{{ url_for('services') }}" class="btn btn-outline-dark btn-lg mt-4 ms-3 learn-more-btn">Learn more</a>
             </div>
         </div>
 

@@ -2,3 +2,4 @@
 .vscode/
 .history/
 .venv/
+.DS_Store

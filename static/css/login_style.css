@@ -13,8 +13,7 @@
 
 body {
   background-color: var(--light-bg);
-  font-family: "Inter", "San Francisco", "SF Pro Text", -apple-system,
-    system-ui, sans-serif;
+  font-family: 'Arial', sans-serif;
   color: var(--text-color);
 }
 

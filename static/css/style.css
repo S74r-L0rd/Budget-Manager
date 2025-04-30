@@ -119,3 +119,61 @@ main.main-content {
   color: #cccccc;
   font-size: 0.8rem;
 }
+
+/* HOME PAGE */
+/* Hero section */
+.hero-section {
+  min-height: 100vh;
+}
+
+/* Illustration for hero section */
+.illustration-wrapper {
+    position: relative;
+    width: 90%;
+    height: 300px;
+  }
+
+/* Illustration slide feature */
+.illustration {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 60%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+  }
+
+.illustration.active {
+    opacity: 1;
+    z-index: 2;
+  }
+
+/* Home Services section */
+.home-services-section {
+  min-height: 100vh;
+}
+
+/* Images Size for Services carousel*/
+.carousel-img {
+  max-height: 400px;
+  max-width: 100%;
+}
+
+/* Style for Carousel icon and caption */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background-color: #dad7cd;
+  background-size: 100%, 100%;
+  border-radius: 50%;
+  padding: 10px;
+}
+
+.carousel-caption h5 {
+  color: #2f4550;
+  font-weight: bold;
+}
+
+.carousel-caption p {
+  color: #2f4550; 
+}

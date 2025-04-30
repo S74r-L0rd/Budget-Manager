@@ -26,10 +26,6 @@ main.main-content {
   flex: 1;
 }
 
-.main-content {
-  min-height: 50vh;
-}
-
 /* Fixed navigation bar at the top */
 .navbar {
   display: flex;
@@ -76,7 +72,6 @@ main.main-content {
   color: #fff;
   padding: 5rem 2rem;
   border-top: 2px solid #b1b1b1;
-  margin-top: 4rem;
   font-size: 1rem;
 }
 
@@ -118,4 +113,120 @@ main.main-content {
 .footer-copy {
   color: #cccccc;
   font-size: 0.8rem;
+}
+
+/* HOME PAGE */
+/* Hero section */
+.hero-section {
+  min-height: 100vh;
+  background-color: #dee4d3;
+}
+
+.hero-row > div {
+  padding-left: 6rem;
+  padding-right: 6rem;
+}
+
+.get-started-btn {
+  border-color: #000;
+  color: #fff;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+ 
+.get-started-btn:hover {
+  background-color: #3A5A40 !important;
+  border-color: #3A5A40 !important;
+  color: #fff !important;
+}
+ 
+.learn-more-btn {
+  border: 2px solid #000;
+  color: #000;
+  background-color: transparent;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+ 
+.learn-more-btn:hover {
+  background-color: #A3B18A !important;
+  border-color: #A3B18A !important;
+  color: #000 !important;
+}
+
+/* Illustration for hero section */
+.illustration-wrapper {
+    position: relative;
+    width: 100%;
+    height: 400px;
+}
+
+/* Illustration slide feature */
+.illustration {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 80%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+.illustration.active {
+    opacity: 1;
+    z-index: 2;
+}
+
+/* Home Services section */
+.home-services-section {
+  min-height: 100vh;
+}
+
+.home-services-row > div {
+  padding-left: 6rem;
+  padding-right: 6rem;
+}
+
+/* Images Size for Services carousel*/
+.carousel-img {
+  max-height: 400px;
+  max-width: 100%;
+}
+
+/* Style for Carousel icon and caption */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background-color: #dad7cd;
+  background-size: 100%, 100%;
+  border-radius: 50%;
+  padding: 10px;
+}
+.carousel-caption {
+  top: 10%;
+  bottom: auto;
+  color: #000;
+  margin-bottom: 1rem;
+}
+
+/* User Review Section */
+.user-review-section {
+  min-height: 90vh;
+}
+
+.user-review:hover {
+  transform: scale(1.05);
+}
+
+/* Last Action Section */
+.last-action-section {
+  min-height: 70vh;
+}
+
+.custom-bg {
+  background-color: #a3b18a;
+}
+
+/* Highlighter effect */
+.highlight {
+  background: linear-gradient(transparent 60%, #a3b18a 40%);
+  padding: 2px 5px; 
+  border-radius: 3px;
 }

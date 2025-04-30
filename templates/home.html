@@ -1,1 +1,126 @@
 {% extends "layout.html" %}
+
+{% block title %}BudgetManager{% endblock %}
+
+{% block content %} 
+<!-- Hero Section -->
+<section class="container-fluid d-flex justify-content-center align-items-center text-center text-dark pt-5 py-5 hero-section" id="hero-section">
+    <div class="row align-items-center hero-row">
+        <!-- Left column: Texts and buttons for hero section  -->
+        <div class="col-md-6 text-center text-md-start ps-md-5">
+            <h1 class="display-3 fw-bold mb-4">No worries.<br>Your private budget manager will take care.</h1>
+            <p class="lead">Track your expenses, achieve saving goals, and enlighten your finance with BudgetManager.</p>
+            <div class="d-flex mt-3 gap-3 buttons">
+                <a href="{{ url_for('login') }}" class="btn btn-dark btn-lg mt-4 get-started-btn">Get started</a>
+                <a href="{{ url_for('services') }}" class="btn btn-outline-dark btn-lg mt-4 ms-3 learn-more-btn">Learn more</a>
+            </div>
+        </div>
+
+        <!-- Right column: Illustrations for hero section -->
+        <div class="col-md-6 text-center w-60 position-relative">
+            <div class="illustration-wrapper">
+                <img src="{{ url_for('static', filename='media/images/hero_image1.svg') }}" class="illustration active" alt="Illustration 1">
+                <img src="{{ url_for('static', filename='media/images/hero_image2.svg') }}" class="illustration" alt="Illustration 2">
+                <img src="{{ url_for('static', filename='media/images/hero_image3.svg') }}" class="illustration" alt="Illustration 3">
+                <img src="{{ url_for('static', filename='media/images/hero_image4.svg') }}" class="illustration" alt="Illustration 4">
+                <img src="{{ url_for('static', filename='media/images/hero_image5.svg') }}" class="illustration" alt="Illustration 5">
+            </div>
+        </div>               
+    </div>
+</section>
+
+<!-- Home-Services Section -->
+<section class="container-fluid bg-white d-flex justify-content-center align-items-center text-center text-dark py-5 px-4 home-services-section" id="home-services-section">
+    <div class="row align-items-center home-services-row">
+        <!-- BudgetManager Explanation -->
+        <div class="col-md-6 text-center text-md-start ps-md-5">
+            <h1 class="display-3 fw-bold"><span class="highlight">What we do?</span></h1>
+            <p class="lead mt-5">BudgetManager helps you to manage your budget and expenses.<br>You simply set your budget and track your spending.<br>
+                We will analyse your financial habits and you just follow our advice.<br><br>With BudgetManager, your dream is not far away!</p>
+        </div>
+        <div class="carousel slide col-md-6" data-bs-ride="carousel" id="service-carousel">
+            <!-- Indicators for Service  Carousel -->
+            <div class="carousel-indicators">                       
+                <button type="button" data-bs-target="#service-carousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#service-carousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#service-carousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>
+            <!-- Each content for Service Carousel -->
+            <!-- TODO: Substitute the images to service screenshots and the descriptions (Change text colour and size as well) -->
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="{{ url_for('static', filename='media/images/hero_image1.svg') }}" class="d-block w-100 carousel-img" alt="service1-carousel">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>Track your expenses and be alert with your spending habit.</h5>
+                        <p>Description of first service</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="{{ url_for('static', filename='media/images/hero_image1.svg') }}" class="d-block w-100 carousel-img" alt="service2-carousel">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>Set your saving goals.</h5>
+                        <p>Description of second service</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="{{ url_for('static', filename='media/images/hero_image1.svg') }}" class="d-block w-100 carousel-img" alt="service3-carousel">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>Share your state with your friends and family.</h5>
+                        <p>Description of third service</p>
+                    </div>
+                </div>
+
+                <!-- Previous and Next Buttons for Service Carousel -->
+                <button class="carousel-control-prev" type="button" data-bs-target="#service-carousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#service-carousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>                
+    </div>
+</section>
+
+<!-- User review section -->
+<section class="container-fluid bg-light d-flex justify-content-center align-items-center text-center text-dark py-5 px-4 user-review-section" id="user-review-section">
+    <div class="row align-items-center w-100">
+
+        <!-- Heading for user review -->
+        <div class="col-12 text-center text-md-start ps-md-5 mb-5">
+            <h1 class="display-3 fw-bold"><span class="highlight">What our users say?</span></h1>
+        </div>
+        <!-- User images and reviews -->
+        <div class="col-md-6 col-lg-6 mb-4 mt-4 d-flex flex-column align-items-center mt-5 user-review">
+            <img src="{{ url_for('static', filename='media/images/user-review1.svg') }}" class="rounded-circle mb-3 img-fluid w-25 user-review-img" alt="user-review image 1">
+            <h5 class="fw-bold mb-1">Harry Poter, 19</h5>
+            <p class="mt-2">"I just started to earn money and I didn't know what to do with them. But BudgetManager helped me to learn how to manage money.</p>
+        </div>
+        <div class="col-md-6 col-lg-6 mb-4 mt-4 d-flex flex-column align-items-center mt-5 user-review">
+            <img src="{{ url_for('static', filename='media/images/user-review2.svg') }}" class="rounded-circle mb-3 img-fluid w-25 user-review-img" alt="user-review image 2">
+            <h5 class="fw-bold mb-1">Hermione Granger, 33</h5>
+            <p class="mt-5">"I was able to achieve the saving goal for this year faster thanks to BudgetManager!</p>
+        </div>
+    </div>
+</section>
+
+<!-- Last action button -->
+<section class="container-fluid d-flex justify-content-center align-items-center text-center text-dark py-5 px-4 custom-bg last-action-section" id="last-action-section">
+    <div class="row align-items-center justify-content-center w-100">
+        <div class="col-12 d-flex flex-column align-items-center justify-content-center">
+            <h1 class="display-6 fw-bold">Are you ready to explore BudgetManager?</h1>
+            <p class="lead mt-5">Join us today and take control of your finance.</p>
+            <div class="d-flex justify-content-center mt-1 buttons">
+                <a href="{{ url_for('login') }}" class="btn btn-dark btn-lg">Start Here</a>
+            </div>
+            <p class="lead mt-5">Any query? Reach out us!</p>
+            <div class="d-flex justify-content-center mt-1 buttons">
+                <a href="{{ url_for('contact') }}" class="btn btn-outline-dark btn-lg">Contact Us</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

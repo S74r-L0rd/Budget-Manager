@@ -1,0 +1,84 @@
+/* Style for Profile section */
+.profile-section {
+    padding-top: 180px;
+}
+
+.profile-container {
+    display: flex;
+    gap: 50px;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.profile-sidebar {
+    flex: 0 0 300px;
+    text-align: center;
+}
+
+.profile-details {
+    flex: 1;
+}
+
+/* Style for Profile photo */
+.profile-image-container {
+    width: 300px;
+    height: 300px;
+    overflow: hidden;
+    border-radius: 50%;
+    margin: 0 auto;
+}
+  
+.profile-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+}
+
+.photo-btn:hover {
+    background-color: #588157;
+}
+
+ /* Style for tap panel */
+.list-group-item.active {
+    background-color: #a3b18a;
+    border-color: #a3b18a;
+    color: #fff;
+}
+
+/* Style for profile detail table */
+.profile-table {
+    border-collapse: separate;
+    border-spacing: 0 10px;
+    width: 100%;
+}
+  
+.profile-table th {
+    background-color: #a3b18a;
+    color: white;
+    padding: 12px;
+    text-align: center;
+}
+  
+.profile-table td {
+    padding: 12px;
+    border-bottom: 1px dashed #ccc;
+}
+
+/* Style for Logout */
+.logout-btn:hover, .cancel-btn:hover {
+    background-color: #588157
+
+}
+
+/* Style for modal logout button */
+.modal-logout-btn {
+    background-color: #344e41;
+    color: #fff;
+}
+
+.modal-logout-btn:hover {
+    background-color: #a3b18a;
+}

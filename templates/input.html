@@ -1,0 +1,1047 @@
+{% extends "layout.html" %}
+
+{% block title %}Budget Planner{% endblock %}
+
+{% block content %}
+<!-- Budget Tool Information Section -->
+<section class="container-fluid d-flex justify-content-center align-items-center text-center text-dark pt-5 py-5 budget-info-section">
+    <div class="row align-items-center budget-info-row w-100">
+        <div class="col-12 mt-5 pt-5">
+            <div class="info-banner">
+                <h2>With BudgetManager's calculators, you can plan smarter and feel more confident about what comes next.</h2>
+            </div>
+
+            <div class="budget-tools-container mt-5">
+                <!-- Budget Planner Tool -->
+                <div class="budget-tool">
+                    <div class="tool-icon">
+                        <!-- <img src="{{ url_for('static', filename='media/images/budget-icon.svg') }}" alt="Budget planner" onerror="this.src='{{ url_for('static', filename='media/images/budget-icon.png') }}'"> -->
+                    </div>
+                    <div class="tool-info">
+                        <h3>Budget planner</h3>
+                        <p>Work out where your money is going</p>
+                    </div>
+                </div>
+
+                <!-- Savings Goal Tool -->
+                <div class="budget-tool">
+                    <div class="tool-icon">
+                        <!-- <img src="{{ url_for('static', filename='media/images/savings-icon.svg') }}" alt="Savings goals calculator" onerror="this.src='{{ url_for('static', filename='media/images/savings-icon.png') }}'"> -->
+                    </div>
+                    <div class="tool-info">
+                        <h3>Savings goals calculator</h3>
+                        <p>Reach your savings goals</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Budget Tool Features -->
+            <div class="budget-features mt-5">
+                <h3>This budget tool allows you to:</h3>
+                <ul class="feature-list">
+                    <li>Understand how your money is distributed across different categories</li>
+                    <li>View a clear yearly summary of income and expenses</li>
+                    <li>Identify major spending areas like insurance and home utilities</li>
+                    <li>Customize budget categories to suit your personal lifestyle</li>
+                    <li>Make better financial decisions by seeing your net balance</li>
+                    <li>How quickly you can hit your savings target</li>
+            <li>What simple steps will get you there faster</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Budget Planner Section -->
+<section class="container-fluid budget-planner-section">
+    <div class="budget-header">
+        <h2>Budget planner</h2>
+        <div class="view-selector">
+            <span>View</span>
+            <select id="view-period" class="period-select">
+                <option value="annually" selected>Annually</option>
+                <option value="monthly">Monthly</option>
+                <option value="weekly">Weekly</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Income Category -->
+    <div class="budget-category" id="income-category">
+        <div class="category-header" onclick="toggleCategory('income')">
+            <div class="category-info">
+                <span class="category-dot income-dot"></span>
+                <h3>Income</h3>
+            </div>
+            <div class="category-amount">$0</div>
+            <div class="category-toggle"><span id="income-toggle-icon">▼</span></div>
+        </div>
+        
+        <div class="category-details" id="income-details">
+            <!-- Income Items -->
+            <div class="budget-item">
+                <div class="item-label">Your take-home pay</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="budget-item">
+                <div class="item-label">Your partner's take-home pay</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="budget-item">
+                <div class="item-label">Bonuses & overtime</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="budget-item">
+                <div class="item-label">Income from savings & investments</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="budget-item">
+                <div class="item-label">Government benefits</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="budget-item">
+                <div class="item-label">Family benefit payments</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="budget-item">
+                <div class="item-label">Child support received</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="budget-item">
+                <div class="item-label">Other</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Home & Utilities Category -->
+    <div class="budget-category" id="home-category">
+        <div class="category-header" onclick="toggleCategory('home')">
+            <div class="category-info">
+                <span class="category-dot home-dot"></span>
+                <h3>Home & utilities</h3>
+            </div>
+            <div class="category-amount">$0</div>
+            <div class="category-toggle"><span id="home-toggle-icon">▼</span></div>
+        </div>
+        
+        <div class="category-details" id="home-details">
+            <!-- Home & Utilities Items -->
+            <div class="budget-item">
+                <div class="item-label">Mortgage or rent</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="budget-item">
+                <div class="item-label">Electricity</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="budget-item">
+                <div class="item-label">Gas</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="budget-item">
+                <div class="item-label">Water</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="budget-item">
+                <div class="item-label">Internet & phone</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="budget-item">
+                <div class="item-label">Home maintenance</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="budget-item">
+                <div class="item-label">Property taxes</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="budget-item">
+                <div class="item-label">Home supplies</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Insurance & Financial Category -->
+    <div class="budget-category" id="insurance-category">
+        <div class="category-header" onclick="toggleCategory('insurance')">
+            <div class="category-info">
+                <span class="category-dot insurance-dot"></span>
+                <h3>Insurance & financial</h3>
+            </div>
+            <div class="category-amount">$0</div>
+            <div class="category-toggle"><span id="insurance-toggle-icon">▼</span></div>
+        </div>
+        
+        <div class="category-details" id="insurance-details">
+            <!-- Insurance & Financial Items -->
+            <div class="budget-item">
+                <div class="item-label">Health insurance</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="budget-item">
+                <div class="item-label">Car insurance</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="budget-item">
+                <div class="item-label">Home & contents insurance</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="budget-item">
+                <div class="item-label">Life insurance</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="budget-item">
+                <div class="item-label">Loan repayments</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="budget-item">
+                <div class="item-label">Credit card payments</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="budget-item">
+                <div class="item-label">Investment contributions</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Groceries Category -->
+    <div class="budget-category" id="groceries-category">
+        <div class="category-header" onclick="toggleCategory('groceries')">
+            <div class="category-info">
+                <span class="category-dot groceries-dot"></span>
+                <h3>Groceries</h3>
+            </div>
+            <div class="category-amount">$0</div>
+            <div class="category-toggle"><span id="groceries-toggle-icon">▼</span></div>
+        </div>
+        
+        <div class="category-details" id="groceries-details">
+            <!-- Groceries Items -->
+            <div class="budget-item">
+                <div class="item-label">Food & beverages</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="budget-item">
+                <div class="item-label">Household supplies</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="budget-item">
+                <div class="item-label">Pet food & supplies</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="budget-item">
+                <div class="item-label">Specialty food items</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Personal & Medical Category -->
+    <div class="budget-category" id="personal-category">
+        <div class="category-header" onclick="toggleCategory('personal')">
+            <div class="category-info">
+                <span class="category-dot personal-dot"></span>
+                <h3>Personal & medical</h3>
+            </div>
+            <div class="category-amount">$0</div>
+            <div class="category-toggle"><span id="personal-toggle-icon">▼</span></div>
+        </div>
+        
+        <div class="category-details" id="personal-details">
+            <!-- Personal & Medical Items -->
+            <div class="budget-item">
+                <div class="item-label">Medical expenses</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="budget-item">
+                <div class="item-label">Clothing & accessories</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="budget-item">
+                <div class="item-label">Personal care</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="budget-item">
+                <div class="item-label">Gym & fitness</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="budget-item">
+                <div class="item-label">Prescriptions</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Entertainment & Eat-out Category -->
+    <div class="budget-category" id="entertainment-category">
+        <div class="category-header" onclick="toggleCategory('entertainment')">
+            <div class="category-info">
+                <span class="category-dot entertainment-dot"></span>
+                <h3>Entertainment & eat-out</h3>
+            </div>
+            <div class="category-amount">$0</div>
+            <div class="category-toggle"><span id="entertainment-toggle-icon">▼</span></div>
+        </div>
+        
+        <div class="category-details" id="entertainment-details">
+            <!-- Entertainment & Eat-out Items -->
+            <div class="budget-item">
+                <div class="item-label">Dining out</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="budget-item">
+                <div class="item-label">Movies & events</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="budget-item">
+                <div class="item-label">Streaming services</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="budget-item">
+                <div class="item-label">Hobbies</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="budget-item">
+                <div class="item-label">Vacations & travel</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Transport & Auto Category -->
+    <div class="budget-category" id="transport-category">
+        <div class="category-header" onclick="toggleCategory('transport')">
+            <div class="category-info">
+                <span class="category-dot transport-dot"></span>
+                <h3>Transport & auto</h3>
+            </div>
+            <div class="category-amount">$0</div>
+            <div class="category-toggle"><span id="transport-toggle-icon">▼</span></div>
+        </div>
+        
+        <div class="category-details" id="transport-details">
+            <!-- Transport & Auto Items -->
+            <div class="budget-item">
+                <div class="item-label">Car payments</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="budget-item">
+                <div class="item-label">Fuel</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="budget-item">
+                <div class="item-label">Public transport</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="budget-item">
+                <div class="item-label">Vehicle maintenance</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="budget-item">
+                <div class="item-label">Parking & tolls</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Children Category -->
+    <div class="budget-category" id="children-category">
+        <div class="category-header" onclick="toggleCategory('children')">
+            <div class="category-info">
+                <span class="category-dot children-dot"></span>
+                <h3>Children</h3>
+            </div>
+            <div class="category-amount">$0</div>
+            <div class="category-toggle"><span id="children-toggle-icon">▼</span></div>
+        </div>
+        
+        <div class="category-details" id="children-details">
+            <!-- Children Items -->
+            <div class="budget-item">
+                <div class="item-label">Childcare</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="budget-item">
+                <div class="item-label">School fees & supplies</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="budget-item">
+                <div class="item-label">Toys & entertainment</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="budget-item">
+                <div class="item-label">Children's clothing</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="budget-item">
+                <div class="item-label">Child support paid</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Education Category -->
+    <div class="budget-category" id="education-category">
+        <div class="category-header" onclick="toggleCategory('education')">
+            <div class="category-info">
+                <span class="category-dot education-dot"></span>
+                <h3>Education</h3>
+            </div>
+            <div class="category-amount">$0</div>
+            <div class="category-toggle"><span id="education-toggle-icon">▼</span></div>
+        </div>
+        
+        <div class="category-details" id="education-details">
+            <!-- Education Items -->
+            <div class="budget-item">
+                <div class="item-label">Tuition fees</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="budget-item">
+                <div class="item-label">Books & supplies</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="budget-item">
+                <div class="item-label">Student loan repayments</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="budget-item">
+                <div class="item-label">Courses & training</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Gifts & Donations Category -->
+    <div class="budget-category" id="gifts-category">
+        <div class="category-header" onclick="toggleCategory('gifts')">
+            <div class="category-info">
+                <span class="category-dot gifts-dot"></span>
+                <h3>Gifts & donations</h3>
+            </div>
+            <div class="category-amount">$0</div>
+            <div class="category-toggle"><span id="gifts-toggle-icon">▼</span></div>
+        </div>
+        
+        <div class="category-details" id="gifts-details">
+            <!-- Gifts & Donations Items -->
+            <div class="budget-item">
+                <div class="item-label">Birthday gifts</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="budget-item">
+                <div class="item-label">Holiday gifts</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="budget-item">
+                <div class="item-label">Charitable donations</div>
+                <div class="item-inputs">
+                    <input type="number" class="amount-input" placeholder="0">
+                    <select class="period-select">
+                        <option value="weekly">Weekly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Summary Section -->
+    <div class="budget-summary">
+        <h3>Summary</h3>
+        <div class="total-amount">$0</div>
+    </div>
+</section>
+
+<!-- Savings Goals Calculator Section -->
+<section class="container-fluid savings-calculator-section">
+    <div class="savings-header">
+        <div class="savings-icon">
+            <!-- <img src="{{ url_for('static', filename='media/images/savings-icon.svg') }}" alt="Savings icon" onerror="this.src='{{ url_for('static', filename='media/images/savings-icon.png') }}'"> -->
+        </div>
+        <h2>Savings goals calculator</h2>
+    </div>
+    
+    <div class="savings-calculator-container">
+        <div class="calculator-form">
+            <div class="calculator-row">
+                <label>I want to</label>
+                <div class="dropdown-container">
+                    <select id="savings-action" class="savings-dropdown">
+                        <option value="save" selected>save</option>
+                        <option value="spend">spend</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="calculator-row">
+                <label></label>
+                <div class="dropdown-container">
+                    <select id="savings-amount-type" class="savings-dropdown">
+                        <option value="as-much-as-possible" selected>as much as possible</option>
+                        <option value="an-amount-of">an amount of</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div id="amount-input-container" class="calculator-row" style="display: none;">
+                <label></label>
+                <div class="amount-input-wrapper">
+                    <input type="number" id="specific-amount" class="savings-amount" placeholder="0">
+                </div>
+            </div>
+            
+            <div class="calculator-row">
+                <span class="time-label">in</span>
+                <div class="time-input-container">
+                    <input type="number" id="time-amount" class="time-amount" value="1" min="1">
+                    <div class="time-dropdown-container">
+                        <select id="time-unit" class="savings-dropdown">
+                            <option value="years" selected>years time</option>
+                            <option value="months">months time</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="calculator-row">
+                <label>Starting balance:</label>
+                <div class="amount-input-wrapper">
+                    <input type="number" id="starting-balance" class="savings-input" placeholder="0">
+                </div>
+            </div>
+            
+            <div class="calculator-row">
+                <label>Interest rate: (max: 10%)</label>
+                <div class="amount-input-wrapper">
+                    <input type="number" id="interest-rate" class="savings-input" placeholder="0" max="10" step="0.1">
+                </div>
+            </div>
+            
+            <div class="calculator-row">
+                <label>Regular savings: (min: $1)</label>
+                <div class="amount-input-wrapper">
+                    <input type="number" id="regular-savings" class="savings-input" placeholder="0" min="1">
+                </div>
+            </div>
+            
+            <div class="calculator-row">
+                <label>Savings frequency:</label>
+                <div class="dropdown-container">
+                    <select id="savings-frequency" class="savings-dropdown">
+                        <option value="monthly" selected>Monthly</option>
+                        <option value="fortnightly">Fortnightly</option>
+                        <option value="weekly">Weekly</option>
+                        <option value="quarterly">Quarterly</option>
+                        <option value="yearly">Yearly</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="calculator-row calculator-actions">
+                <button id="calculate-savings" class="calculate-btn">Calculate</button>
+                <button id="reset-savings" class="reset-btn">Reset</button>
+            </div>
+        </div>
+        
+        <div id="savings-results" class="savings-results" style="display: none;">
+            <h3>Your savings estimate</h3>
+            <div class="results-container">
+                <div class="result-row">
+                    <span class="result-label">Final balance:</span>
+                    <span id="final-balance" class="result-value">$0</span>
+                </div>
+                <div class="result-row">
+                    <span class="result-label">Total deposits:</span>
+                    <span id="total-deposits" class="result-value">$0</span>
+                </div>
+                <div class="result-row">
+                    <span class="result-label">Interest earned:</span>
+                    <span id="interest-earned" class="result-value">$0</span>
+                </div>
+            </div>
+            
+            <div class="savings-tips">
+                <h4>Ways to reach your goal faster:</h4>
+                <ul id="savings-tips-list">
+                    <li>Increase your regular contribution</li>
+                    <li>Find an account with a higher interest rate</li>
+                    <li>Increase your deposit frequency</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

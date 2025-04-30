@@ -1,0 +1,619 @@
+/* Budget Info Section Styles */
+.budget-info-section {
+    padding-top: 120px;
+    background-color: #dee4d3;
+}
+
+.info-banner {
+    background-color: #588157;
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 0 auto;
+    max-width: 90%;
+}
+
+.info-banner h2 {
+    font-weight: 500;
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.budget-tools-container {
+    display: flex;
+    justify-content: space-around;
+    margin: 40px 0;
+    flex-wrap: wrap;
+}
+
+.budget-tool {
+    display: flex;
+    align-items: center;
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 10px;
+    width: 45%;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.tool-icon {
+    background-color: #e9ecef;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 20px;
+}
+
+.tool-icon img {
+    width: 50px;
+    height: 50px;
+}
+
+.tool-info {
+    text-align: left;
+}
+
+.tool-info h3 {
+    color: #344E41;
+    margin-bottom: 5px;
+}
+
+.tool-info p {
+    color: #666;
+    margin: 0;
+}
+
+.budget-features {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 30px;
+    margin: 0 auto;
+    max-width: 90%;
+    text-align: left;
+}
+
+.budget-features h3 {
+    color: #344E41;
+    margin-bottom: 20px;
+}
+
+.feature-list {
+    padding-left: 20px;
+}
+
+.feature-list li {
+    margin-bottom: 10px;
+    list-style-type: disc;
+    color: #444;
+}
+
+/* Budget Planner Section Styles */
+.budget-planner-section {
+    background-color: #f8f9fa;
+    padding: 30px 20px;
+    margin: 30px auto;
+    max-width: 90%; /* 添加左右留白，不铺满整个屏幕 */
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    border-radius: 8px;
+}
+
+.budget-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: #f1f1f1;
+    border-radius: 8px 8px 0 0;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.budget-header h2 {
+    color: #344E41;
+    margin: 0;
+}
+
+.view-selector {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.period-select {
+    padding: 8px 15px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    background-color: white;
+    font-size: 0.9rem;
+}
+
+/* Budget Category Styles */
+.budget-category {
+    margin-bottom: 1px;
+    border: 1px solid #dee2e6;
+    border-radius: 0;
+}
+
+.category-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: #ffffff;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.category-header:hover {
+    background-color: #f8f9fa;
+}
+
+.category-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+}
+
+.category-dot {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.income-dot {
+    background-color: #000000;
+}
+
+.home-dot {
+    background-color: #0d6efd;
+}
+
+.insurance-dot {
+    background-color: #343a40;
+}
+
+.groceries-dot {
+    background-color: #343a40;
+}
+
+.personal-dot {
+    background-color: #adb5bd;
+}
+
+.entertainment-dot {
+    background-color: #81D8D0;
+}
+
+.transport-dot {
+    background-color: #81D8D0;
+}
+
+.children-dot {
+    background-color: #adb5bd;
+}
+
+.education-dot {
+    background-color: #6c757d;
+}
+
+.gifts-dot {
+    background-color: #6c757d;
+}
+
+.category-amount {
+    font-weight: bold;
+    font-size: 1.2rem;
+    text-align: right;
+    width: 80px;
+    margin-left: auto;
+    margin-right: 20px;
+}
+
+.category-toggle {
+    width: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.category-toggle span {
+    transition: transform 0.3s ease;
+}
+
+/* Budget Item Styles */
+.category-details {
+    display: none;
+    background-color: #ffffff;
+    border-top: 1px solid #dee2e6;
+}
+
+.budget-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.item-label {
+    flex: 1;
+    text-align: left;
+}
+
+.item-inputs {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.amount-input {
+    width: 120px;
+    padding: 8px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    text-align: right;
+}
+
+/* Summary Section Styles */
+.budget-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #588157; /* 使用色卡中的绿色 */
+    color: white;
+    border-radius: 0 0 8px 8px;
+    margin-top: 1px;
+}
+
+.budget-summary h3 {
+    margin: 0;
+}
+
+.total-amount {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* Savings Goals Calculator Section Styles */
+.savings-calculator-section {
+    background-color: #f8f9fa;
+    padding: 30px 20px;
+    margin: 30px auto 60px;
+    max-width: 90%;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    border-radius: 8px;
+    text-align: center;
+}
+
+.savings-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    padding: 0 10px;
+}
+
+.savings-icon {
+    background-color: #00A989;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.savings-icon img {
+    width: 50px;
+    height: 50px;
+    filter: brightness(0) invert(1);
+}
+
+.savings-header h2 {
+    color: #344E41;
+    margin: 0;
+    font-size: 2rem;
+}
+
+.savings-description {
+    padding: 0 10px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.savings-description p {
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.savings-description ul {
+    list-style-type: disc;
+    display: inline-block;
+    text-align: left;
+    padding-left: 30px;
+}
+
+.savings-description li {
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.savings-calculator-container {
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    padding: 30px;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.savings-calculator-container h3 {
+    color: #333;
+    margin-top: 0;
+    margin-bottom: 25px;
+    font-size: 1.8rem;
+}
+
+.calculator-form {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.calculator-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    justify-content: center;
+    width: 100%;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.calculator-row label, 
+.calculator-row .time-label {
+    width: 220px;
+    text-align: left;
+    font-size: 1.1rem;
+    color: #444;
+    flex-shrink: 0;
+}
+
+.time-label {
+    display: inline-block;
+}
+
+.dropdown-container {
+    position: relative;
+    min-width: 250px;
+}
+
+.savings-dropdown {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    background-color: white;
+    font-size: 1rem;
+    color: #333;
+    appearance: none;
+    cursor: pointer;
+}
+
+.savings-dropdown:focus {
+    outline: none;
+    border-color: #00A989;
+    box-shadow: 0 0 0 2px rgba(0, 169, 137, 0.2);
+}
+
+.amount-input-wrapper {
+    position: relative;
+    width: 250px;
+}
+
+.savings-input {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.savings-input:focus {
+    outline: none;
+    border-color: #00A989;
+    box-shadow: 0 0 0 2px rgba(0, 169, 137, 0.2);
+}
+
+.time-input-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 250px;
+}
+
+.time-amount {
+    width: 60px;
+    padding: 10px 15px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.time-amount:focus {
+    outline: none;
+    border-color: #00A989;
+    box-shadow: 0 0 0 2px rgba(0, 169, 137, 0.2);
+}
+
+.savings-amount {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.calculator-actions {
+    margin-top: 30px;
+    justify-content: center;
+    gap: 15px;
+}
+
+.calculate-btn {
+    background-color: #588157; /* 与Summary背景色一致 */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-right: 15px;
+}
+
+.calculate-btn:hover {
+    background-color: #4a6a48; /* 略深的绿色 */
+}
+
+.reset-btn {
+    background-color: #f8f9fa;
+    color: #444;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    padding: 10px 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.reset-btn:hover {
+    background-color: #e9ecef;
+}
+
+.savings-results {
+    margin-top: 40px;
+    padding: 25px;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+}
+
+.savings-results h3 {
+    color: #344E41;
+    margin-top: 0;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.results-container {
+    margin-bottom: 30px;
+}
+
+.result-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.result-label {
+    font-size: 1.1rem;
+    color: #555;
+}
+
+.result-value {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.savings-tips {
+    background-color: #f5f5f5;
+    padding: 20px;
+    border-radius: 6px;
+    margin-top: 20px;
+}
+
+.savings-tips h4 {
+    color: #344E41;
+    margin-top: 0;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.savings-tips ul {
+    padding-left: 20px;
+}
+
+.savings-tips li {
+    margin-bottom: 8px;
+    color: #555;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .budget-tool {
+        width: 100%;
+    }
+    
+    .item-inputs {
+        flex-direction: column;
+        align-items: flex-end;
+    }
+    
+    .budget-header {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .view-selector {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .calculator-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .calculator-row label {
+        width: 100%;
+        margin-bottom: 8px;
+    }
+    
+    .dropdown-container, 
+    .amount-input-wrapper {
+        width: 100%;
+    }
+    
+    .time-input-container {
+        width: 100%;
+    }
+    
+    .calculator-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .calculate-btn {
+        margin-right: 0;
+        width: 100%;
+    }
+    
+    .reset-btn {
+        width: 100%;
+    }
+}

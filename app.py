@@ -18,5 +18,9 @@ def contact():
 def login():
     return render_template('login.html')
 
+@app.route('/input')
+def input():
+    return render_template('input.html')
+
 if __name__ == '__main__':
     app.run(debug=True)

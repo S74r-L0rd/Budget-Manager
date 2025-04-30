@@ -4,8 +4,10 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{% block title %}Guest Layout{% endblock %}</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+        <!-- Block for external styles -->
+        {% block styles %}{% endblock %}
+        <!-- Block for external scripts -->
+        {% block scripts %}{% endblock %}
     </head>
     <body>
         <nav class="navbar">
@@ -15,10 +17,10 @@
             </div>
             <!-- Navigation links -->
             <ul>
-                <li><a href="{{ url_for('home') }}" class="active">Home</a></li>
-                <li><a href="{{ url_for('services') }}">Services</a></li>
-                <li><a href="{{ url_for('contact') }}">Contact Us</a></li>
-                <li><a href="{{ url_for('login') }}">Sign In/Up</a></li>
+                <li><a href="{{ url_for('home') }}" class="{{ 'active' if request.endpoint == 'home' }}">Home</a></li>
+                <li><a href="{{ url_for('services') }}" class="{{ 'active' if request.endpoint == 'services' }}">Services</a></li>
+                <li><a href="{{ url_for('contact') }}" class="{{ 'active' if request.endpoint == 'contact' }}">Contact Us</a></li>
+                <li><a href="{{ url_for('login') }}" class="{{ 'active' if request.endpoint == 'login' }}">Sign In/Up</a></li>
             </ul>
         </nav>
 
@@ -47,8 +49,5 @@
                 </div>
             </div>
         </footer>
-        <script src="{{ url_for('static', filename='js/home.js') }}"></script>
-        <script src="{{ url_for('static', filename='js/services.js') }}"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
     </body>
 </html>

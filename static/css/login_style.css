@@ -13,8 +13,7 @@
 
 body {
   background-color: var(--light-bg);
-  font-family: "Inter", "San Francisco", "SF Pro Text", -apple-system,
-    system-ui, sans-serif;
+  font-family: 'Arial', sans-serif;
   color: var(--text-color);
 }
 
@@ -45,17 +44,7 @@ body {
   transition: all 0.2s ease;
 }
 
-textarea.form-control {
-  resize: vertical;
-  min-height: 120px;
-}
-
 .form-control:focus {
-  border-color: var(--input-focus);
-  box-shadow: 0 0 0 3px rgba(136, 158, 129, 0.15);
-}
-
-.login-form-section textarea.form-control:focus {
   border-color: var(--input-focus);
   box-shadow: 0 0 0 3px rgba(136, 158, 129, 0.15);
 }

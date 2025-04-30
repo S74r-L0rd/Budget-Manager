@@ -22,5 +22,9 @@ def login():
 def input():
     return render_template('input.html')
 
+@app.route('/analyze')
+def analyze():
+    return render_template('analyze.html')
+
 if __name__ == '__main__':
     app.run(debug=True)

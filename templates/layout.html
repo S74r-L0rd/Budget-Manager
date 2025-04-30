@@ -9,6 +9,9 @@
         {% if request.path == '/input' %}
         <link rel="stylesheet" href="{{ url_for('static', filename='css/input.css') }}">
         {% endif %}
+        {% if request.path == '/analyze' %}
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/analyze.css') }}">
+        {% endif %}
     </head>
     <body>
         <nav class="navbar">

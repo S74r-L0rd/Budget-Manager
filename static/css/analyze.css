@@ -1,0 +1,275 @@
+/* Budget Analysis Styles */
+.analyze-info-section {
+    padding-top: 120px;
+    background-color: #DAD7CD;
+    padding-bottom: 30px;
+    font-family: 'Arial', sans-serif;
+}
+
+.info-banner {
+    background-color: #588157;
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 0 auto;
+    max-width: 90%;
+}
+
+.info-banner h2 {
+    font-weight: 500;
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+/* Summary Section Styles */
+.summary-section {
+    background-color: #DAD7CD;
+    padding: 30px 20px;
+    margin: 0 auto;
+    max-width: 90%;
+}
+
+.summary-header {
+    background-color: #344E41 !important;
+    color: white;
+}
+
+.summary-header h2 {
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 500;
+}
+
+.summary-amount {
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.congratulations h3 {
+    font-size: 2rem;
+    color: #344E41;
+}
+
+.spending-breakdown h4 {
+    font-size: 1.4rem;
+    color: #3A5A40;
+}
+
+.pie-chart-wrapper {
+    height: 400px;
+    position: relative;
+}
+
+.chart-legend {
+    border: 1px solid #A3B18A;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.legend-dot {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    margin-right: 15px;
+    display: inline-block;
+}
+
+.legend-item p {
+    font-size: 1rem;
+    margin: 0;
+}
+
+/* Color Dots */
+.home-dot {
+    background-color: #588157;
+}
+
+.insurance-dot {
+    background-color: #344E41;
+}
+
+.groceries-dot {
+    background-color: #3A5A40;
+}
+
+.personal-dot {
+    background-color: #A3B18A;
+}
+
+.entertainment-dot {
+    background-color: #DAD7CD;
+}
+
+.transport-dot {
+    background-color: #A3B18A;
+}
+
+.children-dot {
+    background-color: #DAD7CD;
+}
+
+/* Savings Section Styles */
+.savings-section {
+    background-color: #DAD7CD;
+    padding: 20px;
+    margin: 30px auto;
+    max-width: 90%;
+}
+
+.savings-header {
+    background-color: #344E41 !important;
+    color: white;
+    padding: 20px !important;
+    text-align: left;
+}
+
+.savings-header h3 {
+    font-size: 1.7rem;
+    margin: 0 0 15px 0;
+    font-weight: 400;
+}
+
+.savings-amount {
+    font-size: 3.5rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.savings-period {
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+.savings-chart-wrapper {
+    height: 400px;
+    position: relative;
+}
+
+.next-steps h4 {
+    font-size: 1.7rem;
+    color: #344E41;
+}
+
+.next-steps .list-group-item {
+    font-size: 1.1rem;
+    color: #444;
+    border: none;
+    padding: 0.75rem 0;
+}
+
+.savings-link {
+    color: #3A5A40;
+    text-decoration: underline;
+}
+
+.disclaimer-link {
+    color: #588157;
+    text-decoration: underline;
+    font-size: 0.9rem;
+}
+
+.disclaimer-link:hover {
+    color: #344E41;
+    text-decoration: underline;
+}
+
+/* Feature Section Styles */
+.feature-section {
+    background-color: #DAD7CD;
+    max-width: 90%;
+    margin: 0 auto;
+}
+
+.feature-section h3 {
+    color: #344E41;
+    font-size: 1.7rem;
+}
+
+.feature-list {
+    padding-left: 20px;
+}
+
+.feature-list li {
+    margin-bottom: 12px;
+    list-style-type: disc;
+    color: #3A5A40;
+    font-size: 1.1rem;
+}
+
+/* Card Styles */
+.card {
+    background-color: #fff;
+    border-color: #A3B18A;
+}
+
+.card-body {
+    background-color: #fff;
+}
+
+/* Responsive Styles */
+@media (max-width: 992px) {
+    .summary-header,
+    .savings-header {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .summary-amount {
+        margin-top: 10px;
+    }
+    
+    .savings-amount {
+        font-size: 3rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .summary-header h2,
+    .savings-header h3 {
+        font-size: 1.5rem;
+    }
+    
+    .summary-amount {
+        font-size: 1.8rem;
+    }
+    
+    .congratulations h3 {
+        font-size: 1.7rem;
+    }
+    
+    .spending-breakdown h4,
+    .next-steps h4 {
+        font-size: 1.3rem;
+    }
+    
+    .savings-amount {
+        font-size: 2.5rem;
+    }
+    
+    .pie-chart-wrapper,
+    .savings-chart-wrapper {
+        height: 350px;
+    }
+}
+
+@media (max-width: 576px) {
+    .summary-header,
+    .savings-header {
+        padding: 15px !important;
+    }
+    
+    .pie-chart-wrapper,
+    .savings-chart-wrapper {
+        height: 300px;
+    }
+    
+    .info-banner h2 {
+        font-size: 1.2rem;
+    }
+}

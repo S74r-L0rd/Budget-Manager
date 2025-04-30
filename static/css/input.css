@@ -270,6 +270,21 @@
     margin-top: 1px;
 }
 
+.summary-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    color: white;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.summary-link:hover {
+    color: white;
+    opacity: 0.9;
+}
+
 .budget-summary h3 {
     margin: 0;
 }

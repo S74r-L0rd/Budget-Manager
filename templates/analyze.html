@@ -1,0 +1,108 @@
+{% extends "layout.html" %}
+
+{% block title %}Budget Analysis{% endblock %}
+
+{% block content %}
+<!-- Budget Analysis Section -->
+<section class="container-fluid d-flex justify-content-center align-items-center text-center text-dark pt-5 py-5 analyze-info-section">
+    <div class="row align-items-center analyze-info-row w-100">
+        <div class="col-12 mt-5 pt-5">
+            <div class="info-banner">
+                <h2>With BudgetManager's calculators, you can plan smarter and feel more confident about what comes next.</h2>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Summary Analysis Section -->
+<section class="container-fluid summary-section">
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center summary-header">
+                    <h2>Summary</h2>
+                    <div class="summary-amount">$261,456</div>
+                </div>
+                <div class="card-body p-4">
+                    <div class="congratulations mb-4">
+                        <h3 class="mb-3">Congratulations!</h3>
+                        <p class="lead">Your budget is in surplus. (i.e Income: $520,000 vs Expenses: $258,544)</p>
+                    </div>
+                    
+                    <div class="spending-breakdown">
+                        <h4 class="mb-4">Annual spending breakdown:</h4>
+                        <div class="row">
+                            <div class="col-lg-7 col-md-12 mb-4">
+                                <div class="pie-chart-wrapper">
+                                    <canvas id="spending-pie-chart"></canvas>
+                                </div>
+                            </div>
+                            <div class="col-lg-5 col-md-12">
+                                <div class="chart-legend card">
+                                    <div class="card-body">
+                                        <div class="legend-item">
+                                            <span class="legend-dot home-dot"></span>
+                                            <p>Home & utilities: $87,308</p>
+                                        </div>
+                                        <div class="legend-item">
+                                            <span class="legend-dot insurance-dot"></span>
+                                            <p>Insurance & financial: $167,648</p>
+                                        </div>
+                                        <div class="legend-item">
+                                            <span class="legend-dot groceries-dot"></span>
+                                            <p>Groceries: $3,588</p>
+                                        </div>
+                                        <div class="legend-item">
+                                            <span class="legend-dot personal-dot"></span>
+                                            <p>Personal & medical: $0</p>
+                                        </div>
+                                        <div class="legend-item">
+                                            <span class="legend-dot entertainment-dot"></span>
+                                            <p>Entertainment & eat-out: $0</p>
+                                        </div>
+                                        <div class="legend-item">
+                                            <span class="legend-dot transport-dot"></span>
+                                            <p>Transport & auto: $0</p>
+                                        </div>
+                                        <div class="legend-item">
+                                            <span class="legend-dot children-dot"></span>
+                                            <p>Children: $0</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Savings Analysis Section -->
+<section class="container-fluid savings-section">
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-5">
+                <div class="card-header savings-header">
+                    <h3>you can save</h3>
+                    <div class="savings-amount">$7,901</div>
+                    <p class="savings-period">saving $333 monthly for 1 year</p>
+                </div>
+                <div class="card-body p-4">
+                    <div class="savings-chart-wrapper mb-4">
+                        <canvas id="savings-bar-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Include Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+<!-- Include Chart.js library -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- Include analyze.js -->
+<script src="{{ url_for('static', filename='js/analyze.js') }}"></script>
+{% endblock %}

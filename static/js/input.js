@@ -190,7 +190,6 @@ function setupSavingsCalculator() {
     const interestRateInput = document.getElementById('interest-rate');
     const regularSavingsInput = document.getElementById('regular-savings');
     const savingsFrequencySelect = document.getElementById('savings-frequency');
-    const calculateButton = document.getElementById('calculate-savings');
     const resetButton = document.getElementById('reset-savings');
     const savingsResults = document.getElementById('savings-results');
     
@@ -203,11 +202,6 @@ function setupSavingsCalculator() {
         }
     });
     
-    // Add event listener to calculate button
-    calculateButton.addEventListener('click', function() {
-        calculateSavings();
-    });
-    
     // Add event listener to reset button
     resetButton.addEventListener('click', function() {
         resetSavingsCalculator();
@@ -215,72 +209,7 @@ function setupSavingsCalculator() {
     
     // Calculate savings based on inputs
     function calculateSavings() {
-        // Get input values
-        const isSpending = savingsActionSelect.value === 'spend';
-        const isSpecificAmount = savingsAmountTypeSelect.value === 'an-amount-of';
-        const specificAmount = parseFloat(specificAmountInput.value) || 0;
-        const timeAmount = parseInt(timeAmountInput.value) || 1;
-        const timeUnit = timeUnitSelect.value;
-        const startingBalance = parseFloat(startingBalanceInput.value) || 0;
-        const interestRate = parseFloat(interestRateInput.value) || 0;
-        const regularSavings = parseFloat(regularSavingsInput.value) || 0;
-        const savingsFrequency = savingsFrequencySelect.value;
-        
-        // Convert time to months
-        let timeInMonths = 0;
-        if (timeUnit === 'years') {
-            timeInMonths = timeAmount * 12;
-        } else {
-            timeInMonths = timeAmount;
-        }
-        
-        // Calculate frequency multiplier
-        let frequencyMultiplier = 0;
-        switch (savingsFrequency) {
-            case 'weekly':
-                frequencyMultiplier = 52 / 12;
-                break;
-            case 'fortnightly':
-                frequencyMultiplier = 26 / 12;
-                break;
-            case 'monthly':
-                frequencyMultiplier = 1;
-                break;
-            case 'quarterly':
-                frequencyMultiplier = 1 / 3;
-                break;
-            case 'yearly':
-                frequencyMultiplier = 1 / 12;
-                break;
-        }
-        
-        // Calculate final balance
-        const monthlyInterestRate = interestRate / 100 / 12;
-        const monthlySavings = regularSavings * frequencyMultiplier;
-        let finalBalance = startingBalance;
-        let totalDeposits = 0;
-        
-        for (let i = 0; i < timeInMonths; i++) {
-            finalBalance += monthlySavings;
-            totalDeposits += monthlySavings;
-            
-            // Apply interest
-            finalBalance *= (1 + monthlyInterestRate);
-        }
-        
-        // Calculate interest earned
-        const interestEarned = finalBalance - startingBalance - totalDeposits;
-        
-        // Update results
-        document.getElementById('final-balance').textContent = formatCurrency(finalBalance);
-        document.getElementById('total-deposits').textContent = formatCurrency(totalDeposits);
-        document.getElementById('interest-earned').textContent = formatCurrency(interestEarned);
-        
-        // Show results section
-        savingsResults.style.display = 'block';
-        
-        // Generate tips based on calculations
-        generateSavingsTips(monthlySavings, interestRate, savingsFrequency);
+        // 保留此函数以备将来可能需要
     }
     
     // Reset form inputs

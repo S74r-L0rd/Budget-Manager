@@ -920,8 +920,10 @@
 
     <!-- Summary Section -->
     <div class="budget-summary">
-        <h3>Summary</h3>
-        <div class="total-amount">$0</div>
+        <a href="{{ url_for('analyze') }}" class="summary-link">
+            <h3>Summary</h3>
+            <div class="total-amount">$0</div>
+        </a>
     </div>
 </section>
 
@@ -1011,7 +1013,7 @@
             </div>
             
             <div class="calculator-row calculator-actions">
-                <button id="calculate-savings" class="calculate-btn">Calculate</button>
+                <a href="{{ url_for('analyze') }}" class="calculate-btn" style="text-decoration: none; display: inline-block; text-align: center;">Calculate</a>
                 <button id="reset-savings" class="reset-btn">Reset</button>
             </div>
         </div>

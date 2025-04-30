@@ -119,6 +119,7 @@ main.main-content {
 /* Hero section */
 .hero-section {
   min-height: 100vh;
+  background-color: #dee4d3;
 }
 
 .hero-row > div {

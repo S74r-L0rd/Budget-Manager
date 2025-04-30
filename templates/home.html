@@ -85,4 +85,43 @@
     </div>
 </section>
 
+<!-- User review section -->
+<section class="container-fluid bg-light d-flex justify-content-center align-items-center text-center text-dark py-5 px-4 user-review-section" id="user-review-section">
+    <div class="row align-items-center w-100">
+
+        <!-- Heading for user review -->
+        <div class="col-12 text-center text-md-start ps-md-5 mb-5">
+            <h1 class="display-6 fw-bold"><span class="highlight">What our users say?</span></h1>
+        </div>
+        <!-- User images and reviews -->
+        <div class="col-md-6 col-lg-6 mb-4 mt-4 d-flex flex-column align-items-center user-review">
+            <img src="{{ url_for('static', filename='media/images/user-review1.svg') }}" class="rounded-circle mb-3 img-fluid w-25 user-review-img" alt="user-review image 1">
+            <h5 class="fw-bold mb-1">Harry Poter, 19</h5>
+            <p class="mt-2">"I just started to earn money and I didn't know what to do with them. But BudgetManager helped me to learn how to manage money.</p>
+        </div>
+        <div class="col-md-6 col-lg-6 mb-4 mt-4 d-flex flex-column align-items-center user-review">
+            <img src="{{ url_for('static', filename='media/images/user-review2.svg') }}" class="rounded-circle mb-3 img-fluid w-25 user-review-img" alt="user-review image 2">
+            <h5 class="fw-bold mb-1">Hermione Granger, 33</h5>
+            <p class="mt-5">"I was able to achieve the saving goal for this year faster thanks to BudgetManager!</p>
+        </div>
+    </div>
+</section>
+
+<!-- Last action button -->
+<section class="container-fluid d-flex justify-content-center align-items-center text-center text-dark py-5 px-4 custom-bg last-action-section" id="last-action-section">
+    <div class="row align-items-center justify-content-center w-100">
+        <div class="col-12 d-flex flex-column align-items-center justify-content-center">
+            <h1 class="display-6 fw-bold">Are you ready to explore BudgetManager?</h1>
+            <p class="lead mt-5">Join us today and take control of your finance.</p>
+            <div class="d-flex justify-content-center mt-1 buttons">
+                <a href="{{ url_for('login') }}" class="btn btn-dark btn-lg">Start Here</a>
+            </div>
+            <p class="lead mt-5">Any query? Reach out us!</p>
+            <div class="d-flex justify-content-center mt-1 buttons">
+                <a href="{{ url_for('contact') }}" class="btn btn-outline-dark btn-lg">Contact Us</a>
+            </div>
+        </div>
+    </div>
+</section>
+
 {% endblock %}

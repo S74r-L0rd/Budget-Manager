@@ -26,10 +26,6 @@ main.main-content {
   flex: 1;
 }
 
-.main-content {
-  min-height: 50vh;
-}
-
 /* Fixed navigation bar at the top */
 .navbar {
   display: flex;
@@ -123,7 +119,7 @@ main.main-content {
 /* HOME PAGE */
 /* Hero section */
 .hero-section {
-  min-height: 100vh;
+  min-height: 90vh;
 }
 
 /* Illustration for hero section */
@@ -151,7 +147,7 @@ main.main-content {
 
 /* Home Services section */
 .home-services-section {
-  min-height: 100vh;
+  min-height: 90vh;
 }
 
 /* Images Size for Services carousel*/
@@ -176,4 +172,29 @@ main.main-content {
 
 .carousel-caption p {
   color: #2f4550; 
+}
+
+/* User Review Section */
+.user-review-section {
+  min-height: 90vh;
+}
+
+.user-review:hover {
+  transform: scale(1.05);
+}
+
+/* Last Action Section */
+.last-action-section {
+  min-height: 70vh;
+}
+
+.custom-bg {
+  background-color: #a3b18a;
+}
+
+/* Highlighter effect */
+.highlight {
+  background: linear-gradient(transparent 60%, #a3b18a 40%);
+  padding: 2px 5px; 
+  border-radius: 3px;
 }

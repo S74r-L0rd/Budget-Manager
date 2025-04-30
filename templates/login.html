@@ -16,7 +16,7 @@
   </head>
   <body>
     <div class="container login-container">
-      <div class="row align-items-center justify-content-center min-vh-100">
+      <div class="row align-items-center justify-content-center login-section">
         <!-- Left side: Login form -->
         <div class="col-lg-6 p-4">
           <div class="login-form-section">
@@ -361,6 +361,11 @@
             </div>
           </div>
         </div>
+      </div>
+
+      <!-- Back to Home button -->
+      <div class="text-center mt-0 back-to-home-wrapper">
+        <a href="{{ url_for('home') }}" class="btn btn-outline-secondary back-home-btn">← Back to Home</a>
       </div>
     </div>
 

@@ -22,6 +22,10 @@ body {
   min-height: 100vh;
 }
 
+.login-section {
+  padding: 6rem 0 6rem 0;
+}
+
 /* Login form area */
 .login-form-section {
   background-color: var(--card-bg);
@@ -239,4 +243,26 @@ body {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+}
+
+.back-to-home-wrapper {
+  text-align: center;
+  margin-top: 0.5rem;
+  margin-bottom: 5rem;
+}
+
+.back-home-btn {
+  padding: 10px 20px;
+  font-weight: 600;
+  border-radius: 8px;
+  border: 2px solid var(--medium-green);
+  color: var(--medium-green);
+  background-color: transparent;
+  transition: all 0.3s ease;
+}
+
+.back-home-btn:hover {
+  background-color: var(--medium-green);
+  color: #ffffff;
+  text-decoration: none;
 }

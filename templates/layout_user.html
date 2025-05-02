@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{% block title %}User Layout{% endblock %}</title>
+        <!-- Block for external styles -->
+        {% block styles %}{% endblock %}
+        <!-- Block for external scripts -->
+        {% block scripts %}{% endblock %}
+    </head>
+    <body>
+        <!-- Navbar Section -->
+
+        <!-- Main content -->
+        <main class="main-content">
+            {% block content %}
+            {% endblock %}
+        </main>
+
+        <!-- Footer Section -->
+        
+    </body>
+</html>

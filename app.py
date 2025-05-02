@@ -26,9 +26,9 @@ def dashboard():
 def analysis():
     return render_template('analysis.html')
 
-@app.route('/advisor')
-def advisor():
-    return render_template('advisor.html')
+@app.route('/share')
+def share():
+    return render_template('share.html')
 
 @app.route('/profile')
 def profile():

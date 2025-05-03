@@ -43,7 +43,7 @@ def register_user():
         
         if password != confirm_password:
             flash('passwords do not match', 'danger')
-            return render_template('login.html')
+            return render_template('register.html')
         
         # check if email already exists
         if User.find_by_email(email):

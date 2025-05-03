@@ -17,6 +17,12 @@ body {
   color: var(--text-color);
 }
 
+.password-toggle {
+  cursor: pointer;
+  border: none;
+  background: transparent;
+}
+
 .login-container {
   min-height: 100vh;
 }

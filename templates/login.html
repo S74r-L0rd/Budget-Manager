@@ -10,6 +10,7 @@
       integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7"
       crossorigin="anonymous"
     />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link rel="stylesheet" type="text/css" href="../static/css/login_style.css"/>
     
     <title>BudgetManager - Login</title>
@@ -23,16 +24,18 @@
             <h2 class="login-logo text-center">BudgetManager</h2>
 
             <!-- show flash messages -->
-            {% with messages = get_flashed_messages(with_categories=true) %}
-              {% if messages %}
-                {% for category, message in messages %}
-                  <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-                    {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                  </div>
-                {% endfor %}
-              {% endif %}
-            {% endwith %}
+            <div id="flash-messages">
+              {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                  {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                      {{ message }}
+                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                  {% endfor %}
+                {% endif %}
+              {% endwith %}
+            </div>
 
             <!-- Login/Registration tab switcher -->
             <ul class="nav nav-tabs nav-fill mb-4" id="authTabs" role="tablist">
@@ -110,6 +113,9 @@
                         placeholder="Enter your password"
                         required
                       />
+                      <button type="button" class="password-toggle" onclick="togglePasswordVisibility('loginPassword')">
+                        <i class="bi bi-eye-slash"></i>
+                      </button>
                     </div>
                     <div class="text-end mt-1">
                       <a
@@ -211,6 +217,9 @@
                         placeholder="Set new password"
                         required
                       />
+                      <button type="button" class="password-toggle" onclick="togglePasswordVisibility('newPassword')">
+                        <i class="bi bi-eye-slash"></i>
+                      </button>
                     </div>
                   </div>
                   <div class="mb-4">
@@ -229,6 +238,9 @@
                         placeholder="Enter new password again"
                         required
                       />
+                      <button type="button" class="password-toggle" onclick="togglePasswordVisibility('confirmNewPassword')">
+                        <i class="bi bi-eye-slash"></i>
+                      </button>
                     </div>
                   </div>
                   <div class="d-grid gap-2 mb-3">
@@ -278,27 +290,37 @@
                     <label for="signupPassword" class="form-label"
                       >Set Password</label
                     >
-                    <input
-                      type="password"
-                      class="form-control"
-                      id="signupPassword"
-                      name="signupPassword"
-                      placeholder="Set your password"
-                      required
-                    />
+                    <div class="input-group">
+                      <input
+                        type="password"
+                        class="form-control"
+                        id="signupPassword"
+                        name="signupPassword"
+                        placeholder="Set your password"
+                        required
+                      />
+                      <button type="button" class="password-toggle" onclick="togglePasswordVisibility('signupPassword')">
+                        <i class="bi bi-eye-slash"></i>
+                      </button>
+                    </div>
                   </div>
                   <div class="mb-3">
                     <label for="confirmPassword" class="form-label"
                       >Confirm Password</label
                     >
-                    <input
-                      type="password"
-                      class="form-control"
-                      id="confirmPassword"
-                      name="confirmPassword"
-                      placeholder="Enter password again"
-                      required
-                    />
+                    <div class="input-group">
+                      <input
+                        type="password"
+                        class="form-control"
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        placeholder="Enter password again"
+                        required
+                      />
+                      <button type="button" class="password-toggle" onclick="togglePasswordVisibility('confirmPassword')">
+                        <i class="bi bi-eye-slash"></i>
+                      </button>
+                    </div>
                   </div>
                   <div class="mb-3 form-check">
                     <input

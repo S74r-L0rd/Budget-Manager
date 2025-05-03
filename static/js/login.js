@@ -3,6 +3,18 @@ document.addEventListener("DOMContentLoaded", function () {
     // Handle tab switching for login and signup
     const loginTab = document.getElementById("login-tab");
     const signupTab = document.getElementById("signup-tab");
+// get all flash messages
+const flashMessages = document.querySelectorAll('.alert');
+        
+// set 5 seconds to auto dismiss
+flashMessages.forEach(function(alert) {
+  setTimeout(function() {
+    // use Bootstrap's alert dismiss function
+    const closeButton = new bootstrap.Alert(alert);
+    closeButton.close();
+  }, 5000); // 5000 milliseconds = 5 seconds
+});
+
 
     loginTab.addEventListener("click", function () {
       hideAllForms();
@@ -60,3 +72,20 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
   });
+
+// Password visibility toggle function
+function togglePasswordVisibility(inputId) {
+  const passwordInput = document.getElementById(inputId);
+  const toggleButton = passwordInput.nextElementSibling;
+  const toggleIcon = toggleButton.querySelector('i');
+  
+  if (passwordInput.type === 'password') {
+    passwordInput.type = 'text';
+    toggleIcon.classList.remove('bi-eye-slash');
+    toggleIcon.classList.add('bi-eye');
+  } else {
+    passwordInput.type = 'password';
+    toggleIcon.classList.remove('bi-eye');
+    toggleIcon.classList.add('bi-eye-slash');
+  }
+}

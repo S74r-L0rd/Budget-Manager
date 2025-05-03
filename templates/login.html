@@ -63,7 +63,7 @@
                 role="tabpanel"
                 aria-labelledby="login-tab"
               >
-                <form>
+                <form method="POST" action="{{ url_for('login') }}">
                   <div class="mb-3">
                     <label for="loginEmail" class="form-label"
                       >Email Address</label

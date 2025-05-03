@@ -7,9 +7,9 @@ app.secret_key = 'your-very-secret-key'  # Replace with a strong secret in produ
 def home():
     return render_template('home.html')
 
-@app.route('/services')
-def services():
-    return render_template('services.html')
+@app.route('/tools')
+def tools():
+    return render_template('tools.html')
 
 @app.route('/contact')
 def contact():

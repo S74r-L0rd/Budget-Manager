@@ -230,3 +230,23 @@ main.main-content {
   padding: 2px 5px; 
   border-radius: 3px;
 }
+
+/* Brand Section */
+.brand-section {
+    display: flex;
+    align-items: center;
+}
+
+.brand-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    gap: 1rem;
+}
+
+.brand-name {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ffffff;
+    margin-left: 0.5rem;
+}

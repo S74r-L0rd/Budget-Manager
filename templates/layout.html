@@ -18,7 +18,7 @@
             <!-- Navigation links -->
             <ul>
                 <li><a href="{{ url_for('home') }}" class="{{ 'active' if request.endpoint == 'home' }}">Home</a></li>
-                <li><a href="{{ url_for('services') }}" class="{{ 'active' if request.endpoint == 'services' }}">Services</a></li>
+                <li><a href="{{ url_for('tools') }}" class="{{ 'active' if request.endpoint == 'tools' }}">Tools</a></li>
                 <li><a href="{{ url_for('contact') }}" class="{{ 'active' if request.endpoint == 'contact' }}">Contact Us</a></li>
                 <li><a href="{{ url_for('login') }}" class="{{ 'active' if request.endpoint == 'login' }}">Sign In/Up</a></li>
             </ul>
@@ -40,7 +40,7 @@
                 </div>
                 <ul class="footer-links">
                     <li><a href="{{ url_for('home') }}">Home</a></li>
-                    <li><a href="{{ url_for('services') }}">Services</a></li>
+                    <li><a href="{{ url_for('tools') }}">Tools</a></li>
                     <li><a href="{{ url_for('contact') }}">Contact Us</a></li>
                     <li><a href="{{ url_for('login') }}">Sign In/Up</a></li>
                 </ul>

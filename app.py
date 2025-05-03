@@ -8,7 +8,7 @@ def home():
     return render_template('home.html')
 
 @app.route('/tools')
-def services():
+def tools():
     return render_template('tools.html')
 
 @app.route('/contact')

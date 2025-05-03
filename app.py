@@ -1,7 +1,16 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, flash
+from datetime import timedelta
+from db import init_db, db
+from login import login_user, register_user, forgot_password, logout_user
+from models.user import User
 
 app = Flask(__name__)
 app.secret_key = 'your-very-secret-key'  # Replace with a strong secret in production
+# set session lifetime to 7 days
+app.permanent_session_lifetime = timedelta(days=7)
+
+# init db
+init_db(app)
 
 @app.route('/')
 def home():
@@ -18,12 +27,26 @@ def contact():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        session['user'] = 'harry@example.com'  # Simulate user login
-        return redirect(url_for('dashboard'))  # Redirect to dashboard after login
+        return login_user()
     return render_template('login.html')
+
+@app.route('/register', methods=['POST'])
+def register():
+    return register_user()
+
+@app.route('/forgot-password', methods=['POST'])
+def forgot_pwd():
+    return forgot_password()
+
+@app.route('/logout')
+def logout():
+    return logout_user()
 
 @app.route('/dashboard')
 def dashboard():
+    if 'user_id' not in session:
+        flash('please login first', 'warning')
+        return redirect(url_for('login'))
     return render_template('dashboard.html')
 
 @app.route('/analysis')

@@ -22,6 +22,18 @@
           <div class="login-form-section">
             <h2 class="login-logo text-center">BudgetManager</h2>
 
+            <!-- show flash messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                {% for category, message in messages %}
+                  <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
+
             <!-- Login/Registration tab switcher -->
             <ul class="nav nav-tabs nav-fill mb-4" id="authTabs" role="tablist">
               <li class="nav-item" role="presentation">
@@ -76,6 +88,7 @@
                         type="email"
                         class="form-control"
                         id="loginEmail"
+                        name="loginEmail"
                         placeholder="your-email@example.com"
                         required
                       />
@@ -93,6 +106,7 @@
                         type="password"
                         class="form-control"
                         id="loginPassword"
+                        name="loginPassword"
                         placeholder="Enter your password"
                         required
                       />
@@ -111,6 +125,7 @@
                       type="checkbox"
                       class="form-check-input"
                       id="rememberMe"
+                      name="rememberMe"
                     />
                     <label class="form-check-label small" for="rememberMe"
                       >Remember Me</label
@@ -137,7 +152,25 @@
                     Please enter the verification code and new password
                   </p>
                 </div>
-                <form>
+                <form method="POST" action="{{ url_for('forgot_pwd') }}">
+                  <div class="mb-3">
+                    <label for="forgotEmail" class="form-label"
+                      >Email Address</label
+                    >
+                    <div class="input-group">
+                      <span class="input-group-text"
+                        ><i class="bi bi-envelope"></i
+                      ></span>
+                      <input
+                        type="email"
+                        class="form-control"
+                        id="forgotEmail"
+                        name="forgotEmail"
+                        placeholder="Enter your email"
+                        required
+                      />
+                    </div>
+                  </div>
                   <div class="mb-3">
                     <label for="verificationCode" class="form-label"
                       >Email Verification Code</label
@@ -150,6 +183,7 @@
                         type="text"
                         class="form-control"
                         id="verificationCode"
+                        name="verificationCode"
                         placeholder="Enter verification code"
                         required
                       />
@@ -173,6 +207,7 @@
                         type="password"
                         class="form-control"
                         id="newPassword"
+                        name="newPassword"
                         placeholder="Set new password"
                         required
                       />
@@ -190,6 +225,7 @@
                         type="password"
                         class="form-control"
                         id="confirmNewPassword"
+                        name="confirmNewPassword"
                         placeholder="Enter new password again"
                         required
                       />
@@ -213,13 +249,14 @@
                 role="tabpanel"
                 aria-labelledby="signup-tab"
               >
-                <form>
+                <form method="POST" action="{{ url_for('register') }}">
                   <div class="mb-3">
                     <label for="signupName" class="form-label">Name</label>
                     <input
                       type="text"
                       class="form-control"
                       id="signupName"
+                      name="signupName"
                       placeholder="Enter your name"
                       required
                     />
@@ -232,6 +269,7 @@
                       type="email"
                       class="form-control"
                       id="signupEmail"
+                      name="signupEmail"
                       placeholder="your-email@example.com"
                       required
                     />
@@ -244,6 +282,7 @@
                       type="password"
                       class="form-control"
                       id="signupPassword"
+                      name="signupPassword"
                       placeholder="Set your password"
                       required
                     />
@@ -256,6 +295,7 @@
                       type="password"
                       class="form-control"
                       id="confirmPassword"
+                      name="confirmPassword"
                       placeholder="Enter password again"
                       required
                     />
@@ -265,6 +305,7 @@
                       type="checkbox"
                       class="form-check-input"
                       id="agreeTerms"
+                      name="agreeTerms"
                       required
                     />
                     <label class="form-check-label small" for="agreeTerms">

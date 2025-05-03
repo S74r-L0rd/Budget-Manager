@@ -1,6 +1,7 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for, session
 
 app = Flask(__name__)
+app.secret_key = 'your-very-secret-key'  # Replace with a strong secret in production
 
 @app.route('/')
 def home():
@@ -14,8 +15,11 @@ def services():
 def contact():
     return render_template('contact.html')
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
+    if request.method == 'POST':
+        session['user'] = 'harry@example.com'  # Simulate user login
+        return redirect(url_for('dashboard'))  # Redirect to dashboard after login
     return render_template('login.html')
 
 @app.route('/dashboard')

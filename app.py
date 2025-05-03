@@ -1,6 +1,7 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for, session
 
 app = Flask(__name__)
+app.secret_key = 'your-very-secret-key'  # Replace with a strong secret in production
 
 @app.route('/')
 def home():
@@ -14,10 +15,14 @@ def services():
 def contact():
     return render_template('contact.html')
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
+    if request.method == 'POST':
+        session['user'] = 'harry@example.com'  # Simulate user login
+        return redirect(url_for('dashboard'))  # Redirect to dashboard after login
     return render_template('login.html')
 
+<<<<<<< HEAD
 @app.route('/input')
 def input():
     return render_template('input.html')
@@ -25,6 +30,23 @@ def input():
 @app.route('/analyze')
 def analyze():
     return render_template('analyze.html')
+=======
+@app.route('/dashboard')
+def dashboard():
+    return render_template('dashboard.html')
+
+@app.route('/analysis')
+def analysis():
+    return render_template('analysis.html')
+
+@app.route('/share')
+def share():
+    return render_template('share.html')
+
+@app.route('/profile')
+def profile():
+    return render_template('profile.html')
+>>>>>>> origin/feature-aakash
 
 if __name__ == '__main__':
     app.run(debug=True)

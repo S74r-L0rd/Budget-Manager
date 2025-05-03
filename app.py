@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for
 
 app = Flask(__name__)
 
@@ -14,8 +14,10 @@ def services():
 def contact():
     return render_template('contact.html')
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
+    if request.method == 'POST':
+        return redirect(url_for('dashboard'))  # Redirect to dashboard after login
     return render_template('login.html')
 
 @app.route('/dashboard')

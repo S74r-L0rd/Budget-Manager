@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 
 app = Flask(__name__)
 
@@ -17,6 +17,7 @@ def contact():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
+        session['user'] = 'harry@example.com'  # Simulate user login
         return redirect(url_for('dashboard'))  # Redirect to dashboard after login
     return render_template('login.html')
 

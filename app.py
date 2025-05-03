@@ -22,15 +22,6 @@ def login():
         return redirect(url_for('dashboard'))  # Redirect to dashboard after login
     return render_template('login.html')
 
-<<<<<<< HEAD
-@app.route('/input')
-def input():
-    return render_template('input.html')
-
-@app.route('/analyze')
-def analyze():
-    return render_template('analyze.html')
-=======
 @app.route('/dashboard')
 def dashboard():
     return render_template('dashboard.html')
@@ -46,7 +37,6 @@ def share():
 @app.route('/profile')
 def profile():
     return render_template('profile.html')
->>>>>>> origin/feature-aakash
 
 if __name__ == '__main__':
     app.run(debug=True)

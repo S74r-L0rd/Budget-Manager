@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 
 app = Flask(__name__)
+app.secret_key = 'your-very-secret-key'  # Replace with a strong secret in production
 
 @app.route('/')
 def home():

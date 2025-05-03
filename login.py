@@ -42,12 +42,15 @@ def register_user():
             return render_template('login.html')
         
         if password != confirm_password:
+            # use special mark to clear form
             flash('passwords do not match', 'danger')
-            return render_template('register.html')
+            flash('clear_signup_form', 'clear_form')
+            return render_template('login.html')
         
         # check if email already exists
         if User.find_by_email(email):
             flash('email already exists', 'warning')
+            flash('clear_signup_form', 'clear_form')
             return render_template('login.html')
         
         # create user and save to db
@@ -59,6 +62,7 @@ def register_user():
         except Exception as e:
             db.session.rollback()
             flash(f'error occurred: {str(e)}', 'danger')
+            flash('clear_signup_form', 'clear_form')
             
     return render_template('login.html')
 
@@ -73,6 +77,7 @@ def forgot_password():
             flash('reset password link has been sent to your email', 'info')
         else:
             flash('email not found', 'warning')
+            flash('clear_forgot_form', 'clear_form')
             
     return render_template('login.html')
 

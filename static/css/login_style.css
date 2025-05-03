@@ -22,7 +22,20 @@ body {
   border: none;
   background: transparent;
 }
-
+.password-toggle {
+  cursor: pointer;
+  border: none;
+  background: transparent;
+}
+.alert {
+  transition: opacity 0.3s ease-out;
+}
+.alert.fade {
+  opacity: 1;
+}
+.alert.hiding {
+  opacity: 0;
+}
 .login-container {
   min-height: 100vh;
 }

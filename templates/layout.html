@@ -11,9 +11,12 @@
     </head>
     <body>
         <nav class="navbar">
-            <!-- Logo -->
-            <div>
-                <a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='media/images/logo.png') }}" alt="budgetmanager" class="logo"></a>
+            <!-- Logo and Website Name -->
+            <div class="brand-section">
+                <a href="{{ url_for('home') }}" class="brand-link">
+                    <img src="{{ url_for('static', filename='media/images/logo.png') }}" alt="budgetmanager" class="logo">
+                    <span class="brand-name">BudgetManager</span>
+                </a>
             </div>
             <!-- Navigation links -->
             <ul>

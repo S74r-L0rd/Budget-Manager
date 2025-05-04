@@ -10,9 +10,11 @@
       integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7"
       crossorigin="anonymous"
     />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link rel="stylesheet" type="text/css" href="../static/css/login_style.css"/>
     
     <title>BudgetManager - Login</title>
+
   </head>
   <body>
     <div class="container login-container">
@@ -21,6 +23,20 @@
         <div class="col-lg-6 p-4">
           <div class="login-form-section">
             <h2 class="login-logo text-center">BudgetManager</h2>
+
+            <!-- show flash messages -->
+            <div id="flash-messages">
+              {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                  {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                      {{ message }}
+                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                  {% endfor %}
+                {% endif %}
+              {% endwith %}
+            </div>
 
             <!-- Login/Registration tab switcher -->
             <ul class="nav nav-tabs nav-fill mb-4" id="authTabs" role="tablist">
@@ -76,12 +92,13 @@
                         type="email"
                         class="form-control"
                         id="loginEmail"
+                        name="loginEmail"
                         placeholder="your-email@example.com"
                         required
                       />
                     </div>
                   </div>
-                  <div class="mb-3">
+                  <div class="mb-3 password-wrapper">
                     <label for="loginPassword" class="form-label"
                       >Password</label
                     >
@@ -93,9 +110,13 @@
                         type="password"
                         class="form-control"
                         id="loginPassword"
+                        name="loginPassword"
                         placeholder="Enter your password"
                         required
                       />
+                      <button type="button" class="password-toggle" onclick="togglePasswordVisibility('loginPassword')">
+                        <i class="bi bi-eye-slash"></i>
+                      </button>
                     </div>
                     <div class="text-end mt-1">
                       <a
@@ -111,6 +132,7 @@
                       type="checkbox"
                       class="form-check-input"
                       id="rememberMe"
+                      name="rememberMe"
                     />
                     <label class="form-check-label small" for="rememberMe"
                       >Remember Me</label
@@ -137,7 +159,25 @@
                     Please enter the verification code and new password
                   </p>
                 </div>
-                <form>
+                <form method="POST" action="{{ url_for('forgot_pwd') }}">
+                  <div class="mb-3">
+                    <label for="forgotEmail" class="form-label"
+                      >Email Address</label
+                    >
+                    <div class="input-group">
+                      <span class="input-group-text"
+                        ><i class="bi bi-envelope"></i
+                      ></span>
+                      <input
+                        type="email"
+                        class="form-control"
+                        id="forgotEmail"
+                        name="forgotEmail"
+                        placeholder="Enter your email"
+                        required
+                      />
+                    </div>
+                  </div>
                   <div class="mb-3">
                     <label for="verificationCode" class="form-label"
                       >Email Verification Code</label
@@ -150,6 +190,7 @@
                         type="text"
                         class="form-control"
                         id="verificationCode"
+                        name="verificationCode"
                         placeholder="Enter verification code"
                         required
                       />
@@ -161,7 +202,7 @@
                       Verification code will be sent to your email
                     </div>
                   </div>
-                  <div class="mb-3">
+                  <div class="mb-3 password-wrapper">
                     <label for="newPassword" class="form-label"
                       >New Password</label
                     >
@@ -173,12 +214,16 @@
                         type="password"
                         class="form-control"
                         id="newPassword"
+                        name="newPassword"
                         placeholder="Set new password"
                         required
                       />
+                      <button type="button" class="password-toggle" onclick="togglePasswordVisibility('newPassword')">
+                        <i class="bi bi-eye-slash"></i>
+                      </button>
                     </div>
                   </div>
-                  <div class="mb-4">
+                  <div class="mb-4 password-wrapper">
                     <label for="confirmNewPassword" class="form-label"
                       >Confirm New Password</label
                     >
@@ -190,9 +235,13 @@
                         type="password"
                         class="form-control"
                         id="confirmNewPassword"
+                        name="confirmNewPassword"
                         placeholder="Enter new password again"
                         required
                       />
+                      <button type="button" class="password-toggle" onclick="togglePasswordVisibility('confirmNewPassword')">
+                        <i class="bi bi-eye-slash"></i>
+                      </button>
                     </div>
                   </div>
                   <div class="d-grid gap-2 mb-3">
@@ -213,13 +262,14 @@
                 role="tabpanel"
                 aria-labelledby="signup-tab"
               >
-                <form>
+                <form method="POST" action="{{ url_for('register') }}">
                   <div class="mb-3">
                     <label for="signupName" class="form-label">Name</label>
                     <input
                       type="text"
                       class="form-control"
                       id="signupName"
+                      name="signupName"
                       placeholder="Enter your name"
                       required
                     />
@@ -232,39 +282,53 @@
                       type="email"
                       class="form-control"
                       id="signupEmail"
+                      name="signupEmail"
                       placeholder="your-email@example.com"
                       required
                     />
                   </div>
-                  <div class="mb-3">
+                  <div class="mb-3 password-wrapper">
                     <label for="signupPassword" class="form-label"
                       >Set Password</label
                     >
-                    <input
-                      type="password"
-                      class="form-control"
-                      id="signupPassword"
-                      placeholder="Set your password"
-                      required
-                    />
+                    <div class="input-group">
+                      <input
+                        type="password"
+                        class="form-control"
+                        id="signupPassword"
+                        name="signupPassword"
+                        placeholder="Set your password"
+                        required
+                      />
+                      <button type="button" class="password-toggle" onclick="togglePasswordVisibility('signupPassword')">
+                        <i class="bi bi-eye-slash"></i>
+                      </button>
+                    </div>
                   </div>
-                  <div class="mb-3">
+                  <div class="mb-3 password-wrapper">
                     <label for="confirmPassword" class="form-label"
                       >Confirm Password</label
                     >
-                    <input
-                      type="password"
-                      class="form-control"
-                      id="confirmPassword"
-                      placeholder="Enter password again"
-                      required
-                    />
+                    <div class="input-group">
+                      <input
+                        type="password"
+                        class="form-control"
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        placeholder="Enter password again"
+                        required
+                      />
+                      <button type="button" class="password-toggle" onclick="togglePasswordVisibility('confirmPassword')">
+                        <i class="bi bi-eye-slash"></i>
+                      </button>
+                    </div>
                   </div>
                   <div class="mb-3 form-check">
                     <input
                       type="checkbox"
                       class="form-check-input"
                       id="agreeTerms"
+                      name="agreeTerms"
                       required
                     />
                     <label class="form-check-label small" for="agreeTerms">

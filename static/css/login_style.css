@@ -17,6 +17,25 @@ body {
   color: var(--text-color);
 }
 
+.password-toggle {
+  cursor: pointer;
+  border: none;
+  background: transparent;
+}
+.password-toggle {
+  cursor: pointer;
+  border: none;
+  background: transparent;
+}
+.alert {
+  transition: opacity 0.3s ease-out;
+}
+.alert.fade {
+  opacity: 1;
+}
+.alert.hiding {
+  opacity: 0;
+}
 .login-container {
   min-height: 100vh;
 }
@@ -24,7 +43,29 @@ body {
 .login-section {
   padding: 6rem 0 6rem 0;
 }
-
+.password-wrapper {
+  position: relative;
+  width: 100%;
+  }
+  
+  .password-wrapper input.form-control {
+  padding-right: 40px; /* space for the toggle button */
+  }
+  
+  .password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--light-text);
+  font-size: 1.1rem;
+  z-index: 2;
+  padding: 4px; /* adds space to avoid flush overlap /
+  border-radius: 50%; / optional: makes the icon feel part of the input */
+  }
 /* Login form area */
 .login-form-section {
   background-color: var(--card-bg);

@@ -38,9 +38,10 @@ def register():
 def forgot_pwd():
     return forgot_password()
 
-@app.route('/logout')
+@app.route('/logout', methods=['POST'])
 def logout():
-    return logout_user()
+    session.clear()  # Clear user session
+    return redirect(url_for('login'))
 
 @app.route('/dashboard')
 def dashboard():

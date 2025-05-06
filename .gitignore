@@ -8,3 +8,4 @@ static/.DS_Store
 static/media/.DS_Store
 
 __pycache__/
+.env

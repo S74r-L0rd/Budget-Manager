@@ -42,9 +42,10 @@ def get_code():
 def reset_pwd():
     return reset_password()
 
-@app.route('/logout')
+@app.route('/logout', methods=['POST'])
 def logout():
-    return logout_user()
+    session.clear()  # Clear user session
+    return redirect(url_for('login'))
 
 @app.route('/dashboard')
 def dashboard():

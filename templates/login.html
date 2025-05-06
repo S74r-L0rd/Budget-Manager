@@ -159,7 +159,7 @@
                     Please enter the verification code and new password
                   </p>
                 </div>
-                <form method="POST" action="{{ url_for('forgot_pwd') }}">
+                <form method="POST" action="{{ url_for('reset_pwd') }}" id="resetPasswordForm">
                   <div class="mb-3">
                     <label for="forgotEmail" class="form-label"
                       >Email Address</label
@@ -194,7 +194,7 @@
                         placeholder="Enter verification code"
                         required
                       />
-                      <button class="btn btn-outline-secondary" type="button">
+                      <button class="btn btn-outline-secondary" type="button" id="getCodeBtn" data-email="forgotEmail">
                         Get Code
                       </button>
                     </div>
@@ -439,5 +439,37 @@
       crossorigin="anonymous"
     ></script>
     <script src="../static/js/login.js"></script>
+    
+    <!-- 处理重置密码页面自动显示 -->
+    {% if stay_at_reset %}
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        // 直接显示重置密码表单而不触发点击事件
+        const loginForm = document.getElementById("login-form");
+        const forgotForm = document.getElementById("forgot-password-form");
+        const loginTab = document.getElementById("login-tab");
+        
+        // 隐藏登录表单
+        loginForm.classList.remove("show", "active");
+        // 显示忘记密码表单
+        forgotForm.classList.add("show", "active");
+        // 重置标签状态
+        loginTab.classList.remove("active");
+        loginTab.setAttribute("aria-selected", "false");
+        
+        // 数据填充
+        {% if email %}
+        const savedEmail = "{{ email }}";
+        document.getElementById("forgotEmail").value = savedEmail;
+        {% endif %}
+        
+        {% if code %}
+        const savedCode = "{{ code }}";
+        document.getElementById("verificationCode").value = savedCode;
+        {% endif %}
+      });
+    </script>
+    {% endif %}
+    
   </body>
 </html>

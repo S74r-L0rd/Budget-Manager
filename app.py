@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from datetime import timedelta
 from db import init_db, db
-from login import login_user, register_user, forgot_password, logout_user
+from login import login_user, register_user, logout_user, reset_password, get_verification_code
 from models.user import User
 
 app = Flask(__name__)
@@ -34,9 +34,13 @@ def login():
 def register():
     return register_user()
 
-@app.route('/forgot-password', methods=['POST'])
-def forgot_pwd():
-    return forgot_password()
+@app.route('/get_verification_code', methods=['POST'])
+def get_code():
+    return get_verification_code()
+
+@app.route('/reset-password', methods=['GET', 'POST'])
+def reset_pwd():
+    return reset_password()
 
 @app.route('/logout')
 def logout():

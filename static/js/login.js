@@ -5,6 +5,97 @@ document.addEventListener("DOMContentLoaded", function () {
     const signupTab = document.getElementById("signup-tab");
     const forgotPasswordLink = document.getElementById("forgotPasswordLink");
     const backToLogin = document.getElementById("backToLogin");
+    
+    // Get Code button for verification code
+    const getCodeBtn = document.getElementById("getCodeBtn");
+    
+    // Get Code button click event
+    if (getCodeBtn) {
+      let timer;
+      let countdown = 60;
+      
+      getCodeBtn.addEventListener("click", function() {
+        const emailInputId = this.getAttribute("data-email");
+        const emailInput = document.getElementById(emailInputId);
+        
+        if (!emailInput || !emailInput.value) {
+          // Show alert for empty email
+          createAlert("请输入邮箱地址", "warning");
+          return;
+        }
+        
+        // Disable button immediately to prevent multiple clicks
+        getCodeBtn.disabled = true;
+        
+        // Send AJAX request to get verification code
+        const formData = new FormData();
+        formData.append("email", emailInput.value);
+        
+        fetch("/get_verification_code", {
+          method: "POST",
+          body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === "success") {
+            // Show success message
+            createAlert(data.message, "success");
+            
+            // Start countdown
+            startCountdown();
+          } else {
+            // Show error message
+            createAlert(data.message, "danger");
+            getCodeBtn.disabled = false;
+          }
+        })
+        .catch(error => {
+          console.error("Error:", error);
+          createAlert("请求失败，请稍后重试", "danger");
+          getCodeBtn.disabled = false;
+        });
+      });
+      
+      // Function to start countdown
+      function startCountdown() {
+        countdown = 60;
+        getCodeBtn.textContent = `${countdown}s`;
+        
+        timer = setInterval(function() {
+          countdown--;
+          getCodeBtn.textContent = `${countdown}s`;
+          
+          if (countdown <= 0) {
+            clearInterval(timer);
+            getCodeBtn.disabled = false;
+            getCodeBtn.textContent = "Get Code";
+          }
+        }, 1000);
+      }
+      
+      // Function to create a dynamic alert
+      function createAlert(message, type) {
+        const alertContainer = document.getElementById("flash-messages");
+        
+        if (!alertContainer) return;
+        
+        const alertDiv = document.createElement("div");
+        alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+        alertDiv.role = "alert";
+        alertDiv.innerHTML = `
+          ${message}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        `;
+        
+        alertContainer.appendChild(alertDiv);
+        
+        // Auto dismiss after 5 seconds
+        setTimeout(function() {
+          const bsAlert = new bootstrap.Alert(alertDiv);
+          bsAlert.close();
+        }, 5000);
+      }
+    }
 
     // get all flash messages
     const flashMessages = document.querySelectorAll('.alert');
@@ -12,6 +103,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // check if there is a clear form mark
     let shouldClearSignupForm = false;
     let shouldClearForgotForm = false;
+    let shouldClearCodeField = false;
+    let shouldClearPasswordFields = false;
     
     flashMessages.forEach(function(alert) {
       // check flash message category
@@ -23,6 +116,14 @@ document.addEventListener("DOMContentLoaded", function () {
           dismissAlert(alert);
         } else if (message === 'clear_forgot_form') {
           shouldClearForgotForm = true;
+          // hide this special message
+          dismissAlert(alert);
+        } else if (message === 'clear_code_field') {
+          shouldClearCodeField = true;
+          // hide this special message
+          dismissAlert(alert);
+        } else if (message === 'clear_password_fields') {
+          shouldClearPasswordFields = true;
           // hide this special message
           dismissAlert(alert);
         }
@@ -46,9 +147,27 @@ document.addEventListener("DOMContentLoaded", function () {
     // if need to clear forgot password form
     if (shouldClearForgotForm) {
       clearForgotPasswordForm();
-      // ensure forgot password form is active
+      // ensure forgot password form is active without clearing alerts
       if (!document.getElementById("forgot-password-form").classList.contains('active')) {
-        forgotPasswordLink.click();
+        showForgotPasswordFormWithoutDismissingAlerts();
+      }
+    }
+    
+    // if need to clear verification code field only
+    if (shouldClearCodeField) {
+      clearVerificationCodeField();
+      // ensure forgot password form is active without clearing alerts
+      if (!document.getElementById("forgot-password-form").classList.contains('active')) {
+        showForgotPasswordFormWithoutDismissingAlerts();
+      }
+    }
+    
+    // if need to clear password fields only
+    if (shouldClearPasswordFields) {
+      clearPasswordFields();
+      // ensure forgot password form is active without clearing alerts
+      if (!document.getElementById("forgot-password-form").classList.contains('active')) {
+        showForgotPasswordFormWithoutDismissingAlerts();
       }
     }
             
@@ -87,6 +206,23 @@ document.addEventListener("DOMContentLoaded", function () {
       if (document.getElementById("verificationCode")) {
         document.getElementById("verificationCode").value = "";
       }
+      if (document.getElementById("newPassword")) {
+        document.getElementById("newPassword").value = "";
+      }
+      if (document.getElementById("confirmNewPassword")) {
+        document.getElementById("confirmNewPassword").value = "";
+      }
+    }
+    
+    // function to clear verification code field only
+    function clearVerificationCodeField() {
+      if (document.getElementById("verificationCode")) {
+        document.getElementById("verificationCode").value = "";
+      }
+    }
+    
+    // function to clear password fields only
+    function clearPasswordFields() {
       if (document.getElementById("newPassword")) {
         document.getElementById("newPassword").value = "";
       }
@@ -149,6 +285,15 @@ document.addEventListener("DOMContentLoaded", function () {
         navLink.classList.remove("active");
         navLink.setAttribute("aria-selected", "false");
       });
+    }
+
+    // 显示忘记密码表单但不清除提示信息的函数
+    function showForgotPasswordFormWithoutDismissingAlerts() {
+      hideAllForms();
+      document
+        .getElementById("forgot-password-form")
+        .classList.add("show", "active");
+      resetTabStatus();
     }
   });
 

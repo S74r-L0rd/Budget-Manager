@@ -29,7 +29,7 @@
 
             <div class="list-group mt-3" id="sidebar-tabs" role="tablist">
                 <a class="list-group-item list-group-item-action active" id="profile-tab" data-bs-toggle="list" href="#profile" role="tab">My Profile</a>
-                <a class="list-group-item list-group-item-action" data-bs-toggle="list" href="#logout" role="tab">Logout</a>
+                <a class="list-group-item list-group-item-action" data-bs-toggle="modal" href="#logoutModal" role="tab">Logout</a>
             </div>
         </div>
     
@@ -171,15 +171,6 @@
                             </form>
                         </div>
                     </div>
-                    <!-- Logout tab -->
-                    <div class="tab-pane fade" id="logout" role="tabpanel">
-                            <h1 class="mb-4 fw-bold">Logout</h2>
-                            <p class="mb-4 mt-5">Are you sure you want to logout?</p>
-                            <div class="d-flex justify-content-center mt-5 gap-3">
-                                <button type="button" class="btn btn-dark me-2 logout-btn" data-bs-toggle="modal" data-bs-target="#logoutModal">Logout</button>
-                                <button type="button" class="btn btn-outline-dark cancel-btn" onclick="switchToProfile()">Cancel</button>
-                            </div>
-                    </div>                 
                 </div>
             </div>
         </div>

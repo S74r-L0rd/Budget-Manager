@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
         
         if (!emailInput || !emailInput.value) {
           // Show alert for empty email
-          createAlert("请输入邮箱地址", "warning");
+          createAlert("please input your email address", "warning");
           return;
         }
         
@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .catch(error => {
           console.error("Error:", error);
-          createAlert("请求失败，请稍后重试", "danger");
+          createAlert("request failed, please try again later", "danger");
           getCodeBtn.disabled = false;
         });
       });
@@ -287,7 +287,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
 
-    // 显示忘记密码表单但不清除提示信息的函数
+    // show forgot password form without dismissing alerts
     function showForgotPasswordFormWithoutDismissingAlerts() {
       hideAllForms();
       document

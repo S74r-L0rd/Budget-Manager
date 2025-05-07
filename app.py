@@ -3,6 +3,7 @@ from datetime import timedelta
 from db import init_db, db
 from login import login_user, register_user, logout_user, reset_password, get_verification_code
 from models.user import User
+from functools import wraps
 
 app = Flask(__name__)
 app.secret_key = 'your-very-secret-key'  # Replace with a strong secret in production
@@ -11,6 +12,15 @@ app.permanent_session_lifetime = timedelta(days=7)
 
 # init db
 init_db(app)
+
+def login_required_custom(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user_id' not in session:
+            flash('please login first', 'warning')
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    return decorated_function
 
 @app.route('/')
 def home():
@@ -107,21 +117,22 @@ def logout():
     return redirect(url_for('login'))
 
 @app.route('/dashboard')
+@login_required_custom
 def dashboard():
-    if 'user_id' not in session:
-        flash('please login first', 'warning')
-        return redirect(url_for('login'))
     return render_template('dashboard.html')
 
 @app.route('/analysis')
+@login_required_custom
 def analysis():
     return render_template('analysis.html')
 
 @app.route('/share')
+@login_required_custom
 def share():
     return render_template('share.html')
 
 @app.route('/profile')
+@login_required_custom
 def profile():
     return render_template('profile.html')
 

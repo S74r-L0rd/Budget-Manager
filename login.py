@@ -61,7 +61,7 @@ def register_user():
             new_user.save_to_db()
 
             # Create a new profile for the new user
-            new_profile = Profile(user_id=new_user.id)
+            new_profile = Profile(user_id=new_user.id, name=name, email=email)
             new_profile.save_to_db()
 
             flash('registration successful, please login', 'success')

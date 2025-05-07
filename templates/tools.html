@@ -4,16 +4,18 @@
 
 {% block styles %}
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/tools.css') }}">
 {% endblock %}
 
 {% block content %}
+<!-- Hero Section -->
 <section class="container-fluid d-flex justify-content-center align-items-center text-center text-dark py-5 tools-hero-section">
     <div class="row g-0 align-items-center tools-hero-row">
       <!-- Left content: Title and summary -->
       <div class="col-md-6 text-center text-md-start">
-        <h1 class="display-3 fw-bold mb-5">Smarter Tools for Smarter Finance</h1>
+        <h1 class="display-4 fw-bold mb-5">Smarter Tools for Smarter Finance</h1>
         <p class="lead">With BudgetManager’s tool suite, planning your finances is effortless.<br>Access all-in-one utilities to track budgets, analyze spending patterns, and forecast savings.</p>
         <div class="d-flex mt-5 gap-4">
           <a href="#tool-list" class="btn btn-dark btn-lg get-started-btn">Explore Tools</a>
@@ -26,6 +28,174 @@
         <img src="{{ url_for('static', filename='media/images/tools_hero_section.svg') }}" class="img-fluid tools-illustration" alt="Tools Illustration">
       </div>
     </div>
+</section>
+
+<section class="why-tools-section-cards py-5">
+  <div class="container pb-5">
+    <h2 class="display-3 fw-bold text-start mt-4 mb-5">Why Use Our Tools?</h2>
+    <p class="lead text-start mb-5">
+      BudgetManager is built to make personal finance intuitive, insightful, and interactive.<br>
+      Here’s how these tools help you take control of your money:
+    </p>
+
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+      <div class="col">
+        <div class="tool-card h-100 p-4 fade-in-up">
+          <h5 class="tool-card-title">Total Visibility on Spending</h5>
+          <p class="tool-card-description">Track and visualise where your money goes — by category, time, or frequency.</p>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="tool-card h-100 p-4 fade-in-up">
+          <h5 class="tool-card-title">Smarter Planning & Goal Setting</h5>
+          <p class="tool-card-description">Set monthly budgets and savings goals, and receive alerts and progress reports.</p>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="tool-card h-100 p-4 fade-in-up">
+          <h5 class="tool-card-title">Predictive Insights</h5>
+          <p class="tool-card-description">Get AI-powered predictions on next month’s expenses based on your past patterns.</p>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="tool-card h-100 p-4 fade-in-up">
+          <h5 class="tool-card-title">Meaningful Sharing</h5>
+          <p class="tool-card-description">Collaborate with roommates, partners, or mentors by sharing only what you choose.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="tools-list-section-deep bg-dark-green pt-5 pb-8 mb-0" id="tool-list">
+  <div class="container">
+    <h2 class="display-3 fw-bold text-white mt-4 mb-5 pb-4">Explore Our Tools</h2>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-5"> 
+      <div class="col">
+        <div class="tool-card-green p-5 h-100">
+          <div class="d-flex align-items-center mb-3">
+            <img src="{{ url_for('static', filename='media/icons/expense.png') }}" class="tool-icon me-3">
+            <h5 class="tool-title-orange mb-0">Expense Tracker</h5>
+          </div>
+          <ul class="tool-points">
+            <li>Log expenses manually or via file upload</li>
+            <li>See trends across categories and time</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="tool-card-green p-5 h-100">
+          <div class="d-flex align-items-center mb-3">
+            <img src="{{ url_for('static', filename='media/icons/budget.png') }}" class="tool-icon me-3">
+            <h5 class="tool-title-orange mb-0">Budget Planner</h5>
+          </div>
+          <ul class="tool-points">
+            <li>Set custom monthly limits by category</li>
+            <li>Get alerts when you near or exceed limits</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="tool-card-green p-5 h-100">
+          <div class="d-flex align-items-center mb-3">
+            <img src="{{ url_for('static', filename='media/icons/saving.png') }}" class="tool-icon me-3">
+            <h5 class="tool-title-orange mb-0">Savings Goal Tracker</h5>
+          </div>
+          <ul class="tool-points">
+            <li>Set and track custom savings goals</li>
+            <li>Visual progress bars and reminders</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="tool-card-green p-5 h-100">
+          <div class="d-flex align-items-center mb-3">
+            <img src="{{ url_for('static', filename='media/icons/expense-prediction.png') }}" class="tool-icon me-3">
+            <h5 class="tool-title-orange mb-0">Future Expense Predictor</h5>
+          </div>
+          <ul class="tool-points">
+            <li>Get AI-powered predictions based on history</li>
+            <li>Plan proactively using estimated data</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="tool-card-green p-5 h-100">
+          <div class="d-flex align-items-center mb-3">
+            <img src="{{ url_for('static', filename='media/icons/spending-personality.png') }}" class="tool-icon me-3">
+            <h5 class="tool-title-orange mb-0">Spending Personality Analyzer</h5>
+          </div>
+          <ul class="tool-points">
+            <li>Discover your spending habits</li>
+            <li>Gain insights through gamified analysis</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="tool-card-green p-5 h-100">
+          <div class="d-flex align-items-center mb-3">
+            <img src="{{ url_for('static', filename='media/icons/expense-split.png') }}" class="tool-icon me-3">
+            <h5 class="tool-title-orange mb-0">Expense Splitter</h5>
+          </div>
+          <ul class="tool-points">
+            <li>Split bills with roommates or friends</li>
+            <li>Track who owes what across groups</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="container py-5 how-it-works-section">
+  <div class="mb-5">
+    <h2 class="display-3 fw-bold text-black mt-4 mb-4">How It Works</h2>
+    <p class="lead text-start mb-5">A quick, simple process to stay in control of your money.</p>
+  </div>
+  <div class="row text-center g-4 pb-5">
+    <div class="col-md-3">
+      <div class="p-4 border rounded how-step animate__animated animate__fadeInUp">
+        <div class="step-icon mb-3">📤</div>
+        <h5 class="fw-semibold">Upload Data</h5>
+        <p class="text-muted">Add expenses, goals or past records.</p>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="p-4 border rounded how-step animate__animated animate__fadeInUp" style="animation-delay: 0.1s">
+        <div class="step-icon mb-3">📊</div>
+        <h5 class="fw-semibold">Visualize Trends</h5>
+        <p class="text-muted">Understand patterns with smart charts.</p>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="p-4 border rounded how-step animate__animated animate__fadeInUp" style="animation-delay: 0.2s">
+        <div class="step-icon mb-3">📈</div>
+        <h5 class="fw-semibold">Plan & Predict</h5>
+        <p class="text-muted">Use tools to plan budgets or forecast future costs.</p>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="p-4 border rounded how-step animate__animated animate__fadeInUp" style="animation-delay: 0.3s">
+        <div class="step-icon mb-3">🔗</div>
+        <h5 class="fw-semibold">Share Insights</h5>
+        <p class="text-muted">Share specific results with family or friends securely.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="container-fluid bg-dark text-white text-center pt-6 pb-6">
+  <h2 class="display-5 fw-bold mb-3">Ready to take control of your finances?</h2>
+  <p class="lead mb-4">Start exploring the tools today and see what’s possible.</p>
+  <a href="{{ url_for('login') }}" class="btn btn-light btn-lg mt-4">Start Now</a>
 </section>
 
 {% endblock %}

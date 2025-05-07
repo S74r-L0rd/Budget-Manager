@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash
+from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
 from datetime import timedelta
 from db import init_db, db
 from login import login_user, register_user, logout_user, reset_password, get_verification_code
@@ -38,9 +38,68 @@ def register():
 def get_code():
     return get_verification_code()
 
-@app.route('/reset-password', methods=['GET', 'POST'])
-def reset_pwd():
-    return reset_password()
+@app.route('/verify-reset-code', methods=['POST'])
+def verify_reset_code():
+    """API route, verify reset code"""
+    if request.method == 'POST':
+        email = request.form.get('email')
+        code = request.form.get('code')
+        
+        if not all([email, code]):
+            return jsonify({'status': 'error', 'message': 'please provide email and verification code'}), 400
+        
+        # check if verification code is valid
+        if 'verification_code' not in session or 'verification_email' not in session:
+            return jsonify({'status': 'error', 'message': 'verification code has expired, please get a new one'}), 400
+        
+        if session['verification_code'] != code or session['verification_email'] != email:
+            return jsonify({'status': 'error', 'message': 'verification code is not correct'}), 400
+        
+        # find user by email
+        user = User.find_by_email(email)
+        if not user:
+            return jsonify({'status': 'error', 'message': 'no account found for this email'}), 404
+        
+        return jsonify({'status': 'success', 'message': 'verification code is correct'}), 200
+    
+    return jsonify({'status': 'error', 'message': 'unsupported request method'}), 405
+
+@app.route('/reset-password', methods=['POST'])
+def reset_password():
+    """API route, reset password"""
+    if request.method == 'POST':
+        email = request.form.get('email')
+        new_password = request.form.get('new_password')
+        confirm_password = request.form.get('confirm_password')
+        
+        if not all([email, new_password, confirm_password]):
+            return jsonify({'status': 'error', 'message': 'please provide all required fields'}), 400
+        
+        # check if passwords match
+        if new_password != confirm_password:
+            return jsonify({'status': 'error', 'message': 'passwords do not match'}), 400
+        
+        # find user by email
+        user = User.find_by_email(email)
+        if not user:
+            return jsonify({'status': 'error', 'message': 'no account found for this email'}), 404
+        
+        # update password
+        try:
+            user.set_password(new_password)
+            db.session.commit()
+            # clear verification information in session
+            if 'verification_code' in session:
+                session.pop('verification_code')
+            if 'verification_email' in session:
+                session.pop('verification_email')
+            
+            return jsonify({'status': 'success', 'message': 'password reset successfully'}), 200
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({'status': 'error', 'message': f'error occurred: {str(e)}'}), 500
+    
+    return jsonify({'status': 'error', 'message': 'unsupported request method'}), 405
 
 @app.route('/logout', methods=['POST'])
 def logout():

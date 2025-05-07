@@ -1,4 +1,5 @@
-// Add forgot password and return to login functionality
+// Add f
+// rgot password and return to login functionality
 document.addEventListener("DOMContentLoaded", function () {
     // Handle tab switching for login and signup
     const loginTab = document.getElementById("login-tab");
@@ -8,6 +9,10 @@ document.addEventListener("DOMContentLoaded", function () {
     
     // Get Code button for verification code
     const getCodeBtn = document.getElementById("getCodeBtn");
+    const resetPasswordForm = document.getElementById("resetPasswordForm");
+    
+    const verifyCodeBtn = document.getElementById("verifyCodeBtn");
+    const resetPasswordBtn = document.getElementById("resetPasswordBtn");
     
     // Get Code button click event
     if (getCodeBtn) {
@@ -19,7 +24,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const emailInput = document.getElementById(emailInputId);
         
         if (!emailInput || !emailInput.value) {
-          // Show alert for empty email
           createAlert("please input your email address", "warning");
           return;
         }
@@ -38,13 +42,9 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(response => response.json())
         .then(data => {
           if (data.status === "success") {
-            // Show success message
             createAlert(data.message, "success");
-            
-            // Start countdown
             startCountdown();
           } else {
-            // Show error message
             createAlert(data.message, "danger");
             getCodeBtn.disabled = false;
           }
@@ -72,29 +72,99 @@ document.addEventListener("DOMContentLoaded", function () {
           }
         }, 1000);
       }
+    }
+
+    // verify reset code button click event
+    if (verifyCodeBtn) {
+        verifyCodeBtn.onclick = function () {
+            const email = document.getElementById("forgotEmail").value;
+            const code = document.getElementById("verificationCode").value;
+            if (!email || !code) {
+                createAlert("please fill in email and verification code", "warning");
+                return;
+            }
+            const formData = new FormData();
+            formData.append("email", email);
+            formData.append("code", code);
+
+            fetch("/verify-reset-code", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    document.getElementById("passwordFields").style.display = "block";
+                    verifyCodeBtn.style.display = "none";
+                    resetPasswordBtn.style.display = "block";
+                    createAlert(data.message, "success");
+                } else {
+                    createAlert(data.message, "danger");
+                }
+            })
+            .catch(error => {
+                createAlert("request failed, please try again later", "danger");
+            });
+        };
+    }
+
+    // handle reset password form submission
+    if (resetPasswordForm) {
+        resetPasswordForm.onsubmit = function (e) {
+            e.preventDefault();
+            const email = document.getElementById("forgotEmail").value;
+            const newPassword = document.getElementById("newPassword").value;
+            const confirmNewPassword = document.getElementById("confirmNewPassword").value;
+            if (!newPassword || !confirmNewPassword) {
+                createAlert("please fill in new password", "warning");
+                return;
+            }
+            const formData = new FormData();
+            formData.append("email", email);
+            formData.append("new_password", newPassword);
+            formData.append("confirm_password", confirmNewPassword);
+
+            fetch("/reset-password", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    createAlert(data.message, "success");
+                    setTimeout(() => {
+                        window.location.href = "/login";
+                    }, 2000);
+                } else {
+                    createAlert(data.message, "danger");
+                }
+            })
+            .catch(error => {
+                createAlert("request failed, please try again later", "danger");
+            });
+        };
+    }
+
+    // Function to create a dynamic alert
+    function createAlert(message, type) {
+      const alertContainer = document.getElementById("flash-messages");
       
-      // Function to create a dynamic alert
-      function createAlert(message, type) {
-        const alertContainer = document.getElementById("flash-messages");
-        
-        if (!alertContainer) return;
-        
-        const alertDiv = document.createElement("div");
-        alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
-        alertDiv.role = "alert";
-        alertDiv.innerHTML = `
-          ${message}
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        `;
-        
-        alertContainer.appendChild(alertDiv);
-        
-        // Auto dismiss after 5 seconds
-        setTimeout(function() {
-          const bsAlert = new bootstrap.Alert(alertDiv);
-          bsAlert.close();
-        }, 5000);
-      }
+      if (!alertContainer) return;
+      
+      const alertDiv = document.createElement("div");
+      alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+      alertDiv.role = "alert";
+      alertDiv.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      `;
+      
+      alertContainer.appendChild(alertDiv);
+      
+      setTimeout(function() {
+        const bsAlert = new bootstrap.Alert(alertDiv);
+        bsAlert.close();
+      }, 5000);
     }
 
     // get all flash messages

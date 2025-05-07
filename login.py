@@ -67,49 +67,49 @@ def register_user():
             
     return render_template('login.html')
 
-
-
-def reset_password():
+def verify_reset_code():
+    """API route, verify reset code"""
     if request.method == 'POST':
-        # get form data
-        email = request.form.get('forgotEmail')
-        verification_code = request.form.get('verificationCode')
-        new_password = request.form.get('newPassword')
-        confirm_new_password = request.form.get('confirmNewPassword')
+        email = request.form.get('email')
+        code = request.form.get('code')
         
-        # check if all fields are filled
-        if not all([email, verification_code, new_password, confirm_new_password]):
-            flash('please fill all required fields', 'danger')
-            # stay at reset password page
-            return render_template('login.html', stay_at_reset=True)
-        
-        # check if passwords match
-        if new_password != confirm_new_password:
-            flash('passwords do not match', 'danger')
-            # clear password fields, keep email and verification code
-            flash('clear_password_fields', 'clear_form')
-            return render_template('login.html', stay_at_reset=True, email=email, code=verification_code)
+        if not all([email, code]):
+            return jsonify({'status': 'error', 'message': 'please provide email and verification code'}), 400
         
         # check if verification code is valid
         if 'verification_code' not in session or 'verification_email' not in session:
-            flash('verification code has expired, please get a new one', 'warning')
-            # clear code field, keep email and password
-            flash('clear_code_field', 'clear_form')
-            return render_template('login.html', stay_at_reset=True, email=email)
+            return jsonify({'status': 'error', 'message': 'verification code has expired, please get a new one'}), 400
         
-        if session['verification_code'] != verification_code or session['verification_email'] != email:
-            flash('verification code is not correct, please input again', 'danger')
-            # clear code field, keep email and password
-            flash('clear_code_field', 'clear_form')
-            return render_template('login.html', stay_at_reset=True, email=email)
+        if session['verification_code'] != code or session['verification_email'] != email:
+            return jsonify({'status': 'error', 'message': 'verification code is not correct'}), 400
         
         # find user by email
         user = User.find_by_email(email)
         if not user:
-            flash('no account found for this email', 'warning')
-            # clear form, but stay at reset password page
-            flash('clear_forgot_form', 'clear_form')
-            return render_template('login.html', stay_at_reset=True)
+            return jsonify({'status': 'error', 'message': 'no account found for this email'}), 404
+        
+        return jsonify({'status': 'success', 'message': 'verification code is correct'}), 200
+    
+    return jsonify({'status': 'error', 'message': 'unsupported request method'}), 405
+
+def reset_password():
+    """API route, reset password"""
+    if request.method == 'POST':
+        email = request.form.get('email')
+        new_password = request.form.get('new_password')
+        confirm_password = request.form.get('confirm_password')
+        
+        if not all([email, new_password, confirm_password]):
+            return jsonify({'status': 'error', 'message': 'please provide all required fields'}), 400
+        
+        # check if passwords match
+        if new_password != confirm_password:
+            return jsonify({'status': 'error', 'message': 'passwords do not match'}), 400
+        
+        # find user by email
+        user = User.find_by_email(email)
+        if not user:
+            return jsonify({'status': 'error', 'message': 'no account found for this email'}), 404
         
         # update password
         try:
@@ -121,14 +121,12 @@ def reset_password():
             if 'verification_email' in session:
                 session.pop('verification_email')
             
-            flash('password reset successfully, please login', 'success')
-            return redirect(url_for('login'))
+            return jsonify({'status': 'success', 'message': 'password reset successfully'}), 200
         except Exception as e:
             db.session.rollback()
-            flash(f'error occurred: {str(e)}', 'danger')
-            return render_template('login.html', stay_at_reset=True, email=email)
+            return jsonify({'status': 'error', 'message': f'error occurred: {str(e)}'}), 500
     
-    return render_template('login.html')
+    return jsonify({'status': 'error', 'message': 'unsupported request method'}), 405
 
 def logout_user():
     # clear session

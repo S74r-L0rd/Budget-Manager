@@ -2,7 +2,9 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 from datetime import timedelta
 from db import init_db, db
 from login import login_user, register_user, logout_user, reset_password, get_verification_code
+from profile_update import update_profile
 from models.user import User
+from models.userProfile import Profile
 from functools import wraps
 
 app = Flask(__name__)
@@ -113,7 +115,7 @@ def reset_password():
     
     return jsonify({'status': 'error', 'message': 'unsupported request method'}), 405
 
-@app.route('/logout', methods=['POST'])
+@app.route('/logout', methods=['GET','POST'])
 def logout():
     session.clear()  # Clear user session
     return redirect(url_for('login'))
@@ -133,10 +135,22 @@ def analysis():
 def share():
     return render_template('share.html')
 
+# Profile route
 @app.route('/profile')
 @login_required_custom
 def profile():
-    return render_template('profile.html')
+    user_id = session.get('user_id')
+    if not user_id:
+        return redirect(url_for('login'))
+    
+    user = User.query.get(user_id)
+    profile = Profile.query.filter_by(user_id=user_id).first()
+    return render_template('profile.html', user=user, profile=profile)
+
+# Update Profile route
+@app.route('/update-prof', methods=['POST'])
+def update_prof():
+    return update_profile()
 
 if __name__ == '__main__':
     app.run(debug=True)

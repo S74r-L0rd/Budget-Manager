@@ -5,6 +5,7 @@ from login import login_user, register_user, logout_user, reset_password, get_ve
 from profile_update import update_profile
 from models.user import User
 from models.userProfile import Profile
+from functools import wraps
 
 app = Flask(__name__)
 app.secret_key = 'your-very-secret-key'  # Replace with a strong secret in production
@@ -13,6 +14,17 @@ app.permanent_session_lifetime = timedelta(days=7)
 
 # init db
 init_db(app)
+
+# custom login required decorator
+# this decorator is used to check if the user is logged in
+def login_required_custom(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user_id' not in session:
+            flash('please login first', 'warning')
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    return decorated_function
 
 @app.route('/')
 def home():
@@ -109,22 +121,23 @@ def logout():
     return redirect(url_for('login'))
 
 @app.route('/dashboard')
+@login_required_custom
 def dashboard():
-    if 'user_id' not in session:
-        flash('please login first', 'warning')
-        return redirect(url_for('login'))
     return render_template('dashboard.html')
 
 @app.route('/analysis')
+@login_required_custom
 def analysis():
     return render_template('analysis.html')
 
 @app.route('/share')
+@login_required_custom
 def share():
     return render_template('share.html')
 
 # Profile route
 @app.route('/profile')
+@login_required_custom
 def profile():
     user_id = session.get('user_id')
     if not user_id:

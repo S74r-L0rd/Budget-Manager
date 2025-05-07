@@ -5,11 +5,31 @@
 {% block styles %}
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/tools.css') }}">
+{% endblock %}
+
+{% block content %}
+<section class="container-fluid d-flex justify-content-center align-items-center text-center text-dark py-5 tools-hero-section">
+    <div class="row g-0 align-items-center tools-hero-row">
+      <!-- Left content: Title and summary -->
+      <div class="col-md-6 text-center text-md-start">
+        <h1 class="display-3 fw-bold mb-5">Smarter Tools for Smarter Finance</h1>
+        <p class="lead">With BudgetManager’s tool suite, planning your finances is effortless.<br>Access all-in-one utilities to track budgets, analyze spending patterns, and forecast savings.</p>
+        <div class="d-flex mt-5 gap-4">
+          <a href="#tool-list" class="btn btn-dark btn-lg get-started-btn">Explore Tools</a>
+          <a href="{{ url_for('login') }}" class="btn btn-outline-dark btn-lg learn-more-btn">Get Started</a>
+        </div>
+      </div>
+  
+      <!-- Right content: Tool-related illustration -->
+      <div class="col-md-6 text-center w-60 position-relative">
+        <img src="{{ url_for('static', filename='media/images/tools_hero_section.svg') }}" class="img-fluid tools-illustration" alt="Tools Illustration">
+      </div>
+    </div>
+</section>
+
 {% endblock %}
 
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/tools.js') }}"></script>
-{% endblock %}
-
-{% block content %}
 {% endblock %}

@@ -1,0 +1,18 @@
+/* Tool Hero Section */
+.tools-hero-section {
+  min-height: 100vh;
+  background-color: #e6e9dc; /* Slightly off-white greenish */
+  padding-left: 6rem;
+  margin-top: 2rem;
+}
+
+.tools-hero-row > div {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.tools-illustration {
+  max-height: 450px;
+  width: 100%;
+  object-fit: contain;
+}

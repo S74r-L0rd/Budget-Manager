@@ -133,3 +133,35 @@
 .accordion-item:hover {
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
+
+.accordion-collapse {
+    transition: all 0.3s ease-out;
+}
+
+.accordion-button {
+    transition: all 0.3s ease;
+}
+
+.accordion-item {
+    transition: box-shadow 0.3s ease;
+}
+
+.accordion-body {
+    transition: all 0.2s ease;
+    padding: 1rem 1.25rem;
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
+.accordion-collapse.show .accordion-body {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.accordion-button::after {
+    transition: transform 0.3s ease;
+}
+
+.accordion-button:not(.collapsed)::after {
+    transform: rotate(-180deg);
+}

@@ -28,6 +28,10 @@
         <div class="hero-content">
             <h1>Get in Touch With Us</h1>
             <p class="hero-description">Have questions about our budget management tools? Our team is here to help you make the most of your financial journey.</p>
+            <div>    
+                <a href="#contact-form" class="btn btn-dark btn-lg get-started-btn">Contact Us</a>
+                <a href="#faq" class="btn btn-outline-dark btn-lg learn-more-btn">FAQ</a>
+            </div>
         </div>
         <div class="hero-image">
             <img src="{{ url_for('static', filename='media/images/contact-hero.svg') }}" alt="Contact Support Illustration">
@@ -36,7 +40,7 @@
 </section>
 
 <!-- Contact Form Section -->
-<div class="login-container contact-form-container d-flex align-items-center justify-content-center">
+<div class="login-container contact-form-container d-flex align-items-center justify-content-center" id="contact-form">
     <div class="login-form-section contact-form-wrapper">
         <h2 class="login-logo text-center">Contact Us</h2>
         <form id="contactForm" onsubmit="event.preventDefault(); handleSubmit();">
@@ -62,7 +66,7 @@
 </div>
 
 <!-- FAQ Section -->
-<section class="faq-section py-5">
+<section class="faq-section py-5" id="faq">
     <div class="container">
         <h2 class="display-3 fw-bold text-start mb-5">Frequently Asked Questions</h2>
         

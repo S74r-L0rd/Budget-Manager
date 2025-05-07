@@ -13,6 +13,8 @@ app.permanent_session_lifetime = timedelta(days=7)
 # init db
 init_db(app)
 
+# custom login required decorator
+# this decorator is used to check if the user is logged in
 def login_required_custom(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):

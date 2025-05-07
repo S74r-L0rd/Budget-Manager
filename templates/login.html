@@ -156,10 +156,10 @@
                     Reset Your Password
                   </h5>
                   <p class="text-muted small">
-                    Please enter the verification code and new password
+                    Please enter your email and verification code
                   </p>
                 </div>
-                <form method="POST" action="{{ url_for('forgot_pwd') }}">
+                <form method="POST" action="{{ url_for('reset_password') }}" id="resetPasswordForm">
                   <div class="mb-3">
                     <label for="forgotEmail" class="form-label"
                       >Email Address</label
@@ -194,7 +194,7 @@
                         placeholder="Enter verification code"
                         required
                       />
-                      <button class="btn btn-outline-secondary" type="button">
+                      <button class="btn btn-outline-secondary" type="button" id="getCodeBtn" data-email="forgotEmail">
                         Get Code
                       </button>
                     </div>
@@ -202,50 +202,58 @@
                       Verification code will be sent to your email
                     </div>
                   </div>
-                  <div class="mb-3 password-wrapper">
-                    <label for="newPassword" class="form-label"
-                      >New Password</label
-                    >
-                    <div class="input-group">
-                      <span class="input-group-text"
-                        ><i class="bi bi-lock"></i
-                      ></span>
-                      <input
-                        type="password"
-                        class="form-control"
-                        id="newPassword"
-                        name="newPassword"
-                        placeholder="Set new password"
-                        required
-                      />
-                      <button type="button" class="password-toggle" onclick="togglePasswordVisibility('newPassword')">
-                        <i class="bi bi-eye-slash"></i>
-                      </button>
+                  
+                  <!-- Password fields (initially hidden) -->
+                  <div id="passwordFields" style="display: none;">
+                    <div class="mb-3 password-wrapper">
+                      <label for="newPassword" class="form-label"
+                        >New Password</label
+                      >
+                      <div class="input-group">
+                        <span class="input-group-text"
+                          ><i class="bi bi-lock"></i
+                        ></span>
+                        <input
+                          type="password"
+                          class="form-control"
+                          id="newPassword"
+                          name="newPassword"
+                          placeholder="Set new password"
+                          required
+                        />
+                        <button type="button" class="password-toggle" onclick="togglePasswordVisibility('newPassword')">
+                          <i class="bi bi-eye-slash"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="mb-4 password-wrapper">
+                      <label for="confirmNewPassword" class="form-label"
+                        >Confirm New Password</label
+                      >
+                      <div class="input-group">
+                        <span class="input-group-text"
+                          ><i class="bi bi-lock-fill"></i
+                        ></span>
+                        <input
+                          type="password"
+                          class="form-control"
+                          id="confirmNewPassword"
+                          name="confirmNewPassword"
+                          placeholder="Enter new password again"
+                          required
+                        />
+                        <button type="button" class="password-toggle" onclick="togglePasswordVisibility('confirmNewPassword')">
+                          <i class="bi bi-eye-slash"></i>
+                        </button>
+                      </div>
                     </div>
                   </div>
-                  <div class="mb-4 password-wrapper">
-                    <label for="confirmNewPassword" class="form-label"
-                      >Confirm New Password</label
-                    >
-                    <div class="input-group">
-                      <span class="input-group-text"
-                        ><i class="bi bi-lock-fill"></i
-                      ></span>
-                      <input
-                        type="password"
-                        class="form-control"
-                        id="confirmNewPassword"
-                        name="confirmNewPassword"
-                        placeholder="Enter new password again"
-                        required
-                      />
-                      <button type="button" class="password-toggle" onclick="togglePasswordVisibility('confirmNewPassword')">
-                        <i class="bi bi-eye-slash"></i>
-                      </button>
-                    </div>
-                  </div>
+                  
                   <div class="d-grid gap-2 mb-3">
-                    <button type="submit" class="btn btn-primary">
+                    <button class="btn btn-primary" id="verifyCodeBtn">
+                      Verify Code
+                    </button>
+                    <button type="submit" class="btn btn-primary" id="resetPasswordBtn" style="display: none;">
                       Reset Password
                     </button>
                   </div>
@@ -439,5 +447,35 @@
       crossorigin="anonymous"
     ></script>
     <script src="../static/js/login.js"></script>
+    
+    <!-- handle auto display of reset password page when stay_at_reset is true -->
+    {% if stay_at_reset %}
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        // directly display reset password form without triggering click event
+        const loginForm = document.getElementById("login-form");
+        const forgotForm = document.getElementById("forgot-password-form");
+        const loginTab = document.getElementById("login-tab");
+        
+        // hide login form
+        loginForm.classList.remove("show", "active");
+        // show forgot password form
+        forgotForm.classList.add("show", "active");
+        // reset tab status
+        loginTab.classList.remove("active");
+        loginTab.setAttribute("aria-selected", "false");
+        
+        // fill data
+        {% if email %}
+        document.getElementById("forgotEmail").value = "{{ email }}";
+        {% endif %}
+        
+        {% if code %}
+        document.getElementById("verificationCode").value = "{{ code }}";
+        {% endif %}
+      });
+    </script>
+    {% endif %}
+    
   </body>
 </html>

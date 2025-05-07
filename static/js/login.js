@@ -1,10 +1,171 @@
-// Add forgot password and return to login functionality
+// Add f
+// rgot password and return to login functionality
 document.addEventListener("DOMContentLoaded", function () {
     // Handle tab switching for login and signup
     const loginTab = document.getElementById("login-tab");
     const signupTab = document.getElementById("signup-tab");
     const forgotPasswordLink = document.getElementById("forgotPasswordLink");
     const backToLogin = document.getElementById("backToLogin");
+    
+    // Get Code button for verification code
+    const getCodeBtn = document.getElementById("getCodeBtn");
+    const resetPasswordForm = document.getElementById("resetPasswordForm");
+    
+    const verifyCodeBtn = document.getElementById("verifyCodeBtn");
+    const resetPasswordBtn = document.getElementById("resetPasswordBtn");
+    
+    // Get Code button click event
+    if (getCodeBtn) {
+      let timer;
+      let countdown = 60;
+      
+      getCodeBtn.addEventListener("click", function() {
+        const emailInputId = this.getAttribute("data-email");
+        const emailInput = document.getElementById(emailInputId);
+        
+        if (!emailInput || !emailInput.value) {
+          createAlert("please input your email address", "warning");
+          return;
+        }
+        
+        // Disable button immediately to prevent multiple clicks
+        getCodeBtn.disabled = true;
+        
+        // Send AJAX request to get verification code
+        const formData = new FormData();
+        formData.append("email", emailInput.value);
+        
+        fetch("/get_verification_code", {
+          method: "POST",
+          body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === "success") {
+            createAlert(data.message, "success");
+            startCountdown();
+          } else {
+            createAlert(data.message, "danger");
+            getCodeBtn.disabled = false;
+          }
+        })
+        .catch(error => {
+          console.error("Error:", error);
+          createAlert("request failed, please try again later", "danger");
+          getCodeBtn.disabled = false;
+        });
+      });
+      
+      // Function to start countdown
+      function startCountdown() {
+        countdown = 60;
+        getCodeBtn.textContent = `${countdown}s`;
+        
+        timer = setInterval(function() {
+          countdown--;
+          getCodeBtn.textContent = `${countdown}s`;
+          
+          if (countdown <= 0) {
+            clearInterval(timer);
+            getCodeBtn.disabled = false;
+            getCodeBtn.textContent = "Get Code";
+          }
+        }, 1000);
+      }
+    }
+
+    // verify reset code button click event
+    if (verifyCodeBtn) {
+        verifyCodeBtn.onclick = function () {
+            const email = document.getElementById("forgotEmail").value;
+            const code = document.getElementById("verificationCode").value;
+            if (!email || !code) {
+                createAlert("please fill in email and verification code", "warning");
+                return;
+            }
+            const formData = new FormData();
+            formData.append("email", email);
+            formData.append("code", code);
+
+            fetch("/verify-reset-code", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    document.getElementById("passwordFields").style.display = "block";
+                    verifyCodeBtn.style.display = "none";
+                    resetPasswordBtn.style.display = "block";
+                    createAlert(data.message, "success");
+                } else {
+                    createAlert(data.message, "danger");
+                }
+            })
+            .catch(error => {
+                createAlert("request failed, please try again later", "danger");
+            });
+        };
+    }
+
+    // handle reset password form submission
+    if (resetPasswordForm) {
+        resetPasswordForm.onsubmit = function (e) {
+            e.preventDefault();
+            const email = document.getElementById("forgotEmail").value;
+            const newPassword = document.getElementById("newPassword").value;
+            const confirmNewPassword = document.getElementById("confirmNewPassword").value;
+            if (!newPassword || !confirmNewPassword) {
+                createAlert("please fill in new password", "warning");
+                return;
+            }
+            const formData = new FormData();
+            formData.append("email", email);
+            formData.append("new_password", newPassword);
+            formData.append("confirm_password", confirmNewPassword);
+
+            fetch("/reset-password", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    createAlert(data.message, "success");
+                    setTimeout(() => {
+                        window.location.href = "/login";
+                    }, 2000);
+                } else {
+                    createAlert(data.message, "danger");
+                }
+            })
+            .catch(error => {
+                createAlert("request failed, please try again later", "danger");
+            });
+        };
+    }
+
+    // Function to create a dynamic alert
+    function createAlert(message, type) {
+      const alertContainer = document.getElementById("flash-messages");
+      
+      if (!alertContainer) return;
+      
+      const alertDiv = document.createElement("div");
+      alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+      alertDiv.role = "alert";
+      alertDiv.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      `;
+      
+      alertContainer.appendChild(alertDiv);
+      
+      setTimeout(function() {
+        const bsAlert = new bootstrap.Alert(alertDiv);
+        bsAlert.close();
+      }, 5000);
+    }
 
     // get all flash messages
     const flashMessages = document.querySelectorAll('.alert');
@@ -12,6 +173,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // check if there is a clear form mark
     let shouldClearSignupForm = false;
     let shouldClearForgotForm = false;
+    let shouldClearCodeField = false;
+    let shouldClearPasswordFields = false;
     
     flashMessages.forEach(function(alert) {
       // check flash message category
@@ -23,6 +186,14 @@ document.addEventListener("DOMContentLoaded", function () {
           dismissAlert(alert);
         } else if (message === 'clear_forgot_form') {
           shouldClearForgotForm = true;
+          // hide this special message
+          dismissAlert(alert);
+        } else if (message === 'clear_code_field') {
+          shouldClearCodeField = true;
+          // hide this special message
+          dismissAlert(alert);
+        } else if (message === 'clear_password_fields') {
+          shouldClearPasswordFields = true;
           // hide this special message
           dismissAlert(alert);
         }
@@ -46,9 +217,27 @@ document.addEventListener("DOMContentLoaded", function () {
     // if need to clear forgot password form
     if (shouldClearForgotForm) {
       clearForgotPasswordForm();
-      // ensure forgot password form is active
+      // ensure forgot password form is active without clearing alerts
       if (!document.getElementById("forgot-password-form").classList.contains('active')) {
-        forgotPasswordLink.click();
+        showForgotPasswordFormWithoutDismissingAlerts();
+      }
+    }
+    
+    // if need to clear verification code field only
+    if (shouldClearCodeField) {
+      clearVerificationCodeField();
+      // ensure forgot password form is active without clearing alerts
+      if (!document.getElementById("forgot-password-form").classList.contains('active')) {
+        showForgotPasswordFormWithoutDismissingAlerts();
+      }
+    }
+    
+    // if need to clear password fields only
+    if (shouldClearPasswordFields) {
+      clearPasswordFields();
+      // ensure forgot password form is active without clearing alerts
+      if (!document.getElementById("forgot-password-form").classList.contains('active')) {
+        showForgotPasswordFormWithoutDismissingAlerts();
       }
     }
             
@@ -87,6 +276,23 @@ document.addEventListener("DOMContentLoaded", function () {
       if (document.getElementById("verificationCode")) {
         document.getElementById("verificationCode").value = "";
       }
+      if (document.getElementById("newPassword")) {
+        document.getElementById("newPassword").value = "";
+      }
+      if (document.getElementById("confirmNewPassword")) {
+        document.getElementById("confirmNewPassword").value = "";
+      }
+    }
+    
+    // function to clear verification code field only
+    function clearVerificationCodeField() {
+      if (document.getElementById("verificationCode")) {
+        document.getElementById("verificationCode").value = "";
+      }
+    }
+    
+    // function to clear password fields only
+    function clearPasswordFields() {
       if (document.getElementById("newPassword")) {
         document.getElementById("newPassword").value = "";
       }
@@ -149,6 +355,15 @@ document.addEventListener("DOMContentLoaded", function () {
         navLink.classList.remove("active");
         navLink.setAttribute("aria-selected", "false");
       });
+    }
+
+    // show forgot password form without dismissing alerts
+    function showForgotPasswordFormWithoutDismissingAlerts() {
+      hideAllForms();
+      document
+        .getElementById("forgot-password-form")
+        .classList.add("show", "active");
+      resetTabStatus();
     }
   });
 

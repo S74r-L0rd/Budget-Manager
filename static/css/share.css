@@ -1,0 +1,113 @@
+/* Share page container styling */
+.container.mt-4 {
+    padding-top: 120px;
+    padding-bottom: 60px;
+}
+
+/* Tab navigation styling */
+.nav-tabs {
+    border-bottom: 2px solid #DAD7CD;
+}
+
+.nav-tabs .nav-link {
+    color: #344E41;
+    font-weight: 600;
+    font-size: 1.1rem;
+    padding: 12px 24px;
+    border: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    transition: all 0.3s ease;
+}
+
+.nav-tabs .nav-link:hover {
+    border-color: transparent;
+    color: #588157;
+}
+
+.nav-tabs .nav-link.active {
+    color: #344E41;
+    background-color: transparent;
+    border-bottom: 2px solid #344E41;
+}
+
+/* Table styling */
+.table-responsive {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.table {
+    margin-bottom: 0;
+}
+
+.table th {
+    background-color: #f0ead2;
+    color: #344E41;
+    font-weight: 600;
+    border-bottom: 2px solid #DAD7CD;
+    padding: 15px;
+}
+
+.table td {
+    vertical-align: middle;
+    padding: 15px;
+    color: #344E41;
+    border-bottom: 1px solid #DAD7CD;
+}
+
+/* Button styling */
+.btn-danger {
+    background-color: #bc4749;
+    border-color: #bc4749;
+    transition: all 0.3s ease;
+}
+
+.btn-danger:hover {
+    background-color: #a63638;
+    border-color: #a63638;
+    transform: translateY(-1px);
+}
+
+.btn-primary {
+    background-color: #344E41;
+    border-color: #344E41;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #588157;
+    border-color: #588157;
+    transform: translateY(-1px);
+}
+
+/* Section headings */
+h2.mb-4 {
+    color: #344E41;
+    font-weight: 700;
+    margin-bottom: 2rem;
+}
+
+h4 {
+    color: #344E41;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+/* Table hover effect */
+.table tbody tr {
+    transition: all 0.2s ease;
+}
+
+.table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* Button size and spacing */
+.btn-sm {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.875rem;
+}

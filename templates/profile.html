@@ -45,24 +45,23 @@
                                 <h5 class="fw-bold">Account Detail</h5>
                                 <button class="edit-btn" onclick="toggleEdit('account-detail')">Edit</button>
                             </div>
-                            <!-- TODO: Define method 'POST' and Change route to 'update_profile' -->
-                            <form>
+                        
+                            <form method="POST" action="{{ url_for('update_prof') }}">
                                 <div id="account-detail-display" class="profile-card-content">
                                     <div class="profile-row">
                                         <div class="profile-item">
-                                            <!-- TODO: change after backend development -->
                                             <label>Name</label>
-                                            <p>name</p>
+                                            <p>{{ user.name }}</p>
                                         </div>
                                     </div>
                                     <div class="profile-row">
                                         <div class="profile-item">
                                             <label>Email Address</label>
-                                            <p>email</p>
+                                            <p>{{ user.email }}</p>
                                         </div>
                                         <div class="profile-item">
                                             <label>Phone</label>
-                                            <p>phone</p>
+                                            <p>{{ profile.phone }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -71,18 +70,17 @@
                                     <div class="profile-row">
                                         <div class="profile-item">
                                             <label>Name</label>
-                                            <!-- TODO: Change 'value' after backend development (user.name)-->
-                                            <input type="text" class="form-control" name="name" value="name">
+                                            <input type="text" class="form-control" name="name" value="{{ user.name }}">
                                         </div>
                                     </div>
                                     <div class="profile-row">
                                         <div class="profile-item">
                                             <label>Email Address</label>
-                                            <input type="email" class="form-control" name="email" value="email">        
+                                            <input type="email" class="form-control" name="email" value="{{ user.email }}">        
                                         </div>
                                         <div class="profile-item">
                                             <label>Phone</label>
-                                            <input type="tel" class="form-control" name="phone" value="phone">                                          
+                                            <input type="tel" class="form-control" name="phone" value="{{ profile.phone }}">                                          
                                         </div>
                                     </div>
                                     <div class="text-end mt-3">
@@ -98,28 +96,26 @@
                                 <h5 class="fw-bold">Personal Information</h5>
                                 <button class="edit-btn" onclick="toggleEdit('personal-info')">Edit</button>
                             </div>
-                            <!-- TODO: Define method 'POST' and Change route to 'update_profile' in form -->
-                            <form>
+                            <form method="POST" action="{{ url_for('update_prof') }}">
                                 <div id="personal-info-display" class="profile-card-content">
                                     <div class="profile-row">
                                         <div class="profile-item">
-                                            <!-- TODO: change after backend development (p - profile.address) -->
                                             <label>Address</label>
-                                            <p>address</p>
+                                            <p>{{ profile.address }}</p>
                                         </div>
                                         <div class="profile-item">
                                             <label>Date of Birth</label>
-                                            <p>dob</p>
+                                            <p>{{ profile.dob }}</p>
                                         </div>
                                     </div>
                                     <div class="profile-row">
                                         <div class="profile-item">
                                             <label>Gender</label>
-                                            <p>gender</p>
+                                            <p>{{ profile.gender }}</p>
                                         </div>
                                         <div class="profile-item">
                                             <label>Occupation</label>
-                                            <p>occupation</p>
+                                            <p>{{ profile.occupation }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -128,11 +124,11 @@
                                     <div class="profile-row">
                                         <div class="profile-item">
                                             <label>Address</label>
-                                            <input type="text" class="form-control" name="address" value="address">
+                                            <input type="text" class="form-control" name="address" value="{{ profile.address }}">
                                         </div>
                                         <div class="profile-item">
                                             <label>Date of Birth</label>
-                                            <input type="date" class="form-control" name="dob" value="dob">
+                                            <input type="date" class="form-control" name="dob" value="{{ profile.dob }}">
                                         </div>
                                     </div>
                                     <div class="profile-row">

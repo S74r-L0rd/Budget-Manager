@@ -1,5 +1,6 @@
 from flask import request, redirect, url_for, flash, render_template, session, jsonify
 from models.user import User
+from models.userProfile import Profile
 from db import db
 from emailVerification import send_verification_email, generate_verification_code
 
@@ -58,6 +59,11 @@ def register_user():
         new_user = User(name=name, email=email, password=password)
         try:
             new_user.save_to_db()
+
+            # Create a new profile for the new user
+            new_profile = Profile(user_id=new_user.id)
+            new_profile.save_to_db()
+
             flash('registration successful, please login', 'success')
             return redirect(url_for('login'))
         except Exception as e:

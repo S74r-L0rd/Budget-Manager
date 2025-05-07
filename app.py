@@ -126,9 +126,70 @@ def dashboard():
     return render_template('dashboard.html')
 
 @app.route('/analysis')
-@login_required_custom
 def analysis():
-    return render_template('analysis.html')
+    tools = [
+        {
+            'name': 'Expense Tracker',
+            'description': 'Track your daily expenses and budgets.',
+            'icon': 'expense.png',
+            'route': 'expense_tracker'  
+        },
+        {
+            'name': 'Budget Planner',
+            'description': 'Plan your timely budgets easily.',
+            'icon': 'budget.png',
+            'route': 'budget_planner'
+        },
+        {
+            'name': 'Savings Goal Tracker',
+            'description': 'Set and track custom savings goals.',
+            'icon': 'saving.png',
+            'route': 'savings_goal_tracker'
+        },
+        {
+            'name': 'Future Expense Predictor',
+            'description': 'Get AI-powered predictions based on expense history.',
+            'icon': 'expense-prediction.png',
+            'route': 'future_expense_predictor'
+        },
+        {
+            'name': 'Spending Personality Analyzer',
+            'description': 'Discover your spending habits.',
+            'icon': 'spending-personality.png',
+            'route': 'spending_personality_analyzer'
+        },
+        {
+            'name': 'Expense Splitter',
+            'description': 'Split bills with roommates or friends.',
+            'icon': 'expense-split.png',
+            'route': 'expense_splitter'
+        }
+    ]
+    return render_template('analysis.html', tools=tools)
+
+@app.route('/expense-tracker')
+def expense_tracker():
+    return render_template('expense_tracker.html')
+
+@app.route('/budget-planner')
+def budget_planner():
+    return render_template('budget_planner.html')
+
+@app.route('/savings-goal-tracker')
+def savings_goal_tracker():
+    return render_template('savings_goal_tracker.html')
+
+@app.route('/future-expense-predictor')
+def future_expense_predictor():
+    return render_template('future_expense_predictor.html')
+
+@app.route('/spending-personality-analyzer')
+def spending_personality_analyzer():
+    return render_template('spending_personality_analyzer.html')
+
+@app.route('/expense-splitter')
+def expense_splitter():
+    return render_template('expense_splitter.html')
 
 @app.route('/share')
 @login_required_custom

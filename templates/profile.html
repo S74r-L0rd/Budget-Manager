@@ -13,6 +13,21 @@
 {% endblock %}
 
 {% block content %}
+
+<!-- Flash Message -->
+{% with messages = get_flashed_messages(with_categories=True) %}
+  {% if messages %}
+    <div class="flash-container">
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
 <!-- Profile Section -->
 <section class="container profile-section">
     <div class="profile-container">
@@ -29,7 +44,9 @@
 
             <div class="list-group mt-3" id="sidebar-tabs" role="tablist">
                 <a class="list-group-item list-group-item-action active" id="profile-tab" data-bs-toggle="list" href="#profile" role="tab">My Profile</a>
+                <a class="list-group-item list-group-item-action" id="account-setting-tab" data-bs-toggle="list" href="#account-settings" role="tab">Account Setting</a>
                 <a class="list-group-item list-group-item-action" data-bs-toggle="modal" href="#logoutModal" role="tab">Logout</a>
+
             </div>
         </div>
     
@@ -167,10 +184,65 @@
                             </form>
                         </div>
                     </div>
+                    <!-- Account Setting Tab -->
+                    <div class="tab-pane fade" id="account-setting" role="tabpanel">
+                        <h3 class="mb-4 fw-bold">Account Settings</h3>
+                        <div class="d-flex flex-column gap-3">
+                            
+                            <!-- Change Password Card -->
+                            <div class="card shadow-sm" onclick="showChangePasswordModal()">
+                                <div class="card-body">
+                                    <h5 class="card-title">Change Password</h5>
+                                    <p class="card-text">Update your account password for your privacy.</p>
+                                </div>
+                            </div>
+
+                            <!-- Password Update Modal -->
+                            <div class="modal fade" id="passwordModal" tabindex="-1" aria-labelledby="passwordModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h5 class="modal-title" id="passwordModalLabel">Update Password</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <form method="POST" action="{{ url_for('change_password') }}">
+                                    <div class="modal-body">
+                                        <div class="mb-3">
+                                        <label for="currentPassword" class="form-label">Current Password</label>
+                                        <input type="password" class="form-control" id="currentPassword" name="current_password" required>
+                                        </div>
+                                        <div class="mb-3">
+                                        <label for="newPassword" class="form-label">New Password</label>
+                                        <input type="password" class="form-control" id="newPassword" name="new_password" required>
+                                        </div>
+                                        <div class="mb-3">
+                                        <label for="confirmPassword" class="form-label">Confirm New Password</label>
+                                        <input type="password" class="form-control" id="confirmPassword" name="confirm_password" required>
+                                        </div>
+                                        <div id="passwordError" class="text-danger"></div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn modal-logout-btn">Update Password</button>
+                                        <button type="button" class="btn btn-outline-dark modal-cancel-btn" data-bs-dismiss="modal">Cancel</button>
+                                    </div>
+                                    </form>
+                                </div>
+                                </div>
+                            </div>
+
+
+                            <!-- Delete Account Card -->
+                            <div class="card shadow-sm" onclick="showDeleteAccountModal()">
+                                <div class="card-body">
+                                    <h5 class="card-title">Delete Account</h5>
+                                    <p class="card-text">Permanently delete your account. This action cannot be undone.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-</section>
+    </section>
 
 <!-- Logout modal -->
 <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
@@ -193,5 +265,7 @@
       </div>
     </div>
 </div>
+
+
 
 {% endblock %}

@@ -6,6 +6,7 @@ from profile_update import update_profile
 from models.user import User
 from models.userProfile import Profile
 from functools import wraps
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 app.secret_key = 'your-very-secret-key'  # Replace with a strong secret in production
@@ -212,6 +213,42 @@ def profile():
 @app.route('/update-prof', methods=['POST'])
 def update_prof():
     return update_profile()
+
+
+# Change password from profile page
+@app.route('/change_password', methods=['POST'])
+def change_password():
+    user_id = session.get('user_id')
+    if not user_id:
+        flash("You need to log in to update your password.", "danger")
+        return redirect(url_for('login'))
+
+    # Get current password, new password, and confirm password
+    current_password = request.form.get('current_password')
+    new_password = request.form.get('new_password')
+    confirm_password = request.form.get('confirm_password')
+
+    # New password and Confirm password should match
+    if new_password != confirm_password:
+        flash("New passwords do not match.", "danger")
+        return redirect(url_for('profile'))
+
+    user = User.query.get(user_id)
+
+    # Check if the current password is valid
+    if not check_password_hash(user.password_hash, current_password):
+        flash("Current password is incorrect.", "danger")
+        return redirect(url_for('profile'))
+
+    # Update the password and save to the database
+    user.password_hash = generate_password_hash(new_password)
+    db.session.commit()
+
+    #Logout after changing password
+    session.pop('user_id', None) #Log out the user without clearing other session data
+    flash("Password successfully updated. Please log in again.", "success")
+    return redirect(url_for('login'))
+
 
 if __name__ == '__main__':
     app.run(debug=True)

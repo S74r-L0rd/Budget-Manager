@@ -67,6 +67,16 @@
                 <button type="submit" class="btn-secondary mt-3">📈 Upload & Compare</button>
             </form>
 
+            <div class="chart-section mt-5">
+                <h4 class="mb-4">📈 Your Budget Analysis</h4>
+                <div class="dummy-chart-placeholder">
+                    <!-- This will be replaced by actual charts in coming PR -->
+                    <iframe src="about:blank" title="Budget Chart Placeholder"
+                            style="width:100%; height:300px; border:1px dashed #ccc;">
+                    </iframe>
+                </div>
+            </div>
+
             {% else %}
             <!-- Fallback Message -->
             <div class="alert alert-warning">

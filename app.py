@@ -221,6 +221,10 @@ def savings_goal_tracker():
 def future_expense_predictor():
     return render_template('future_expense_predictor.html')
 
+@app.route('/download-template-personality')
+def download_template_personality():
+    return send_file('templates/spendings_template_personality.xlsx', as_attachment=True)
+
 @app.route('/spending-personality-analyzer', methods=['GET', 'POST'])
 @login_required_custom
 def spending_personality_analyzer():
@@ -231,16 +235,12 @@ def spending_personality_analyzer():
             return redirect(url_for('spending_personality_analyzer'))
 
         try:
-            # Read the uploaded file based on extension
-            if file.filename.endswith('.csv'):
-                user_df = pd.read_csv(file)
-            elif file.filename.endswith('.xlsx'):
-                user_df = pd.read_excel(file)
+            user_df = pd.read_excel(file)
 
             # Check for required columns
             required_cols = {'Date', 'Category', 'Amount'}
             if not required_cols.issubset(set(user_df.columns)):
-                flash(f"CSV must contain columns: {required_cols}", "danger")
+                flash(f"Excel must contain columns: {required_cols}", "danger")
                 return redirect(url_for('spending_personality_analyzer'))
 
             # Load demographic spending data
@@ -268,7 +268,6 @@ def spending_personality_analyzer():
         insights=[],
         cluster_name="No data",
         bar_chart={},
-        pie_chart={},
         is_loaded=False
     )
 

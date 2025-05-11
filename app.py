@@ -1,6 +1,8 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
+from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify, send_file
 from datetime import timedelta
 from db import init_db, db
+import pandas as pd
+import plotly.express as px
 from login import login_user, register_user, logout_user, reset_password, get_verification_code
 from profile_update import update_profile
 from models.user import User
@@ -127,6 +129,7 @@ def dashboard():
     return render_template('dashboard.html')
 
 @app.route('/analysis')
+@login_required_custom
 def analysis():
     tools = [
         {
@@ -169,26 +172,60 @@ def analysis():
     return render_template('analysis.html', tools=tools)
 
 @app.route('/expense-tracker')
+@login_required_custom
 def expense_tracker():
     return render_template('expense_tracker.html')
 
+@app.route('/download-template')
+def download_template():
+    return send_file('templates/expense_template.xlsx', as_attachment=True)
+
+@app.route('/upload-expenses', methods=['POST'])
+def upload_expenses():
+    file = request.files['file']
+    if file and file.filename.endswith('.xlsx'):
+        df = pd.read_excel(file)
+        # basic validation
+        if not {'Date', 'Category', 'Description', 'Amount', 'Payment Method'}.issubset(df.columns):
+            return "Invalid template format", 400
+
+        # Generate charts
+        pie = px.pie(df, values='Amount', names='Category', title='Spending by Category')
+        bar = px.bar(df.groupby('Category')['Amount'].sum().nlargest(5).reset_index(), x='Category', y='Amount', title='Top 5 Categories')
+        line = px.line(df.groupby('Date')['Amount'].sum().reset_index(), x='Date', y='Amount', title='Spending Over Time')
+
+        charts = {
+            "pie_chart": pie.to_html(full_html=False),
+            "bar_chart": bar.to_html(full_html=False),
+            "line_chart": line.to_html(full_html=False),
+        }
+
+        return render_template('expense_tracker.html', charts=charts, scroll_to_results=True)
+
+    return redirect(url_for('expense_tracker'))
+
 @app.route('/budget-planner')
+@login_required_custom
 def budget_planner():
     return render_template('budget_planner.html')
 
 @app.route('/savings-goal-tracker')
+@login_required_custom
 def savings_goal_tracker():
     return render_template('savings_goal_tracker.html')
 
 @app.route('/future-expense-predictor')
+@login_required_custom
 def future_expense_predictor():
     return render_template('future_expense_predictor.html')
 
 @app.route('/spending-personality-analyzer')
+@login_required_custom
 def spending_personality_analyzer():
     return render_template('spending_personality_analyzer.html')
 
 @app.route('/expense-splitter')
+@login_required_custom
 def expense_splitter():
     return render_template('expense_splitter.html')
 

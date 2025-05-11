@@ -2,5 +2,72 @@
 
 {% block styles %}
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/spending_personality_analyzer.css') }}">
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/spending_personality_analyzer.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<section class="container personality-section">
+    <div class="personality-container">
+        <h2>Spending Personality Analyzer</h2>
+        <p>Upload your spendings data (CSV/Excel)</p>
+        <!-- Get user's spendings data -->
+        <form method="POST" enctype="multipart/form-data" action="{{ url_for('spending_personality_analyzer') }}" class="mb-4">
+            <input type="file" name="spending_file" accept=".csv, .xlsx" class="form-control mb-2" required>
+            <button type="submit" class="btn btn-primary">Upload & Analyze</button>
+        </form>
+
+        <div class="personality-analysis-container">
+            <!-- Get processed data and display the plots -->
+            {% if is_loaded %}
+                <h3>Your Spending Personality: {{ cluster_name }}</h3>
+                <ul>
+                    {% for insight in insights %}
+                        <li>{{ insight }}</li>
+                    {% endfor %}
+                </ul>
+                <div id="barChart" style="width: 600px; height: 400px;"></div>
+                <div id="pieChart" style="width: 600px; height: 400px;"></div>
+                <div id="mapChart" style="width: 100%; height: 500px;"></div>
+                <!-- Render charts in html page -->
+                <script>
+                    try {
+                        console.log("Rendering Clustering Charts...");
+                        var barData = JSON.parse('{{ bar_chart | safe }}');
+                        var pieData = JSON.parse('{{ pie_chart | safe }}');
+                        // var mapData = JSON.parse('{{ map_chart | safe }}');
+                        
+                        console.log("Received Bar Data:", JSON.stringify(barData));
+                        console.log("Received Pie Data:", JSON.stringify(pieData));
+                        // console.log("Received Map Data:", JSON.stringify(mapData));
+                        // Plotly.newPlot('mapChart', mapData.data, mapData.layout);
+            
+                        if (barData && barData.data) {
+                            Plotly.newPlot('barChart', barData.data, barData.layout);
+                            console.log("Bar chart rendered successfully.");
+                        } else {
+                            console.error("Bar chart data is missing or corrupted.");
+                        }
+            
+                        if (pieData && pieData.data) {
+                            Plotly.newPlot('pieChart', pieData.data, pieData.layout);
+                            console.log("Pie chart rendered successfully.");
+                        } else {
+                            console.error("Pie chart data is missing or corrupted.");
+                        }
+                    } catch (error) {
+                        console.error("Error rendering charts:", error);
+                    }
+                </script>            
+                {% else %}
+                    <p>No charts available. Please upload your spending data.</p>
+            {% endif %}
+        </div>
+    </div>
+</section>
 {% endblock %}

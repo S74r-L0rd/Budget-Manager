@@ -5,10 +5,12 @@ import pandas as pd
 import plotly.express as px
 from login import login_user, register_user, logout_user, reset_password, get_verification_code
 from profile_update import update_profile
+from spending_personality_analyzer import spending_personality
 from models.user import User
 from models.userProfile import Profile
 from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
+import json
 
 app = Flask(__name__)
 app.secret_key = 'your-very-secret-key'  # Replace with a strong secret in production
@@ -219,10 +221,57 @@ def savings_goal_tracker():
 def future_expense_predictor():
     return render_template('future_expense_predictor.html')
 
-@app.route('/spending-personality-analyzer')
+@app.route('/spending-personality-analyzer', methods=['GET', 'POST'])
 @login_required_custom
 def spending_personality_analyzer():
-    return render_template('spending_personality_analyzer.html')
+    if request.method == 'POST':
+        file = request.files.get('spending_file')
+        if not file or file.filename == '':
+            flash("No file selected.", "danger")
+            return redirect(url_for('spending_personality_analyzer'))
+
+        try:
+            # Read the uploaded file based on extension
+            if file.filename.endswith('.csv'):
+                user_df = pd.read_csv(file)
+            elif file.filename.endswith('.xlsx'):
+                user_df = pd.read_excel(file)
+
+            # Check for required columns
+            required_cols = {'Date', 'Category', 'Amount'}
+            if not required_cols.issubset(set(user_df.columns)):
+                flash(f"CSV must contain columns: {required_cols}", "danger")
+                return redirect(url_for('spending_personality_analyzer'))
+
+            # Load demographic spending data
+            demographic_df = pd.read_csv('base_demographic_spending.csv')
+
+            # Run clustering
+            cluster_label, insights, bar_chart = spending_personality(user_df, demographic_df)
+            # cluster_label, insights, bar_chart, pie_chart, map_chart = spending_personality(user_df, demographic_df)
+
+            return render_template(
+                    'spending_personality_analyzer.html',
+                    cluster_name=cluster_label,
+                    insights=insights,
+                    bar_chart=json.dumps(bar_chart),
+                    # map_chart=json.dumps(map_chart),
+                    is_loaded=True
+                )
+
+        except Exception as e:
+            flash(f"Error processing file: {str(e)}", "danger")
+            return redirect(url_for('spending_personality_analyzer'))
+
+    return render_template(
+        'spending_personality_analyzer.html',
+        insights=[],
+        cluster_name="No data",
+        bar_chart={},
+        pie_chart={},
+        is_loaded=False
+    )
+
 
 @app.route('/expense-splitter')
 @login_required_custom

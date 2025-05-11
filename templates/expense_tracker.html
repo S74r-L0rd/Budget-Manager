@@ -14,7 +14,7 @@
         <div class="expense-tracker-box">
           <h2>Expense Tracker</h2>
           <p class="mt-4 mb-5">
-            Upload your expense records in Excel format to visualize your spending habits. 
+            Upload your expense records in <strong>Excel Format</strong> to visualize your spending habits. 
             Please ensure the file follows the required structure in this order for accurate analysis.
           </p>
 
@@ -51,6 +51,11 @@
               {{ charts.line_chart | safe }}
             </div>
           </div>
+
+          <div class="mt-4 text-center">
+            <a href="{{ url_for('expense_tracker') }}" class="btn-secondary" title="Start a new analysis">🔁 Analyze Again</a>
+          </div>
+          
           {% endif %}
         </div>
     </section>

@@ -228,3 +228,19 @@
   font-family: monospace;
   font-size: 0.95rem;
 }
+
+.expense-tracker-section.text-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 1rem;
+  min-height: 300px; /* optional, for spacing */
+}
+
+.expense-tracker-section.text-center h2,
+.expense-tracker-section.text-center p,
+.expense-tracker-section.text-center a {
+  margin-bottom: 1rem;
+}

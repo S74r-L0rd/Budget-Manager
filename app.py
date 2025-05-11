@@ -211,7 +211,7 @@ def budget_planner():
     # Dummy variable to simulate no budget set yet
     current_budget = None  # Change to a dictionary to simulate a saved budget
 
-    return render_template('budget_planner.html', current_budget=current_budget)
+    return render_template('budget_planner.html', current_budget=True)
 
 @app.route('/savings-goal-tracker')
 @login_required_custom

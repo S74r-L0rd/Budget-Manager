@@ -128,6 +128,7 @@ def dashboard():
     return render_template('dashboard.html')
 
 @app.route('/analysis')
+@login_required_custom
 def analysis():
     tools = [
         {
@@ -170,6 +171,7 @@ def analysis():
     return render_template('analysis.html', tools=tools)
 
 @app.route('/expense-tracker')
+@login_required_custom
 def expense_tracker():
     return render_template('expense_tracker.html')
 
@@ -197,27 +199,32 @@ def upload_expenses():
             "line_chart": line.to_html(full_html=False),
         }
 
-        return render_template('expense_tracker.html', charts=charts)
+        return render_template('expense_tracker.html', charts=charts, scroll_to_results=True)
 
     return redirect(url_for('expense_tracker'))
 
 @app.route('/budget-planner')
+@login_required_custom
 def budget_planner():
     return render_template('budget_planner.html')
 
 @app.route('/savings-goal-tracker')
+@login_required_custom
 def savings_goal_tracker():
     return render_template('savings_goal_tracker.html')
 
 @app.route('/future-expense-predictor')
+@login_required_custom
 def future_expense_predictor():
     return render_template('future_expense_predictor.html')
 
 @app.route('/spending-personality-analyzer')
+@login_required_custom
 def spending_personality_analyzer():
     return render_template('spending_personality_analyzer.html')
 
 @app.route('/expense-splitter')
+@login_required_custom
 def expense_splitter():
     return render_template('expense_splitter.html')
 

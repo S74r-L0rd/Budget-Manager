@@ -248,14 +248,12 @@ def spending_personality_analyzer():
 
             # Run clustering
             cluster_label, insights, bar_chart = spending_personality(user_df, demographic_df)
-            # cluster_label, insights, bar_chart, pie_chart, map_chart = spending_personality(user_df, demographic_df)
 
             return render_template(
                     'spending_personality_analyzer.html',
                     cluster_name=cluster_label,
                     insights=insights,
                     bar_chart=json.dumps(bar_chart),
-                    # map_chart=json.dumps(map_chart),
                     is_loaded=True
                 )
 

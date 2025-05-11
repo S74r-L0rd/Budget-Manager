@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify, send_file
 from datetime import timedelta
 from db import init_db, db
+import pandas as pd
+import plotly.express as px
 from login import login_user, register_user, logout_user, reset_password, get_verification_code
 from profile_update import update_profile
 from models.user import User
@@ -177,6 +179,26 @@ def download_template():
 
 @app.route('/upload-expenses', methods=['POST'])
 def upload_expenses():
+    file = request.files['file']
+    if file and file.filename.endswith('.xlsx'):
+        df = pd.read_excel(file)
+        # basic validation
+        if not {'Date', 'Category', 'Description', 'Amount', 'Payment Method'}.issubset(df.columns):
+            return "Invalid template format", 400
+
+        # Generate charts
+        pie = px.pie(df, values='Amount', names='Category', title='Spending by Category')
+        bar = px.bar(df.groupby('Category')['Amount'].sum().nlargest(5).reset_index(), x='Category', y='Amount', title='Top 5 Categories')
+        line = px.line(df.groupby('Date')['Amount'].sum().reset_index(), x='Date', y='Amount', title='Spending Over Time')
+
+        charts = {
+            "pie_chart": pie.to_html(full_html=False),
+            "bar_chart": bar.to_html(full_html=False),
+            "line_chart": line.to_html(full_html=False),
+        }
+
+        return render_template('expense_tracker.html', charts=charts)
+
     return redirect(url_for('expense_tracker'))
 
 @app.route('/budget-planner')

@@ -244,3 +244,16 @@
 .expense-tracker-section.text-center a {
   margin-bottom: 1rem;
 }
+
+.frequency-switcher .tool-button {
+    margin: 0 0.5rem;
+    padding: 0.5rem 1.2rem;
+    font-weight: 500;
+    transition: background 0.3s;
+}
+
+.frequency-switcher .tool-button.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}

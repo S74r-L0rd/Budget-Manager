@@ -122,4 +122,15 @@
         <a href="{{ url_for('analysis') }}" class="tool-button">⬅ Back to Toolkit</a>
     </div>
 </div>
+{% if scroll_to_results %}
+<script type="module">
+  import { scrollToElementSmoothly } from "{{ url_for('static', filename='js/spending_personality_analyzer.js') }}";
+  
+  document.addEventListener("DOMContentLoaded", () => {
+    requestAnimationFrame(() => {
+      scrollToElementSmoothly("personality-analysis-results");
+    });
+  });
+</script>
+{% endif %}
 {% endblock %}

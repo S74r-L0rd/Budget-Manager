@@ -254,7 +254,8 @@ def spending_personality_analyzer():
                     cluster_name=cluster_label,
                     insights=insights,
                     bar_chart=json.dumps(bar_chart),
-                    is_loaded=True
+                    is_loaded=True,
+                    scroll_to_results=True
                 )
 
         except Exception as e:

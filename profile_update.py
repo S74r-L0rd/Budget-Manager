@@ -7,6 +7,7 @@ from db import db
 def update_profile():
     user_id = session.get('user_id')
     if not user_id:
+        flash("You must be logged in to update your profile.", "danger")
         return redirect(url_for('login'))
 
     # Fetch the user and profile from the database
@@ -41,5 +42,6 @@ def update_profile():
     db.session.add(user)
     db.session.add(profile)
     db.session.commit()
+    flash("Profile updated successfully.", "success")
 
     return redirect(url_for('profile') + '#profile')

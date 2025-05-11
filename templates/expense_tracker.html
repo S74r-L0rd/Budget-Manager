@@ -13,7 +13,24 @@
     <section class="expense-tracker-section">
         <div class="expense-tracker-box">
           <h2>Expense Tracker</h2>
-          <p>Download the template, fill in your daily expenses, and upload it back to visualize your spending habits.</p>
+          <p class="mt-4 mb-5">
+            Upload your expense records in Excel format to visualize your spending habits. 
+            Please ensure the file follows the required structure in this order for accurate analysis.
+          </p>
+
+          <div class="template-guidelines mb-4">
+            <strong>📋 Required Template Format:</strong>
+            <ul class="template-fields mt-2">
+              <li><code>Date</code></li>
+              <li><code>Category</code></li>
+              <li><code>Description</code></li>
+              <li><code>Amount</code></li>
+              <li><code>Payment Method</code></li>
+            </ul>
+            <p class="mt-5">
+              If you don’t already have the template, you can download it below, fill it in, and upload it back here.
+            </p>
+          </div>
       
           <!-- Download Template -->
           <a href="{{ url_for('download_template') }}" class="btn-primary">⬇ Download Excel Template</a>

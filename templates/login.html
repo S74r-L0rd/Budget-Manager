@@ -80,6 +80,7 @@
                 aria-labelledby="login-tab"
               >
                 <form method="POST" action="{{ url_for('login') }}">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                   <div class="mb-3">
                     <label for="loginEmail" class="form-label"
                       >Email Address</label
@@ -160,6 +161,7 @@
                   </p>
                 </div>
                 <form method="POST" action="{{ url_for('reset_password') }}" id="resetPasswordForm">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                   <div class="mb-3">
                     <label for="forgotEmail" class="form-label"
                       >Email Address</label
@@ -271,6 +273,7 @@
                 aria-labelledby="signup-tab"
               >
                 <form method="POST" action="{{ url_for('register') }}">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                   <div class="mb-3">
                     <label for="signupName" class="form-label">Name</label>
                     <input

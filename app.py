@@ -203,10 +203,15 @@ def upload_expenses():
 
     return redirect(url_for('expense_tracker'))
 
-@app.route('/budget-planner')
+@app.route('/budget-planner', methods=['GET'])
 @login_required_custom
 def budget_planner():
-    return render_template('budget_planner.html')
+    user_id = session.get('user_id')
+
+    # Dummy variable to simulate no budget set yet
+    current_budget = None  # Change to a dictionary to simulate a saved budget
+
+    return render_template('budget_planner.html', current_budget=current_budget)
 
 @app.route('/savings-goal-tracker')
 @login_required_custom

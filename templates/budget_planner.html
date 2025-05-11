@@ -19,18 +19,54 @@
 
             {% if has_budget %}
             <!-- Static Budget Display Block -->
-            <div class="template-guidelines mb-4">
-                <strong>📊 Your Current Budget Plan ({{ budget.period|capitalize }})</strong>
-                <ul class="template-fields mt-2">
-                    <li><strong>Total Limit:</strong> ${{ budget.total_limit }}</li>
-                    {% for cat, value in budget.category_limits.items() %}
-                        <li>{{ cat }}: ${{ value }}</li>
-                    {% endfor %}
-                </ul>
+            <div class="current-budget-box mb-4">
+                <h5 class="current-budget-title">📊 Your Current Budget Plan ({{ budget.period|capitalize }})</h5>
+                <div class="budget-summary-grid mt-3">
+                    <div class="summary-total">
+                        <strong>Total Limit:</strong> ${{ budget.total_limit }}
+                    </div>
+                    <div class="summary-categories">
+                        <ul class="budget-category-list">
+                            {% for cat, value in budget.category_limits.items() %}
+                            <li><strong>{{ cat }}:</strong> ${{ value }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
                 <p class="mt-4">
                     You can <a href="#" class="link-primary fw-bold">edit your plan</a> if required.
                 </p>
             </div>
+
+            <p class="mt-5 mb-5">
+                Upload your expense records in <strong>Excel Format</strong> to visualize your spending habits. 
+                Please ensure the file follows the required structure in this order for accurate analysis.
+            </p>
+
+            <div class="template-guidelines mb-4">
+                <strong>📋 Required Template Format:</strong>
+                <ul class="template-fields mt-2">
+                    <li><code>Date</code></li>
+                    <li><code>Category</code></li>
+                    <li><code>Description</code></li>
+                    <li><code>Amount</code></li>
+                    <li><code>Payment Method</code></li>
+                </ul>
+                <p class="mt-5">
+                    If you don’t already have the template, you can download it below, fill it in, and upload it back here.
+                </p>
+            </div>
+
+            <!-- Download Template -->
+            <a href="{{ url_for('download_template') }}" class="btn-primary">⬇ Download Excel Template</a>
+        
+            <!-- Upload Form -->
+            <form action="{{ url_for('upload_budget_expenses') }}" method="POST" enctype="multipart/form-data" class="upload-form">
+                <label for="file">Upload Filled Template</label>
+                <input type="file" name="file" id="file" accept=".xlsx" required>
+                <button type="submit" class="btn-secondary mt-3">📈 Upload & Compare</button>
+            </form>
+
             {% else %}
             <!-- Fallback Message -->
             <div class="alert alert-warning">
@@ -39,6 +75,8 @@
             <div class="text-center">
                 <a href="#" class="btn btn-secondary" id="show-budget-form">➕ Add Budget Plan</a>
             </div>
+
+            {% endif %}
 
             <!-- Hidden Budget Form -->
             <div id="budget-form-container" style="display: none;">
@@ -70,7 +108,6 @@
                     <button type="submit" class="btn-primary save-budget-btn mt-4">💾 Save Budget Plan</button>
                 </form>
             </div>
-            {% endif %}
         </div>
     </section>
 

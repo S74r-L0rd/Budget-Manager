@@ -1,14 +1,23 @@
 export function setupBudgetFormToggle() {
   document.addEventListener("DOMContentLoaded", function () {
-    const triggerBtn = document.getElementById("show-budget-form");
+    const addBtn = document.getElementById("show-budget-form");
+    const editLink = document.getElementById("edit-budget-plan");
     const formBlock = document.getElementById("budget-form-container");
 
-    if (triggerBtn && formBlock) {
-      triggerBtn.addEventListener("click", function (e) {
-        e.preventDefault();
+    function toggleForm(e) {
+      e.preventDefault();
+      if (formBlock) {
         formBlock.style.display = "block";
-        triggerBtn.style.display = "none";
-      });
+      }
+      if (addBtn) addBtn.style.display = "none";
+    }
+
+    if (addBtn) {
+      addBtn.addEventListener("click", toggleForm);
+    }
+
+    if (editLink) {
+      editLink.addEventListener("click", toggleForm);
     }
   });
 }

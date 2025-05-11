@@ -211,10 +211,29 @@ def upload_expenses():
 def budget_planner():
     user_id = session.get('user_id')
 
-    # Dummy variable to simulate no budget set yet
-    current_budget = None  # Change to a dictionary to simulate a saved budget
+    # Simulate a saved budget
+    mock_budget = {
+        'period': 'monthly',
+        'total_limit': 3000,
+        'category_limits': {
+            "Rent": 1000,
+            "Travel": 300,
+            "Entertainment": 200,
+            "Utilities": 250,
+            "Groceries": 400,
+            "Insurance": 200,
+            "Debt Repayments": 300,
+            "Loan": 250,
+            "Medical": 100
+        }
+    }
+    return render_template('budget_planner.html', categories=CATEGORIES, has_budget=True, budget=mock_budget)
 
-    return render_template('budget_planner.html', categories=CATEGORIES, has_budget=False)
+@app.route('/upload-budget-expenses', methods=['POST'])
+@login_required_custom
+def upload_budget_expenses():
+    # This is where you'll compare uploaded expenses with stored budget
+    pass  # placeholder
 
 @app.route('/savings-goal-tracker')
 @login_required_custom

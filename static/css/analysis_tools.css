@@ -119,3 +119,71 @@
   border-radius: 4px;
   font-family: monospace;
 }
+
+#budget-form-container {
+  margin-top: 2rem;
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.08);
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.budget-form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+}
+
+.budget-form .form-row.full {
+  width: 100%;
+  max-width: 400px;
+}
+
+.budget-form label {
+  font-weight: bold;
+  color: #344E41;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.budget-form input,
+.budget-form select {
+  width: 100%;
+  padding: 0.6rem 1rem;
+  border: 2px solid #A3B18A;
+  border-radius: 6px;
+  font-size: 1rem;
+  background-color: #f6f6f6;
+  transition: border-color 0.3s ease;
+}
+
+.budget-form input:focus,
+.budget-form select:focus {
+  border-color: #3A5A40;
+  background-color: #ffffff;
+  outline: none;
+}
+
+.form-grid {
+  display: grid;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 700px;
+}
+
+.form-pair {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.save-budget-btn {
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: bold;
+}

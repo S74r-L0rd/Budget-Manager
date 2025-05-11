@@ -34,10 +34,41 @@
             {% else %}
             <!-- Fallback Message -->
             <div class="alert alert-warning">
-                You haven't set a budget plan yet. Click below to begin!
+                You haven't set a budget plan yet. Add below to begin!
             </div>
             <div class="text-center">
-                <a href="#" class="btn btn-secondary">➕ Add Budget Plan</a>
+                <a href="#" class="btn btn-secondary" id="show-budget-form">➕ Add Budget Plan</a>
+            </div>
+
+            <!-- Hidden Budget Form -->
+            <div id="budget-form-container" style="display: none;">
+                <form method="POST" action="{{ url_for('budget_planner') }}" class="budget-form mt-4">
+                    <div class="form-row full">
+                        <label for="frequency">Budget Frequency:</label>
+                        <select name="frequency" id="frequency" required>
+                            <option value="monthly">Monthly</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="yearly">Yearly</option>
+                            <option value="daily">Daily</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row full">
+                        <label for="monthly_limit">Total Limit:</label>
+                        <input type="number" id="monthly_limit" name="monthly_limit" step="0.01" required>
+                    </div>
+
+                    <div class="form-grid mt-4">
+                        {% for category in categories %}
+                        <div class="form-pair">
+                            <label for="{{ category }}">{{ category }}:</label>
+                            <input type="number" id="{{ category }}" name="{{ category }}" step="0.01" required>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <button type="submit" class="btn-primary save-budget-btn mt-4">💾 Save Budget Plan</button>
+                </form>
             </div>
             {% endif %}
         </div>
@@ -47,4 +78,11 @@
         <a href="{{ url_for('analysis') }}" class="tool-button">⬅ Back to Toolkit</a>
     </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script type="module">
+  import { setupBudgetFormToggle } from "{{ url_for('static', filename='js/budget_planner.js') }}";
+  setupBudgetFormToggle();
+</script>
 {% endblock %}

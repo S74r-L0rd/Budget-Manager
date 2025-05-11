@@ -14,6 +14,9 @@ app.secret_key = 'your-very-secret-key'  # Replace with a strong secret in produ
 # set session lifetime to 7 days
 app.permanent_session_lifetime = timedelta(days=7)
 
+CATEGORIES = ["Rent", "Travel", "Entertainment", "Utilities", "Groceries",
+              "Insurance", "Debt Repayments", "Loan", "Medical"]
+
 # init db
 init_db(app)
 
@@ -211,7 +214,7 @@ def budget_planner():
     # Dummy variable to simulate no budget set yet
     current_budget = None  # Change to a dictionary to simulate a saved budget
 
-    return render_template('budget_planner.html', current_budget=True)
+    return render_template('budget_planner.html', categories=CATEGORIES, has_budget=False)
 
 @app.route('/savings-goal-tracker')
 @login_required_custom

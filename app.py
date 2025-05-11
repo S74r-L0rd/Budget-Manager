@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
+from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify, send_file
 from datetime import timedelta
 from db import init_db, db
 from login import login_user, register_user, logout_user, reset_password, get_verification_code
@@ -170,6 +170,14 @@ def analysis():
 @app.route('/expense-tracker')
 def expense_tracker():
     return render_template('expense_tracker.html')
+
+@app.route('/download-template')
+def download_template():
+    return send_file('templates/expense_template.xlsx', as_attachment=True)
+
+@app.route('/upload-expenses', methods=['POST'])
+def upload_expenses():
+    return redirect(url_for('expense_tracker'))
 
 @app.route('/budget-planner')
 def budget_planner():

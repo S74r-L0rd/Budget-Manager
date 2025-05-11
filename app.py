@@ -186,7 +186,7 @@ def upload_expenses():
         df = pd.read_excel(file)
         # basic validation
         if not {'Date', 'Category', 'Description', 'Amount', 'Payment Method'}.issubset(df.columns):
-            return "Invalid template format", 400
+            return render_template('invalid_template.html')
 
         # Generate charts
         pie = px.pie(df, values='Amount', names='Category', title='Spending by Category')

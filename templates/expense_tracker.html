@@ -24,6 +24,17 @@
             <input type="file" name="file" id="file" accept=".xlsx" required>
             <button type="submit" class="btn-secondary">📈 Upload & Visualize</button>
           </form>
+
+          {% if charts %}
+          <div class="chart-section">
+            <h3>Your Expense Breakdown</h3>
+            <div class="chart-container">
+              {{ charts.pie_chart | safe }}
+              {{ charts.bar_chart | safe }}
+              {{ charts.line_chart | safe }}
+            </div>
+          </div>
+          {% endif %}
         </div>
     </section>
 </div>

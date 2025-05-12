@@ -370,7 +370,7 @@ def download_template_personality():
 @login_required_custom
 def spending_personality_analyzer():
     if request.method == 'POST':
-        file = request.files.get('spending_file')
+        file = request.files.get('file')
         if not file or not file.filename.endswith('.xlsx'):
             flash("❌ Please upload a valid Excel (.xlsx) file.", "danger")
             return render_template('invalid_template.html', back_url=url_for('spending_personality_analyzer'))

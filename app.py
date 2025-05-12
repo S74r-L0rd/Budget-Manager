@@ -208,12 +208,37 @@ def upload_expenses():
 
     return redirect(url_for('expense_tracker'))
 
-@app.route('/budget-planner', methods=['GET'])
+@app.route('/budget-planner', methods=['GET', 'POST'])
 @login_required_custom
 def budget_planner():
     user_id = session.get('user_id')
-    budget = BudgetPlan.query.filter_by(user_id=user_id).first()
 
+    if request.method == 'POST':
+        frequency = request.form.get('frequency')
+        total_limit = float(request.form.get('total_limit'))
+
+        category_limits = {cat: float(request.form.get(cat, 0)) for cat in CATEGORIES}
+
+        # Either create or update
+        budget = BudgetPlan.query.filter_by(user_id=user_id).first()
+        if not budget:
+            budget = BudgetPlan(
+                user_id=user_id,
+                frequency=frequency,
+                total_limit=total_limit,
+                category_limits=category_limits
+            )
+            db.session.add(budget)
+        else:
+            budget.frequency = frequency
+            budget.total_limit = total_limit
+            budget.category_limits = category_limits
+
+        db.session.commit()
+        return redirect(url_for('budget_saved_success'))
+    
+    # GET logic
+    budget = BudgetPlan.query.filter_by(user_id=user_id).first()
     has_budget = bool(budget)
     return render_template('budget_planner.html', categories=CATEGORIES, has_budget=has_budget, budget=budget)
 
@@ -243,7 +268,6 @@ def update_budget():
     budget = BudgetPlan.query.filter_by(user_id=user_id).first()
 
     if not budget:
-        flash("No existing budget to update.", "warning")
         return redirect(url_for('budget_planner'))
 
     budget.frequency = frequency
@@ -251,7 +275,6 @@ def update_budget():
     budget.category_limits = category_limits
 
     db.session.commit()
-    flash("✅ Budget plan updated successfully! Redirecting...", "success")
     return redirect(url_for('budget_saved_success'))
 
 @app.route('/budget-planner/success')

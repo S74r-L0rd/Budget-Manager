@@ -310,43 +310,17 @@ def upload_budget_expenses():
             flash("❌ No budget plan found. Please set your budget first.", "warning")
             return redirect(url_for('budget_planner'))
 
-        category_limits = budget.category_limits
-        monthly_limit = budget.total_limit
-
-        # Compute actuals
+        # Clean and process DataFrame
         df = df[df['Category'].isin(CATEGORIES)]
         df['Amount'] = pd.to_numeric(df['Amount'], errors='coerce')
         df.dropna(subset=['Amount'], inplace=True)
-        actuals = df.groupby('Category')['Amount'].sum().to_dict()
 
-        summary = []
-        for cat in CATEGORIES:
-            limit = category_limits.get(cat, 0)
-            spent = actuals.get(cat, 0)
-            remaining = limit - spent
-            summary.append({
-                'category': cat,
-                'limit': limit,
-                'spent': spent,
-                'remaining': remaining,
-                'status': 'Over' if remaining < 0 else 'Under'
-            })
+        # Save processed data in session for frequency toggle support
+        session['uploaded_expense_df'] = df.to_json(orient='records')
+        session['selected_frequency'] = budget.frequency  # You can default to 'monthly' if preferred
 
-        # Generate chart
-        import plotly.graph_objects as go
-        fig = go.Figure()
-        fig.add_trace(go.Bar(name='Spent', x=[s['category'] for s in summary], y=[s['spent'] for s in summary], marker_color='indianred'))
-        fig.add_trace(go.Bar(name='Limit', x=[s['category'] for s in summary], y=[s['limit'] for s in summary], marker_color='seagreen'))
-        fig.update_layout(barmode='group', title='Budget vs Actual')
-
-        return render_template('budget_planner.html',
-                               categories=CATEGORIES,
-                               has_budget=True,
-                               budget=budget,
-                               summary=summary,
-                               chart=fig.to_html(full_html=False),
-                               step='result',
-                               scroll_target_id='budget-planner-results')
+        # Redirect to the frequency-based analysis view (default to 'daily')
+        return redirect(url_for('budget_frequency_view', frequency='daily'))
 
     except Exception as e:
         flash(f"❌ Error processing file: {str(e)}", "danger")

@@ -319,8 +319,8 @@ def upload_budget_expenses():
         session['uploaded_expense_df'] = df.to_json(orient='records')
         session['selected_frequency'] = budget.frequency  # You can default to 'monthly' if preferred
 
-        # Redirect to the frequency-based analysis view (default to 'daily')
-        return redirect(url_for('budget_frequency_view', frequency='daily'))
+        # Redirect to the frequency-based analysis view using user's selected frequency
+        return redirect(url_for('budget_frequency_view', frequency=budget.frequency))
 
     except Exception as e:
         flash(f"❌ Error processing file: {str(e)}", "danger")

@@ -221,23 +221,15 @@ def budget_planner():
 @login_required_custom
 def edit_budget_plan():
     user_id = session.get('user_id')
-    # Replace with actual DB fetch later
-    mock_budget = {
-        'period': 'monthly',
-        'total_limit': 3000,
-        'category_limits': {
-            "Rent": 1000,
-            "Travel": 300,
-            "Entertainment": 200,
-            "Utilities": 250,
-            "Groceries": 400,
-            "Insurance": 200,
-            "Debt Repayments": 300,
-            "Loan": 250,
-            "Medical": 100
-        }
-    }
-    return render_template('edit_budget.html', budget=mock_budget, categories=CATEGORIES)
+    from models.budgetPlan import BudgetPlan
+
+    budget = BudgetPlan.query.filter_by(user_id=user_id).first()
+
+    if not budget:
+        flash("No existing budget found to edit.", "warning")
+        return redirect(url_for('budget_planner'))
+
+    return render_template('edit_budget.html', budget=budget, categories=CATEGORIES)
 
 @app.route('/update-budget', methods=['POST'])
 @login_required_custom

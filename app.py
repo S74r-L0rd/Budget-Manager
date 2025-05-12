@@ -212,24 +212,10 @@ def upload_expenses():
 @login_required_custom
 def budget_planner():
     user_id = session.get('user_id')
+    budget = BudgetPlan.query.filter_by(user_id=user_id).first()
 
-    # Simulate a saved budget
-    mock_budget = {
-        'period': 'monthly',
-        'total_limit': 3000,
-        'category_limits': {
-            "Rent": 1000,
-            "Travel": 300,
-            "Entertainment": 200,
-            "Utilities": 250,
-            "Groceries": 400,
-            "Insurance": 200,
-            "Debt Repayments": 300,
-            "Loan": 250,
-            "Medical": 100
-        }
-    }
-    return render_template('budget_planner.html', categories=CATEGORIES, has_budget=True, budget=mock_budget)
+    has_budget = bool(budget)
+    return render_template('budget_planner.html', categories=CATEGORIES, has_budget=has_budget, budget=budget)
 
 @app.route('/budget-planner/edit', methods=['GET'])
 @login_required_custom

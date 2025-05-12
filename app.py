@@ -9,6 +9,7 @@ from models.user import User
 from models.userProfile import Profile
 from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
+from models.budgetPlan import BudgetPlan
 
 app = Flask(__name__)
 app.secret_key = 'your-very-secret-key'  # Replace with a strong secret in production
@@ -207,56 +208,73 @@ def upload_expenses():
 
     return redirect(url_for('expense_tracker'))
 
-@app.route('/budget-planner', methods=['GET'])
+@app.route('/budget-planner', methods=['GET', 'POST'])
 @login_required_custom
 def budget_planner():
     user_id = session.get('user_id')
 
-    # Simulate a saved budget
-    mock_budget = {
-        'period': 'monthly',
-        'total_limit': 3000,
-        'category_limits': {
-            "Rent": 1000,
-            "Travel": 300,
-            "Entertainment": 200,
-            "Utilities": 250,
-            "Groceries": 400,
-            "Insurance": 200,
-            "Debt Repayments": 300,
-            "Loan": 250,
-            "Medical": 100
-        }
-    }
-    return render_template('budget_planner.html', categories=CATEGORIES, has_budget=True, budget=mock_budget)
+    if request.method == 'POST':
+        frequency = request.form.get('frequency')
+        total_limit = float(request.form.get('total_limit'))
+
+        category_limits = {cat: float(request.form.get(cat, 0)) for cat in CATEGORIES}
+
+        # Either create or update
+        budget = BudgetPlan.query.filter_by(user_id=user_id).first()
+        if not budget:
+            budget = BudgetPlan(
+                user_id=user_id,
+                frequency=frequency,
+                total_limit=total_limit,
+                category_limits=category_limits
+            )
+            db.session.add(budget)
+        else:
+            budget.frequency = frequency
+            budget.total_limit = total_limit
+            budget.category_limits = category_limits
+
+        db.session.commit()
+        return redirect(url_for('budget_saved_success'))
+    
+    # GET logic
+    budget = BudgetPlan.query.filter_by(user_id=user_id).first()
+    has_budget = bool(budget)
+    return render_template('budget_planner.html', categories=CATEGORIES, has_budget=has_budget, budget=budget)
 
 @app.route('/budget-planner/edit', methods=['GET'])
 @login_required_custom
 def edit_budget_plan():
     user_id = session.get('user_id')
-    # Replace with actual DB fetch later
-    mock_budget = {
-        'period': 'monthly',
-        'total_limit': 3000,
-        'category_limits': {
-            "Rent": 1000,
-            "Travel": 300,
-            "Entertainment": 200,
-            "Utilities": 250,
-            "Groceries": 400,
-            "Insurance": 200,
-            "Debt Repayments": 300,
-            "Loan": 250,
-            "Medical": 100
-        }
-    }
-    return render_template('edit_budget.html', budget=mock_budget, categories=CATEGORIES)
+    from models.budgetPlan import BudgetPlan
+
+    budget = BudgetPlan.query.filter_by(user_id=user_id).first()
+
+    if not budget:
+        flash("No existing budget found to edit.", "warning")
+        return redirect(url_for('budget_planner'))
+
+    return render_template('edit_budget.html', budget=budget, categories=CATEGORIES)
 
 @app.route('/update-budget', methods=['POST'])
 @login_required_custom
 def update_budget():
-    # Later: Save to DB
-    flash("✅ Budget plan updated successfully! Redirecting...", "success")
+    user_id = session.get('user_id')
+    frequency = request.form.get('frequency')
+    total_limit = float(request.form.get('total_limit'))
+
+    category_limits = {cat: float(request.form.get(cat, 0)) for cat in CATEGORIES}
+
+    budget = BudgetPlan.query.filter_by(user_id=user_id).first()
+
+    if not budget:
+        return redirect(url_for('budget_planner'))
+
+    budget.frequency = frequency
+    budget.total_limit = total_limit
+    budget.category_limits = category_limits
+
+    db.session.commit()
     return redirect(url_for('budget_saved_success'))
 
 @app.route('/budget-planner/success')

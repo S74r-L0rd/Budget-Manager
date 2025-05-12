@@ -76,10 +76,13 @@
                 <div class="frequency-switcher text-center mt-5">
                     <h5 class="mb-3">View By Frequency</h5>
                     <div class="btn-group" role="group" aria-label="Frequency toggle" id="frequency-toggle-group">
-                        <button class="tool-button active">Daily</button>
-                        <button class="tool-button">Weekly</button>
-                        <button class="tool-button">Monthly</button>
-                        <button class="tool-button">Yearly</button>
+                        {% for freq in ['daily', 'weekly', 'monthly', 'yearly'] %}
+                            <a href="{{ url_for('budget_frequency_view', frequency=freq) }}"
+                               class="tool-button {% if freq == selected_frequency %}active{% endif %}"
+                               data-frequency="{{ freq }}">
+                               {{ freq.capitalize() }}
+                            </a>
+                        {% endfor %}
                     </div>
                 </div>
 

@@ -14,11 +14,24 @@
 
 {% block content %}
 <div class="main-content-with-navbar">
+    <!-- Flash -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="alert-container">
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+        </div>
+    {% endif %}
+    {% endwith %}
     <section class="container personality-section">
         <div class="personality-container">
             <h2>Spending Personality Analyzer</h2>
             <p class="mt-4 mb-5">
-                Upload your expense records in <strong>Excel Format</strong> to visualize your spending personality. 
+                Upload your expense records in <strong>Excel Format</strong> to visualize your spending habits. 
                 Please ensure the file follows the required structure in this order for accurate analysis.
             </p>   
 
@@ -26,9 +39,11 @@
             <div class="template-guidelines mb-4">
                 <strong>📋 Required Template Format:</strong>
                 <ul class="template-fields mt-2">
-                  <li><code>Date</code></li>
-                  <li><code>Category</code></li>
-                  <li><code>Amount</code></li>
+                    <li><code>Date</code></li>
+                    <li><code>Category</code></li>
+                    <li><code>Description</code></li>
+                    <li><code>Amount</code></li>
+                    <li><code>Payment Method</code></li>
                 </ul>
                 <p class="mt-5">
                   If you don’t already have the template, you can download it below, fill it in, and upload it back here.

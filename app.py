@@ -364,26 +364,27 @@ def future_expense_predictor():
 
 @app.route('/download-template-personality')
 def download_template_personality():
-    return send_file('templates/spendings_template_personality.xlsx', as_attachment=True)
+    return send_file('templates/expense_template.xlsx', as_attachment=True)
 
 @app.route('/spending-personality-analyzer', methods=['GET', 'POST'])
 @login_required_custom
 def spending_personality_analyzer():
     if request.method == 'POST':
         file = request.files.get('spending_file')
-        if not file or file.filename == '':
-            flash("No file selected.", "danger")
-            return redirect(url_for('spending_personality_analyzer'))
+        if not file or not file.filename.endswith('.xlsx'):
+            flash("❌ Please upload a valid Excel (.xlsx) file.", "danger")
+            return render_template('invalid_template.html', back_url=url_for('spending_personality_analyzer'))
 
         try:
+            # Load user's uploaded data
             user_df = pd.read_excel(file)
 
             # Check for required columns
             required_cols = {'Date', 'Category', 'Amount'}
-            if not required_cols.issubset(set(user_df.columns)):
-                flash(f"Excel must contain columns: {required_cols}", "danger")
-                return redirect(url_for('spending_personality_analyzer'))
-
+            if not required_cols.issubset(user_df.columns):
+                flash("❌ Invalid Excel format. Required columns: Date, Category, Amount.", "danger")
+                return render_template('invalid_template.html', back_url=url_for('spending_personality_analyzer'))
+            
             # Load demographic spending data
             demographic_df = pd.read_csv('base_demographic_spending.csv')
 
@@ -400,7 +401,7 @@ def spending_personality_analyzer():
                 )
 
         except Exception as e:
-            flash(f"Error processing file: {str(e)}", "danger")
+            flash(f"❌ Error processing file: {str(e)}", "danger")
             return redirect(url_for('spending_personality_analyzer'))
 
     return render_template(

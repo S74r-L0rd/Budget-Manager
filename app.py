@@ -194,7 +194,7 @@ def upload_expenses():
         df = pd.read_excel(file)
         # basic validation
         if not {'Date', 'Category', 'Description', 'Amount', 'Payment Method'}.issubset(df.columns):
-            return render_template('invalid_template.html')
+            return render_template('invalid_template.html', back_url=url_for('expense_tracker'))
 
         # Generate charts
         pie = px.pie(df, values='Amount', names='Category', title='Spending by Category')
@@ -288,8 +288,69 @@ def budget_saved_success():
 @app.route('/upload-budget-expenses', methods=['POST'])
 @login_required_custom
 def upload_budget_expenses():
-    # This is where you'll compare uploaded expenses with stored budget
-    pass  # placeholder
+    user_id = session.get('user_id')
+    file = request.files.get('file')
+
+    if not file or not file.filename.endswith('.xlsx'):
+        flash("❌ Please upload a valid Excel (.xlsx) file.", "danger")
+        return render_template('invalid_template.html', back_url=url_for('budget_planner'))
+
+    try:
+        df = pd.read_excel(file)
+
+        # Validate structure
+        required_columns = {'Date', 'Category', 'Amount'}
+        if not required_columns.issubset(df.columns):
+            flash("❌ Invalid Excel format. Required columns: Date, Category, Amount.", "danger")
+            return render_template('invalid_template.html', back_url=url_for('budget_planner'))
+
+        # Load saved budget
+        budget = BudgetPlan.query.filter_by(user_id=user_id).first()
+        if not budget:
+            flash("❌ No budget plan found. Please set your budget first.", "warning")
+            return redirect(url_for('budget_planner'))
+
+        category_limits = budget.category_limits
+        monthly_limit = budget.total_limit
+
+        # Compute actuals
+        df = df[df['Category'].isin(CATEGORIES)]
+        df['Amount'] = pd.to_numeric(df['Amount'], errors='coerce')
+        df.dropna(subset=['Amount'], inplace=True)
+        actuals = df.groupby('Category')['Amount'].sum().to_dict()
+
+        summary = []
+        for cat in CATEGORIES:
+            limit = category_limits.get(cat, 0)
+            spent = actuals.get(cat, 0)
+            remaining = limit - spent
+            summary.append({
+                'category': cat,
+                'limit': limit,
+                'spent': spent,
+                'remaining': remaining,
+                'status': 'Over' if remaining < 0 else 'Under'
+            })
+
+        # Generate chart
+        import plotly.graph_objects as go
+        fig = go.Figure()
+        fig.add_trace(go.Bar(name='Spent', x=[s['category'] for s in summary], y=[s['spent'] for s in summary], marker_color='indianred'))
+        fig.add_trace(go.Bar(name='Limit', x=[s['category'] for s in summary], y=[s['limit'] for s in summary], marker_color='seagreen'))
+        fig.update_layout(barmode='group', title='Budget vs Actual')
+
+        return render_template('budget_planner.html',
+                               categories=CATEGORIES,
+                               has_budget=True,
+                               budget=budget,
+                               summary=summary,
+                               chart=fig.to_html(full_html=False),
+                               step='result',
+                               scroll_target_id='budget-planner-results')
+
+    except Exception as e:
+        flash(f"❌ Error processing file: {str(e)}", "danger")
+        return redirect(url_for('budget_planner'))
 
 @app.route('/savings-goal-tracker')
 @login_required_custom

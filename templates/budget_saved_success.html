@@ -1,0 +1,24 @@
+{% extends "layout_user.html" %}
+{% block title %}Budget Saved{% endblock %}
+
+{% block styles %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/analysis.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/analysis_tools.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="main-content-with-navbar pt-6">
+    <section class="expense-tracker-section text-center">
+        <h2 class="text-success mb-4">🎉 Budget Plan Saved!</h2>
+        <p>Redirecting in <span id="countdown" data-redirect="{{ url_for('budget_planner') }}">5</span> seconds...</p>
+        <a href="{{ url_for('budget_planner') }}" class="btn btn-primary mt-4">Go Now</a>
+    </section>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script type="module" src="{{ url_for('static', filename='js/budget_saved_success.js') }}"></script>
+{% endblock %}

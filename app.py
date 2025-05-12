@@ -16,6 +16,9 @@ app.secret_key = 'your-very-secret-key'  # Replace with a strong secret in produ
 # set session lifetime to 7 days
 app.permanent_session_lifetime = timedelta(days=7)
 
+CATEGORIES = ["Rent", "Travel", "Entertainment", "Utilities", "Groceries",
+              "Insurance", "Debt Repayments", "Loan", "Medical"]
+
 # Initialize CSRF protection
 csrf = CSRFProtect(app)
 
@@ -208,10 +211,68 @@ def upload_expenses():
 
     return redirect(url_for('expense_tracker'))
 
-@app.route('/budget-planner')
+@app.route('/budget-planner', methods=['GET'])
 @login_required_custom
 def budget_planner():
-    return render_template('budget_planner.html')
+    user_id = session.get('user_id')
+
+    # Simulate a saved budget
+    mock_budget = {
+        'period': 'monthly',
+        'total_limit': 3000,
+        'category_limits': {
+            "Rent": 1000,
+            "Travel": 300,
+            "Entertainment": 200,
+            "Utilities": 250,
+            "Groceries": 400,
+            "Insurance": 200,
+            "Debt Repayments": 300,
+            "Loan": 250,
+            "Medical": 100
+        }
+    }
+    return render_template('budget_planner.html', categories=CATEGORIES, has_budget=True, budget=mock_budget)
+
+@app.route('/budget-planner/edit', methods=['GET'])
+@login_required_custom
+def edit_budget_plan():
+    user_id = session.get('user_id')
+    # Replace with actual DB fetch later
+    mock_budget = {
+        'period': 'monthly',
+        'total_limit': 3000,
+        'category_limits': {
+            "Rent": 1000,
+            "Travel": 300,
+            "Entertainment": 200,
+            "Utilities": 250,
+            "Groceries": 400,
+            "Insurance": 200,
+            "Debt Repayments": 300,
+            "Loan": 250,
+            "Medical": 100
+        }
+    }
+    return render_template('edit_budget.html', budget=mock_budget, categories=CATEGORIES)
+
+@app.route('/update-budget', methods=['POST'])
+@login_required_custom
+def update_budget():
+    # Later: Save to DB
+    flash("✅ Budget plan updated successfully! Redirecting...", "success")
+    return redirect(url_for('budget_saved_success'))
+
+@app.route('/budget-planner/success')
+@login_required_custom
+def budget_saved_success():
+    return render_template('budget_saved_success.html')
+
+@app.route('/upload-budget-expenses', methods=['POST'])
+@login_required_custom
+def upload_budget_expenses():
+    # This is where you'll compare uploaded expenses with stored budget
+    pass  # placeholder
 
 @app.route('/savings-goal-tracker')
 @login_required_custom

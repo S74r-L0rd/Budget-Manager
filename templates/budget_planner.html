@@ -1,6 +1,145 @@
 {% extends "layout_user.html" %}
+{% block title %}Budget Planner{% endblock %}
 
 {% block styles %}
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/analysis.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/analysis_tools.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="main-content-with-navbar pt-6">
+    <section class="expense-tracker-section">
+        <div class="expense-tracker-box">
+            <h2>Budget Planner</h2>
+            <p class="mt-3 mb-4">
+                Plan your finances by setting category-wise limits and tracking your actual expenses. 
+            </p>
+
+            {% if has_budget %}
+            <!-- Static Budget Display Block -->
+            <div class="current-budget-box mb-4">
+                <h5 class="current-budget-title">📊 Your Current Budget Plan ({{ budget.period|capitalize }})</h5>
+                <div class="budget-summary-grid mt-3">
+                    <div class="summary-total">
+                        <strong>Total Limit:</strong> ${{ budget.total_limit }}
+                    </div>
+                    <div class="summary-categories">
+                        <ul class="budget-category-list">
+                            {% for cat, value in budget.category_limits.items() %}
+                            <li><strong>{{ cat }}:</strong> ${{ value }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <p class="mt-4">
+                    You can <a href="{{ url_for('edit_budget_plan') }}" class="link-primary fw-bold">edit your plan</a> if required.
+                </p>
+            </div>
+
+            <p class="mt-5 mb-5">
+                Upload your expense records in <strong>Excel Format</strong> to visualize your spending habits. 
+                Please ensure the file follows the required structure in this order for accurate analysis.
+            </p>
+
+            <div class="template-guidelines mb-4">
+                <strong>📋 Required Template Format:</strong>
+                <ul class="template-fields mt-2">
+                    <li><code>Date</code></li>
+                    <li><code>Category</code></li>
+                    <li><code>Description</code></li>
+                    <li><code>Amount</code></li>
+                    <li><code>Payment Method</code></li>
+                </ul>
+                <p class="mt-5">
+                    If you don’t already have the template, you can download it below, fill it in, and upload it back here.
+                </p>
+            </div>
+
+            <!-- Download Template -->
+            <a href="{{ url_for('download_template') }}" class="btn-primary">⬇ Download Excel Template</a>
+        
+            <!-- Upload Form -->
+            <form action="{{ url_for('upload_budget_expenses') }}" method="POST" enctype="multipart/form-data" class="upload-form">
+                <label for="file">Upload Filled Template</label>
+                <input type="file" name="file" id="file" accept=".xlsx" required>
+                <button type="submit" class="btn-secondary mt-3">📈 Upload & Compare</button>
+            </form>
+
+            <div class="frequency-switcher text-center mt-5">
+                <h5 class="mb-3">View By Frequency</h5>
+                <div class="btn-group" role="group" aria-label="Frequency toggle" id="frequency-toggle-group">
+                    <button class="tool-button active">Daily</button>
+                    <button class="tool-button">Weekly</button>
+                    <button class="tool-button">Monthly</button>
+                    <button class="tool-button">Yearly</button>
+                </div>
+            </div>
+
+            <div class="chart-section mt-5">
+                <h4 class="mb-4">📈 Your Budget Analysis</h4>
+                <div class="dummy-chart-placeholder">
+                    <!-- This will be replaced by actual charts in coming PR -->
+                    <iframe src="about:blank" title="Budget Chart Placeholder"
+                            style="width:100%; height:300px; border:1px dashed #ccc;">
+                    </iframe>
+                </div>
+            </div>
+
+            {% else %}
+            <!-- Fallback Message -->
+            <div class="alert alert-warning">
+                You haven't set a budget plan yet. Add below to begin!
+            </div>
+            <div class="text-center">
+                <a href="#" class="btn btn-secondary" id="show-budget-form">➕ Add Budget Plan</a>
+            </div>
+
+            {% endif %}
+
+            <!-- Hidden Budget Form -->
+            <div id="budget-form-container" style="display: none;">
+                <form method="POST" action="{{ url_for('budget_planner') }}" class="budget-form mt-4">
+                    <div class="form-row full">
+                        <label for="frequency">Budget Frequency:</label>
+                        <select name="frequency" id="frequency" required>
+                            <option value="monthly">Monthly</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="yearly">Yearly</option>
+                            <option value="daily">Daily</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row full">
+                        <label for="monthly_limit">Total Limit:</label>
+                        <input type="number" id="monthly_limit" name="monthly_limit" step="0.01" required>
+                    </div>
+
+                    <div class="form-grid mt-4">
+                        {% for category in categories %}
+                        <div class="form-pair">
+                            <label for="{{ category }}">{{ category }}:</label>
+                            <input type="number" id="{{ category }}" name="{{ category }}" step="0.01" required>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <button type="submit" class="btn-primary save-budget-btn mt-4">💾 Save Budget Plan</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <div style="display: flex; justify-content: center;" class="my-4">
+        <a href="{{ url_for('analysis') }}" class="tool-button">⬅ Back to Toolkit</a>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script type="module">
+  import { setupBudgetFormToggle } from "{{ url_for('static', filename='js/budget_planner.js') }}";
+  setupBudgetFormToggle();
+</script>
 {% endblock %}

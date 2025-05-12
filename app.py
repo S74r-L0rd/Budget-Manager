@@ -234,7 +234,23 @@ def edit_budget_plan():
 @app.route('/update-budget', methods=['POST'])
 @login_required_custom
 def update_budget():
-    # Later: Save to DB
+    user_id = session.get('user_id')
+    frequency = request.form.get('frequency')
+    total_limit = float(request.form.get('total_limit'))
+
+    category_limits = {cat: float(request.form.get(cat, 0)) for cat in CATEGORIES}
+
+    budget = BudgetPlan.query.filter_by(user_id=user_id).first()
+
+    if not budget:
+        flash("No existing budget to update.", "warning")
+        return redirect(url_for('budget_planner'))
+
+    budget.frequency = frequency
+    budget.total_limit = total_limit
+    budget.category_limits = category_limits
+
+    db.session.commit()
     flash("✅ Budget plan updated successfully! Redirecting...", "success")
     return redirect(url_for('budget_saved_success'))
 

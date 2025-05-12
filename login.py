@@ -3,9 +3,6 @@ from models.user import User
 from models.userProfile import Profile
 from db import db
 from emailVerification import send_verification_email, generate_verification_code
-from flask_wtf.csrf import CSRFProtect
-
-csrf = CSRFProtect()
 
 def login_user():
     if request.method == 'POST':
@@ -76,7 +73,6 @@ def register_user():
             
     return render_template('login.html')
 
-@csrf.exempt
 def verify_reset_code():
     """API route, verify reset code"""
     if request.method == 'POST':
@@ -102,7 +98,6 @@ def verify_reset_code():
     
     return jsonify({'status': 'error', 'message': 'unsupported request method'}), 405
 
-@csrf.exempt
 def reset_password():
     """API route, reset password"""
     if request.method == 'POST':
@@ -145,7 +140,6 @@ def logout_user():
     flash('you have successfully logged out', 'info')
     return redirect(url_for('login'))
 
-@csrf.exempt
 def get_verification_code():
     """API route, return verification code"""
     if request.method == 'POST':

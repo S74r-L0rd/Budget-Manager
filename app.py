@@ -9,7 +9,6 @@ from models.user import User
 from models.userProfile import Profile
 from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_wtf.csrf import CSRFProtect
 
 app = Flask(__name__)
 app.secret_key = 'your-very-secret-key'  # Replace with a strong secret in production
@@ -18,9 +17,6 @@ app.permanent_session_lifetime = timedelta(days=7)
 
 CATEGORIES = ["Rent", "Travel", "Entertainment", "Utilities", "Groceries",
               "Insurance", "Debt Repayments", "Loan", "Medical"]
-
-# Initialize CSRF protection
-csrf = CSRFProtect(app)
 
 # init db
 init_db(app)

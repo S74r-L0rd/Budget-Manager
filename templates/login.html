@@ -477,5 +477,36 @@
     </script>
     {% endif %}
     
+    <!-- Modal for Terms and Privacy -->
+    <div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="termsModalLabel">Terms of Service & Privacy Policy</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div id="termsContent" style="display: none;">
+              
+              <p>1. Acceptance of Terms</p>
+              <p>By accessing and using BudgetManager, you agree to be bound by these Terms of Service.</p>
+              <p>2. User Responsibilities</p>
+              <p>You are responsible for maintaining the confidentiality of your account and password.</p>
+              <p>3. Service Usage</p>
+              <p>Our service is provided "as is" and we make no warranties about the reliability or availability of our service.</p>
+            </div>
+            <div id="privacyContent" style="display: none;">
+              
+              <p>1. Data Collection</p>
+              <p>We collect information that you provide directly to us, including your name, email address, and financial data.</p>
+              <p>2. Data Protection</p>
+              <p>We implement appropriate security measures to protect your personal information.</p>
+              <p>3. Data Usage</p>
+              <p>Your data is used solely for providing and improving our services.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

@@ -9,6 +9,7 @@ from models.user import User
 from models.userProfile import Profile
 from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
+from models.budgetPlan import BudgetPlan
 
 app = Flask(__name__)
 app.secret_key = 'your-very-secret-key'  # Replace with a strong secret in production

@@ -106,6 +106,10 @@
                     {{ chart | safe }}
                 </div>
             </div>
+
+            <div class="mt-4 text-center">
+                <a href="{{ url_for('budget_planner') }}" class="btn-secondary" title="Start a new analysis">🔁 Analyze Again</a>
+            </div>
             {% endif %}
 
             {% else %}

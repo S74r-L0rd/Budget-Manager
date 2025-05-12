@@ -9,7 +9,7 @@
         <!-- Block for external scripts -->
         {% block scripts %}{% endblock %}
     </head>
-    <body>
+    <body data-scroll-target-id="{{ scroll_target_id | default('') }}" {% block body_tag_attrs %}{% endblock %}>
         <!-- Navbar Section -->
         <nav class="navbar">
             <!-- Logo and Website Name -->

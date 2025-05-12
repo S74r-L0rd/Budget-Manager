@@ -342,7 +342,8 @@ def upload_budget_expenses():
                                budget=budget,
                                summary=summary,
                                chart=fig.to_html(full_html=False),
-                               step='result')
+                               step='result',
+                               scroll_target_id='budget-planner-results')
 
     except Exception as e:
         flash(f"❌ Error processing file: {str(e)}", "danger")

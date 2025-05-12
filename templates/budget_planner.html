@@ -77,11 +77,13 @@
                     <h5 class="mb-3">View By Frequency</h5>
                     <div class="btn-group" role="group" aria-label="Frequency toggle" id="frequency-toggle-group">
                         {% for freq in ['daily', 'weekly', 'monthly', 'yearly'] %}
-                            <a href="{{ url_for('budget_frequency_view', frequency=freq) }}"
-                               class="tool-button {% if freq == selected_frequency %}active{% endif %}"
-                               data-frequency="{{ freq }}">
-                               {{ freq.capitalize() }}
-                            </a>
+                            <button
+                                type="button"
+                                class="tool-button {% if freq == active_frequency %}active{% endif %}"
+                                data-frequency="{{ freq }}"
+                            >
+                                {{ freq.capitalize() }}
+                            </button>
                         {% endfor %}
                     </div>
                 </div>
@@ -171,4 +173,5 @@
 
   setupBudgetFormToggle();
 </script>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 {% endblock %}

@@ -330,11 +330,14 @@ def upload_budget_expenses():
 @login_required_custom
 def budget_frequency_view(frequency):
     import json
+    from flask import request
 
     user_id = session.get('user_id')
     budget = BudgetPlan.query.filter_by(user_id=user_id).first()
 
     if not budget or 'uploaded_expense_df' not in session:
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return jsonify({'error': 'Missing budget or uploaded data'}), 400
         flash("Missing budget or uploaded data", "warning")
         return redirect(url_for('budget_planner'))
 
@@ -364,6 +367,16 @@ def budget_frequency_view(frequency):
     fig.add_trace(go.Bar(name='Limit', x=[s['category'] for s in summary], y=[s['limit'] for s in summary]))
     fig.update_layout(barmode='group', title=f'Budget vs Actual ({frequency.title()})')
 
+    # AJAX (fetch) request: return JSON
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        return jsonify({
+            'summary': summary,
+            'plot_data': fig.to_plotly_json()['data'],
+            'plot_layout': fig.to_plotly_json()['layout'],
+            'frequency': frequency
+        })
+
+    # Normal full-page render
     return render_template('budget_planner.html',
                            categories=CATEGORIES,
                            has_budget=True,

@@ -506,6 +506,44 @@ def change_password():
     flash("Password successfully updated. Please log in again.", "success")
     return redirect(url_for('login'))
 
+# Delete account from profile page
+@app.route('/delete_account', methods=['POST'])
+def delete_account():
+    user_id = session.get('user_id')
+    if not user_id:
+        flash("You need to log in to delete your account.", "danger")
+        return redirect(url_for('login'))
+
+    try:
+        # Delete user profile from user table
+        user = User.query.get(user_id)
+        if user:
+            db.session.delete(user)
+
+        # Delete user from useProfile table
+        profile = Profile.query.filter_by(user_id=user_id).first()
+        if profile:
+            db.session.delete(profile)
+
+        # Delete user's budget plan from BudgetPlan table
+        budget_plan = BudgetPlan.query.filter_by(user_id=user_id).first()
+        if budget_plan:
+            db.session.delete(budget_plan)
+
+        # TODO: Add any table 
+        db.session.commit()
+        # Clear session and logout
+        session.clear()
+
+        flash("Your account has been deleted successfully. See you again!", "success")
+        return redirect(url_for('login'))
+
+    except Exception as e:
+        db.session.rollback()
+        flash(f"An error occurred while deleting your account: {str(e)}", "danger")
+        return redirect(url_for('profile'))
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

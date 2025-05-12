@@ -325,6 +325,54 @@ def upload_budget_expenses():
     except Exception as e:
         flash(f"❌ Error processing file: {str(e)}", "danger")
         return redirect(url_for('budget_planner'))
+    
+@app.route('/budget-planner/view/<frequency>')
+@login_required_custom
+def budget_frequency_view(frequency):
+    import json
+
+    user_id = session.get('user_id')
+    budget = BudgetPlan.query.filter_by(user_id=user_id).first()
+
+    if not budget or 'uploaded_expense_df' not in session:
+        flash("Missing budget or uploaded data", "warning")
+        return redirect(url_for('budget_planner'))
+
+    df = pd.DataFrame(json.loads(session['uploaded_expense_df']))
+
+    # Normalize based on frequency
+    freq_divider = {'daily': 365, 'weekly': 52, 'monthly': 12, 'yearly': 1}
+    factor = freq_divider.get(frequency, 12)
+
+    summary = []
+    for cat in CATEGORIES:
+        spent = df[df['Category'] == cat]['Amount'].sum() * factor
+        limit = budget.category_limits.get(cat, 0)
+        remaining = limit - spent
+        summary.append({
+            'category': cat,
+            'limit': limit,
+            'spent': round(spent, 2),
+            'remaining': round(remaining, 2),
+            'status': 'Over' if remaining < 0 else 'Under'
+        })
+
+    # Generate chart
+    import plotly.graph_objects as go
+    fig = go.Figure()
+    fig.add_trace(go.Bar(name='Spent', x=[s['category'] for s in summary], y=[s['spent'] for s in summary]))
+    fig.add_trace(go.Bar(name='Limit', x=[s['category'] for s in summary], y=[s['limit'] for s in summary]))
+    fig.update_layout(barmode='group', title=f'Budget vs Actual ({frequency.title()})')
+
+    return render_template('budget_planner.html',
+                           categories=CATEGORIES,
+                           has_budget=True,
+                           budget=budget,
+                           summary=summary,
+                           chart=fig.to_html(full_html=False),
+                           active_frequency=frequency,
+                           step='result',
+                           scroll_target_id='budget-planner-results')
 
 @app.route('/savings-goal-tracker')
 @login_required_custom

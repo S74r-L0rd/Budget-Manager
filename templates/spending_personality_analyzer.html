@@ -1,6 +1,151 @@
 {% extends "layout_user.html" %}
 
 {% block styles %}
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/analysis.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/analysis_tools.css') }}">
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/spending_personality_analyzer.js') }}"></script>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="main-content-with-navbar">
+    <!-- Flash -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="alert-container">
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+        </div>
+    {% endif %}
+    {% endwith %}
+    <section class="container personality-section">
+        <div class="personality-container">
+            <h2>Spending Personality Analyzer</h2>
+            <p class="mt-4 mb-5">
+                Upload your expense records in <strong>Excel Format</strong> to visualize your spending habits. 
+                Please ensure the file follows the required structure in this order for accurate analysis.
+            </p>   
+
+            <!-- Download template file -->
+            <div class="template-guidelines mb-4">
+                <strong>📋 Required Template Format:</strong>
+                <ul class="template-fields mt-2">
+                    <li><code>Date</code></li>
+                    <li><code>Category</code></li>
+                    <li><code>Description</code></li>
+                    <li><code>Amount</code></li>
+                    <li><code>Payment Method</code></li>
+                </ul>
+                <p class="mt-5">
+                  If you don’t already have the template, you can download it below, fill it in, and upload it back here.
+                </p>
+            </div>
+
+            <!-- Download Template -->
+            <a href="{{ url_for('download_template') }}" class="btn-primary">⬇ Download Excel Template</a>
+
+            <!-- Upload Form -->
+            <form method="POST" enctype="multipart/form-data" action="{{ url_for('spending_personality_analyzer') }}" class="upload-form">
+                <label for="file">Upload Filled Template</label>
+                <input type="file" name="file" id="file" accept=".xlsx" required>
+                <button type="submit" class="btn-secondary">📈 Upload & Visualize</button>
+              </form>
+
+            {% if is_loaded %}
+            <!-- Analysis Results -->
+            <div class="personality-analysis-container" id="personality-analysis-results">
+                <h3>Your Spending Personality: {{ cluster_name }}</h3>
+
+                <!-- Insights Cards -->
+                {% if insights %}
+                <div class="insights-container">
+                    <div class="row justify-content-center">
+                        {% for insight in insights %}
+                            <div class="col-md-4">
+                                <div class="insight-card">
+                                    <div class="insight-header">
+                                        <span class="insight-category">{{ insight.category }}</span>
+                                        {% if insight.difference > 0 %}
+                                            <span class="insight-icon increase">↑</span>
+                                        {% else %}
+                                            <span class="insight-icon decrease">↓</span>
+                                        {% endif %}
+                                    </div>
+                                    <div class="insight-body">
+                                        <p>{{ insight.message }}</p>
+                                        <div class="progress">
+                                            <div class="progress-bar" role="progressbar" 
+                                                style="width: {{ insight.percentage }}%;" 
+                                                aria-valuenow="{{ insight.percentage }}" 
+                                                aria-valuemin="0" aria-valuemax="100">
+                                                {{ insight.percentage }}%
+                                            </div>
+                                        </div>                                     
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Charts -->
+                {% if bar_chart %}
+                <div class="chart-container-personality mt-4">
+                    <div id="barChart" style="width: 600px; height: 400px;"></div>
+                </div>
+                {% endif %}
+
+                <!-- Analyze Again Button -->
+                <div class="text-center mt-4">
+                    <a href="{{ url_for('spending_personality_analyzer') }}" class="btn btn-secondary">🔁 Analyze Again</a>
+                </div>
+
+                <!-- Chart Rendering Script -->
+                <script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        try {
+                            console.log("Rendering Clustering Charts...");
+                            var barData = JSON.parse('{{ bar_chart | safe }}');
+
+                            if (barData && barData.data) {
+                                Plotly.newPlot('barChart', barData.data, barData.layout);
+                                console.log("Bar chart rendered successfully.");
+                            } else {
+                                console.error("Bar chart data is missing or corrupted.");
+                            }
+                        } catch (error) {
+                            console.error("Error rendering charts:", error);
+                        }
+                    });
+                </script>
+            {% endif %}
+            </div>
+        </div>
+    </section>
+    <!-- Back to toolkit button -->
+    <div style="display: flex; justify-content: center;" class="back-to-toolkit-button">
+        <a href="{{ url_for('analysis') }}" class="tool-button">⬅ Back to Toolkit</a>
+    </div>
+</div>
+{% if scroll_to_results %}
+<script type="module">
+  import { scrollToElementSmoothly } from "{{ url_for('static', filename='js/spending_personality_analyzer.js') }}";
+  
+  document.addEventListener("DOMContentLoaded", () => {
+    requestAnimationFrame(() => {
+      scrollToElementSmoothly("personality-analysis-results");
+    });
+  });
+</script>
+{% endif %}
 {% endblock %}

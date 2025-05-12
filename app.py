@@ -310,47 +310,82 @@ def upload_budget_expenses():
             flash("❌ No budget plan found. Please set your budget first.", "warning")
             return redirect(url_for('budget_planner'))
 
-        category_limits = budget.category_limits
-        monthly_limit = budget.total_limit
-
-        # Compute actuals
+        # Clean and process DataFrame
         df = df[df['Category'].isin(CATEGORIES)]
         df['Amount'] = pd.to_numeric(df['Amount'], errors='coerce')
         df.dropna(subset=['Amount'], inplace=True)
-        actuals = df.groupby('Category')['Amount'].sum().to_dict()
 
-        summary = []
-        for cat in CATEGORIES:
-            limit = category_limits.get(cat, 0)
-            spent = actuals.get(cat, 0)
-            remaining = limit - spent
-            summary.append({
-                'category': cat,
-                'limit': limit,
-                'spent': spent,
-                'remaining': remaining,
-                'status': 'Over' if remaining < 0 else 'Under'
-            })
+        # Save processed data in session for frequency toggle support
+        session['uploaded_expense_df'] = df.to_json(orient='records')
+        session['selected_frequency'] = budget.frequency  # You can default to 'monthly' if preferred
 
-        # Generate chart
-        import plotly.graph_objects as go
-        fig = go.Figure()
-        fig.add_trace(go.Bar(name='Spent', x=[s['category'] for s in summary], y=[s['spent'] for s in summary], marker_color='indianred'))
-        fig.add_trace(go.Bar(name='Limit', x=[s['category'] for s in summary], y=[s['limit'] for s in summary], marker_color='seagreen'))
-        fig.update_layout(barmode='group', title='Budget vs Actual')
-
-        return render_template('budget_planner.html',
-                               categories=CATEGORIES,
-                               has_budget=True,
-                               budget=budget,
-                               summary=summary,
-                               chart=fig.to_html(full_html=False),
-                               step='result',
-                               scroll_target_id='budget-planner-results')
+        # Redirect to the frequency-based analysis view using user's selected frequency
+        return redirect(url_for('budget_frequency_view', frequency=budget.frequency))
 
     except Exception as e:
         flash(f"❌ Error processing file: {str(e)}", "danger")
         return redirect(url_for('budget_planner'))
+    
+@app.route('/budget-planner/view/<frequency>')
+@login_required_custom
+def budget_frequency_view(frequency):
+    import json
+    from flask import request
+
+    user_id = session.get('user_id')
+    budget = BudgetPlan.query.filter_by(user_id=user_id).first()
+
+    if not budget or 'uploaded_expense_df' not in session:
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return jsonify({'error': 'Missing budget or uploaded data'}), 400
+        flash("Missing budget or uploaded data", "warning")
+        return redirect(url_for('budget_planner'))
+
+    df = pd.DataFrame(json.loads(session['uploaded_expense_df']))
+
+    # Normalize based on frequency
+    freq_divider = {'daily': 365, 'weekly': 52, 'monthly': 12, 'yearly': 1}
+    factor = freq_divider.get(frequency, 12)
+
+    summary = []
+    for cat in CATEGORIES:
+        spent = df[df['Category'] == cat]['Amount'].sum() * factor
+        limit = budget.category_limits.get(cat, 0)
+        remaining = limit - spent
+        summary.append({
+            'category': cat,
+            'limit': limit,
+            'spent': round(spent, 2),
+            'remaining': round(remaining, 2),
+            'status': 'Over' if remaining < 0 else 'Under'
+        })
+
+    # Generate chart
+    import plotly.graph_objects as go
+    fig = go.Figure()
+    fig.add_trace(go.Bar(name='Spent', x=[s['category'] for s in summary], y=[s['spent'] for s in summary]))
+    fig.add_trace(go.Bar(name='Limit', x=[s['category'] for s in summary], y=[s['limit'] for s in summary]))
+    fig.update_layout(barmode='group', title=f'Budget vs Actual ({frequency.title()})')
+
+    # AJAX (fetch) request: return JSON
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        return jsonify({
+            'summary': summary,
+            'plot_data': fig.to_plotly_json()['data'],
+            'plot_layout': fig.to_plotly_json()['layout'],
+            'frequency': frequency
+        })
+
+    # Normal full-page render
+    return render_template('budget_planner.html',
+                           categories=CATEGORIES,
+                           has_budget=True,
+                           budget=budget,
+                           summary=summary,
+                           chart=fig.to_html(full_html=False),
+                           active_frequency=frequency,
+                           step='result',
+                           scroll_target_id='budget-planner-results')
 
 @app.route('/savings-goal-tracker')
 @login_required_custom

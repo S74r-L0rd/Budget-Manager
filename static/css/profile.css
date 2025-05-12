@@ -327,3 +327,11 @@ body, h1, ul, li, a {
   font-size: 1.0rem;
   color: #666;
 }
+.btn-outline-dark {
+  border-color: #a3b18a;
+}
+
+.btn-outline-dark:hover {
+  background-color: #588157;
+  border-color: #a3b18a;
+}

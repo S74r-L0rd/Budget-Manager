@@ -306,3 +306,44 @@ body {
   color: #ffffff;
   text-decoration: none;
 }
+
+/* Modal Styles */
+.modal-content {
+  border-radius: 15px;
+  border: none;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+  background-color: var(--light-green);
+  border-bottom: 1px solid var(--medium-green);
+  border-radius: 15px 15px 0 0;
+}
+
+.modal-title {
+  color: var(--dark-green);
+  font-weight: 600;
+}
+
+.modal-body {
+  padding: 20px;
+  color: var(--text-color);
+}
+
+.modal-body h6 {
+  color: var(--dark-green);
+  font-weight: 600;
+}
+
+.modal-body p {
+  margin-bottom: 10px;
+  line-height: 1.6;
+}
+
+.btn-close {
+  color: var(--dark-green);
+}
+
+.modal-backdrop.show {
+  opacity: 0.7;
+}

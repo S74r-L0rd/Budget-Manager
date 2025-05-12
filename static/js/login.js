@@ -383,3 +383,29 @@ function togglePasswordVisibility(inputId) {
     toggleIcon.classList.add('bi-eye-slash');
   }
 }
+
+// Handle Terms and Privacy Modal
+document.addEventListener('DOMContentLoaded', function() {
+    const termsLinks = document.querySelectorAll('a[href="#"]');
+    const termsModal = new bootstrap.Modal(document.getElementById('termsModal'));
+    const termsContent = document.getElementById('termsContent');
+    const privacyContent = document.getElementById('privacyContent');
+
+    termsLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const isTerms = this.textContent.includes('Terms');
+            
+            // Show appropriate content
+            termsContent.style.display = isTerms ? 'block' : 'none';
+            privacyContent.style.display = isTerms ? 'none' : 'block';
+            
+            // Update modal title
+            document.getElementById('termsModalLabel').textContent = 
+                isTerms ? 'Terms of Service' : 'Privacy Policy';
+            
+            // Show modal
+            termsModal.show();
+        });
+    });
+});

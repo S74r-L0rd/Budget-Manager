@@ -20,7 +20,7 @@
             {% if has_budget %}
             <!-- Static Budget Display Block -->
             <div class="current-budget-box mb-4">
-                <h5 class="current-budget-title">📊 Your Current Budget Plan ({{ budget.period|capitalize }})</h5>
+                <h5 class="current-budget-title">📊 Your Current Budget Plan ({{ budget.frequency|capitalize }})</h5>
                 <div class="budget-summary-grid mt-3">
                     <div class="summary-total">
                         <strong>Total Limit:</strong> ${{ budget.total_limit }}

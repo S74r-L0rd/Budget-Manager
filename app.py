@@ -362,10 +362,6 @@ def savings_goal_tracker():
 def future_expense_predictor():
     return render_template('future_expense_predictor.html')
 
-@app.route('/download-template-personality')
-def download_template_personality():
-    return send_file('templates/expense_template.xlsx', as_attachment=True)
-
 @app.route('/spending-personality-analyzer', methods=['GET', 'POST'])
 @login_required_custom
 def spending_personality_analyzer():

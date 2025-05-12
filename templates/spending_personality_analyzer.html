@@ -5,7 +5,6 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/analysis.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/analysis_tools.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/spending_personality_analyzer.css') }}">
 {% endblock %}
 
 {% block scripts %}
@@ -52,7 +51,7 @@
             </div>
 
             <!-- Download Template -->
-            <a href="{{ url_for('download_template_personality') }}" class="btn-primary">⬇ Download Excel Template</a>
+            <a href="{{ url_for('download_template') }}" class="btn-primary">⬇ Download Excel Template</a>
 
             <!-- Upload Form -->
             <form method="POST" enctype="multipart/form-data" action="{{ url_for('spending_personality_analyzer') }}" class="upload-form">
@@ -101,7 +100,7 @@
 
                 <!-- Charts -->
                 {% if bar_chart %}
-                <div class="chart-container mt-4">
+                <div class="chart-container-personality mt-4">
                     <div id="barChart" style="width: 600px; height: 400px;"></div>
                 </div>
                 {% endif %}

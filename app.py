@@ -10,8 +10,10 @@ from models.user import User
 from models.userProfile import Profile
 from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
 from models.budgetPlan import BudgetPlan
 import json
+import os
 
 
 app = Flask(__name__)
@@ -21,6 +23,11 @@ app.permanent_session_lifetime = timedelta(days=7)
 
 CATEGORIES = ["Rent", "Travel", "Entertainment", "Utilities", "Groceries",
               "Insurance", "Debt Repayments", "Loan", "Medical"]
+
+# Config for uploading photo
+UPLOAD_FOLDER = 'static/uploads'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # init db
 init_db(app)
@@ -471,6 +478,66 @@ def profile():
 def update_prof():
     return update_profile()
 
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+# Editing profile photo
+@app.route('/upload-photo', methods=['POST'])
+@login_required_custom
+def upload_photo():
+    if 'photo' not in request.files:
+        flash('No file part', 'danger')
+        return redirect(url_for('profile'))
+
+    file = request.files['photo']
+
+    if file.filename == '':
+        flash('No selected file', 'danger')
+        return redirect(url_for('profile'))
+
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        user_id = session.get('user_id')
+
+        # Save file to the upload folder
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], f"{user_id}_{filename}")
+        file.save(file_path)
+
+        relative_path = f"uploads/{user_id}_{filename}"
+
+        # Update user profile in the database
+        profile = Profile.query.filter_by(user_id=user_id).first()
+        if profile:
+            profile.photo = relative_path
+            db.session.commit()
+
+        flash('Profile photo updated successfully!', 'success')
+        return redirect(url_for('profile'))
+
+    flash('Invalid file type. Please upload an image.', 'danger')
+    return redirect(url_for('profile'))
+
+@app.route('/delete-photo', methods=['POST'])
+@login_required_custom
+def delete_photo():
+    user_id = session.get('user_id')
+
+    try:
+        # Find the user profile
+        profile = Profile.query.filter_by(user_id=user_id).first()
+        if profile:
+            # Set the photo field to the default value
+            profile.photo = 'media/images/user-review1.svg'
+            db.session.commit()
+            flash('Profile photo has been reset to the default image.', 'success')
+        else:
+            flash('User profile not found.', 'danger')
+    except Exception as e:
+        db.session.rollback()
+        flash(f'Error while deleting photo: {str(e)}', 'danger')
+
+    return redirect(url_for('profile'))
+
 
 # Change password from profile page
 @app.route('/change_password', methods=['POST'])
@@ -530,7 +597,8 @@ def delete_account():
         if budget_plan:
             db.session.delete(budget_plan)
 
-        # TODO: Add any table 
+        # TODO: Add any table updated
+
         db.session.commit()
         # Clear session and logout
         session.clear()

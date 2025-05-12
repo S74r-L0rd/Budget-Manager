@@ -32,21 +32,47 @@
 <section class="container profile-section">
     <div class="profile-container">
         <!-- Left Column: Profile image & Nav bar-->
-        <!-- TODO: Use Flask to store the user photo -->
         <div class="profile-sidebar">
             <div class="profile-image-container">
-                <img id="profile-img" src="{{ url_for('static', filename='media/images/user-review1.svg') }}" class="img-fluid rounded-circle w-100 mb-2 profile-image" alt="Profile image">
+                <img id="profile-img" src="{{ url_for('static', filename=profile.photo) }}" class="img-fluid rounded-circle w-100 mb-2 profile-image" alt="Profile image" onerror='this.onerror=null;this.src="{{ url_for("static", filename="media/images/user-review1.svg") }}";'>
             </div>
-
-            <!-- Photo input when edit photo is clicked-->
-            <input type="file" id="photo-upload" accept="image/*" style="display: none;" onchange="previewImage(event)">
-            <label for="photo-upload" class="btn btn-outline-dark btn-sm mt-3 mb-2 photo-btn">Edit photo</label>
+            <!-- Edit Photo Button that triggers the modal -->
+            <button type="button" class="btn btn-outline-dark btn-sm mt-3 mb-2" data-bs-toggle="modal" data-bs-target="#photoModal">
+                Edit Photo
+            </button>
 
             <div class="list-group mt-3" id="sidebar-tabs" role="tablist">
                 <a class="list-group-item list-group-item-action active" id="profile-tab" data-bs-toggle="list" href="#profile" role="tab">My Profile</a>
                 <a class="list-group-item list-group-item-action" id="account-setting-tab" data-bs-toggle="list" href="#account-settings" role="tab">Account Setting</a>
                 <a class="list-group-item list-group-item-action" data-bs-toggle="modal" href="#logoutModal" role="tab">Logout</a>
 
+            </div>
+        </div>
+
+        <!-- Modal for Photo Upload and Delete -->
+        <div class="modal fade photo-modal" id="photoModal" tabindex="-1" aria-labelledby="photoModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="photoModalLabel">Edit Profile Photo</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <!-- Upload Photo Form -->
+                        <form method="POST" enctype="multipart/form-data" action="{{ url_for('upload_photo') }}" class="mb-3">
+                            <input type="file" id="photo-upload" name="photo" accept="image/*" style="display: none;" onchange="this.form.submit()">
+                            <label for="photo-upload" class="btn btn-outline-dark">📷 Upload Photo</label>
+                        </form>
+
+                        <!-- Delete Photo Form -->
+                        <form method="POST" action="{{ url_for('delete_photo') }}">
+                            <button type="submit" class="btn btn-outline-dark">🏙️ Delete Photo</button>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
             </div>
         </div>
     

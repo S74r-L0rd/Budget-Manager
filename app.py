@@ -526,8 +526,10 @@ def delete_photo():
         # Find the user profile
         profile = Profile.query.filter_by(user_id=user_id).first()
         if profile:
+
             # Set the photo field to the default value
             profile.photo = 'media/images/user-review1.svg'
+
             db.session.commit()
             flash('Profile photo has been reset to the default image.', 'success')
         else:

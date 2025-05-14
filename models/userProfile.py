@@ -5,7 +5,6 @@ from db import db
 class Profile(db.Model):
     __tablename__ = 'user_profile'
 
-    # id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True, nullable=False)
     email = db.Column(db.String(100), nullable=False)
     name = db.Column(db.String(50), nullable=False)
@@ -14,6 +13,7 @@ class Profile(db.Model):
     dob = db.Column(db.String(10))
     gender = db.Column(db.String(10))
     occupation = db.Column(db.String(50))
+    photo = db.Column(db.String(200), default='media/images/user-review1.svg')
 
     def save_to_db(self):
         db.session.add(self)

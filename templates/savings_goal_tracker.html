@@ -70,6 +70,17 @@
                 </div>
             </div>
             {% endfor %}
+
+            {% if own_goals|length == 0 %}
+            <div class="col-12 w-100">
+                <div class="card goal-card text-center bg-white shadow-sm p-4 border-0">
+                    <div class="card-body text-muted">
+                        <h5 class="card-title text-success mb-3">No Goals Yet</h5>
+                        <p class="card-text">You haven't set any savings goals yet. Use the form above to create your first goal.</p>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
         </div>
 
         <!-- Shared Goals -->
@@ -94,6 +105,17 @@
             </div>
           </div>
           {% endfor %}
+
+          {% if shared_goals|length == 0 %}
+          <div class="col-12 w-100">
+            <div class="card goal-card text-center bg-white shadow-sm p-4 border-0">
+                <div class="card-body text-muted">
+                    <h5 class="card-title text-primary mb-3">No Shared Goals</h5>
+                    <p class="card-text">No goals have been shared with you yet. Shared savings goals from others will appear here.</p>
+                </div>
+            </div>
+          </div>
+          {% endif %}
         </div>
     </div>
 

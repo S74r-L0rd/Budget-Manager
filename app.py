@@ -27,7 +27,7 @@ CATEGORIES = ["Rent", "Travel", "Entertainment", "Utilities", "Groceries",
               "Insurance", "Debt Repayments", "Loan", "Medical"]
 
 # Config for uploading photo
-UPLOAD_FOLDER = 'static/uploads'
+UPLOAD_FOLDER = 'static/media/uploads'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
@@ -552,7 +552,7 @@ def upload_photo():
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], f"{user_id}_{filename}")
         file.save(file_path)
 
-        relative_path = f"uploads/{user_id}_{filename}"
+        relative_path = f"media/uploads/{user_id}_{filename}"
 
         # Update user profile in the database
         profile = Profile.query.filter_by(user_id=user_id).first()
@@ -575,8 +575,19 @@ def delete_photo():
         # Find the user profile
         profile = Profile.query.filter_by(user_id=user_id).first()
         if profile:
+            # Check if the photo is not default photo
+            if profile.photo != 'media/images/user-review1.svg':
+
+                file_name = os.path.basename(profile.photo)
+                file_path = os.path.join(app.config['UPLOAD_FOLDER'], file_name)
+                
+                # Delete the photo from /uploads directory
+                if os.path.exists(file_path):
+                    os.remove(file_path)
+
             # Set the photo field to the default value
             profile.photo = 'media/images/user-review1.svg'
+
             db.session.commit()
             flash('Profile photo has been reset to the default image.', 'success')
         else:

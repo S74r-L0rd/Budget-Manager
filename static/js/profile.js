@@ -11,16 +11,6 @@ function toggleEdit(sectionId) {
     displayEl.classList.toggle("d-none");
     editEl.classList.toggle("d-none");
 }
-
-// Function to handle tab switching
-document.addEventListener('DOMContentLoaded', function() {
-  const accountSettingTab = document.getElementById('account-setting-tab');
-  accountSettingTab.addEventListener('click', function() {
-      document.querySelectorAll('.tab-pane').forEach(tab => tab.classList.remove('show', 'active'));
-      document.getElementById('account-setting').classList.add('show', 'active');
-  });
-});
-
 // Function to check if the new password and confirm password fields match
 document.addEventListener('DOMContentLoaded', function () {
     const newPassword = document.getElementById('newPassword');

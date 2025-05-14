@@ -1,6 +1,85 @@
 {% extends "layout_user.html" %}
 
+{% block title %}Dashboard - BudgetManager{% endblock %}
+
 {% block styles %}
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <div class="container">
+        <div class="welcome-section">
+            <h1>Hi, {{ session.user_name if session.user_name else 'User' }}！</h1>
+            <p>Welcome back to your personal budget management dashboard</p>
+        </div>
+        
+        {% if budget %}
+        <!-- budget plan exists -->
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="budget-box">
+                    <h2 class="budget-title">Your budget plan</h2>
+                    <div class="budget-detail">
+                        <strong>Frequency:</strong> 
+                        {% if budget.frequency == 'monthly' %}
+                            Monthly
+                        {% elif budget.frequency == 'weekly' %}
+                            Weekly
+                        {% elif budget.frequency == 'daily' %}
+                            Daily
+                        {% elif budget.frequency == 'yearly' %}
+                            Yearly
+                        {% endif %}
+                    </div>
+                    <div class="budget-detail">
+                        <strong>Total budget limit:</strong> ${{ budget.total_limit }}
+                    </div>
+                    
+                    <h3 class="mt-4 mb-3 text-center" style="color: #344E41; font-size: 1.2rem;">Category budget allocation</h3>
+                    <div class="category-list">
+                        {% for category, amount in budget.category_limits.items() %}
+                        <div class="category-item">
+                            <span class="category-name">{{ category }}</span>
+                            <span class="category-value">${{ amount }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="text-center mt-4">
+                        <a href="{{ url_for('edit_budget_plan') }}" class="btn create-plan-btn">Edit budget plan</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 mb-4">
+                <div class="budget-box">
+                    <h2 class="budget-title">Budget allocation ratio</h2>
+                    <div class="chart-container">
+                        <canvas id="budgetChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <!-- no budget plan -->
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <div class="budget-box text-center py-5" style="min-height: 60vh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                    <h1 class="mb-4" style="color: #344E41; font-size: 2.5rem; font-weight: 600;">You have not created a budget plan yet</h1>
+                    <p class="mb-5" style="font-size: 1.3rem; max-width: 700px; margin-left: auto; margin-right: auto;">Create a budget plan to track your spending and achieve your financial goals</p>
+                    <a href="{{ url_for('budget_planner') }}" class="btn create-plan-btn" style="font-size: 1.2rem; padding: 15px 40px;">Create budget plan</a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}

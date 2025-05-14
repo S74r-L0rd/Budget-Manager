@@ -47,3 +47,23 @@ export function setupMultiUserSelector() {
     });
   });
 }
+
+export function scrollToHashWithOffset() {
+  const OFFSET = 190; // adjust as needed based on header height
+  const hash = window.location.hash;
+
+  if (hash) {
+    const target = document.querySelector(hash);
+    if (target) {
+      // Delay scroll to ensure layout is rendered
+      setTimeout(() => {
+        const targetTop = target.getBoundingClientRect().top + window.scrollY - OFFSET;
+        window.scrollTo({ top: targetTop, behavior: 'smooth' });
+
+        // Highlight the target element
+        target.classList.add("highlighted");
+        setTimeout(() => target.classList.remove("highlighted"), 2000);
+      }, 150);
+    }
+  }
+}

@@ -25,7 +25,7 @@ CATEGORIES = ["Rent", "Travel", "Entertainment", "Utilities", "Groceries",
               "Insurance", "Debt Repayments", "Loan", "Medical"]
 
 # Config for uploading photo
-UPLOAD_FOLDER = 'static/uploads'
+UPLOAD_FOLDER = 'static/media/uploads'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
@@ -503,7 +503,7 @@ def upload_photo():
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], f"{user_id}_{filename}")
         file.save(file_path)
 
-        relative_path = f"uploads/{user_id}_{filename}"
+        relative_path = f"media/uploads/{user_id}_{filename}"
 
         # Update user profile in the database
         profile = Profile.query.filter_by(user_id=user_id).first()

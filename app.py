@@ -16,7 +16,11 @@ from models.savings_goal import SavingsGoal
 from models.savings_goal_share import SavingsGoalShare
 import json
 import os
+from os import getenv
+from dotenv import load_dotenv
 
+# load environment variables
+load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = 'your-very-secret-key'  # Replace with a strong secret in production
@@ -671,7 +675,13 @@ def delete_account():
         flash(f"An error occurred while deleting your account: {str(e)}", "danger")
         return redirect(url_for('profile'))
 
-
+# API route to get EmailJS configuration
+@app.route('/api/emailjs-config')
+def get_emailjs_config():
+    return jsonify({
+        'serviceId': getenv('EMAILJS_SERVICE_ID'),
+        'templateId': getenv('EMAILJS_TEMPLATE_ID')
+    })
 
 if __name__ == '__main__':
     app.run(debug=True)

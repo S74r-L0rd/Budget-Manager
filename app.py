@@ -498,7 +498,17 @@ def expense_splitter():
 @app.route('/share')
 @login_required_custom
 def share():
-    return render_template('share.html')
+    user_id = session.get('user_id')
+
+    # Shared by me: I'm the owner and have shared it with others
+    shared_by_me = SavingsGoalShare.query.join(SavingsGoal).filter(SavingsGoal.user_id == user_id).all()
+
+    # Shared with me: Others shared their goal with me
+    shared_with_me = SavingsGoalShare.query.filter_by(shared_with_user_id=user_id).all()
+
+    return render_template('share.html',
+                           shared_by_me=shared_by_me,
+                           shared_with_me=shared_with_me)
 
 # Profile route
 @app.route('/profile')

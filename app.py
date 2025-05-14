@@ -146,7 +146,13 @@ def logout():
 @app.route('/dashboard')
 @login_required_custom
 def dashboard():
-    return render_template('dashboard.html')
+    user_id = session.get('user_id')
+    username = session.get('user_name', 'User')
+    
+    # get budget plan
+    budget = BudgetPlan.query.filter_by(user_id=user_id).first()
+    
+    return render_template('dashboard.html', budget=budget, username=username)
 
 @app.route('/analysis')
 @login_required_custom

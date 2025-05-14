@@ -50,17 +50,25 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for share in shared_by_me %}
-                              <tr>
-                                  <td>{{ share.shared_user.name }}</td>
-                                  <td>Savings Goal</td>
-                                  <td>{{ share.goal.goal_name }}</td>
-                                  <td>{{ share.goal.created_at.strftime('%Y-%m-%d') }}</td>
-                                  <td>
-                                      <a href="{{ url_for('savings_goal_tracker') }}#savings-own-goal" class="btn btn-sm btn-outline-primary">View</a>
-                                  </td>
-                              </tr>
-                            {% endfor %}
+                            {% if shared_by_me %}
+                                {% for share in shared_by_me %}
+                                <tr>
+                                    <td>{{ share.shared_user.name }}</td>
+                                    <td>Savings Goal</td>
+                                    <td>{{ share.goal.goal_name }}</td>
+                                    <td>{{ share.goal.created_at.strftime('%Y-%m-%d') }}</td>
+                                    <td>
+                                        <a href="{{ url_for('savings_goal_tracker') }}#savings-own-goal" class="btn btn-sm btn-outline-primary">View</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted py-4">
+                                        <em>You haven't shared any tools or reports yet. Shared items will appear here once you do.</em>
+                                    </td>
+                                </tr>
+                            {% endif %}
                         </tbody>
                     </table>
                 </div>
@@ -83,17 +91,25 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for share in shared_with_me %}
-                              <tr>
-                                  <td>{{ share.goal.owner.name }}</td>
-                                  <td>Savings Goal</td>
-                                  <td>{{ share.goal.goal_name }}</td>
-                                  <td>{{ share.goal.created_at.strftime('%Y-%m-%d') }}</td>
-                                  <td>
-                                      <a href="{{ url_for('savings_goal_tracker') }}#savings-shared-goal" class="btn btn-sm btn-outline-success">View</a>
-                                  </td>
-                              </tr>
-                            {% endfor %}
+                            {% if shared_with_me %}
+                                {% for share in shared_with_me %}
+                                <tr>
+                                    <td>{{ share.goal.owner.name }}</td>
+                                    <td>Savings Goal</td>
+                                    <td>{{ share.goal.goal_name }}</td>
+                                    <td>{{ share.goal.created_at.strftime('%Y-%m-%d') }}</td>
+                                    <td>
+                                        <a href="{{ url_for('savings_goal_tracker') }}#savings-shared-goal" class="btn btn-sm btn-outline-success">View</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted py-4">
+                                        <em>No one has shared any tools or reports with you yet. Items shared by others will appear here.</em>
+                                    </td>
+                                </tr>
+                            {% endif %}
                         </tbody>
                     </table>
                 </div>

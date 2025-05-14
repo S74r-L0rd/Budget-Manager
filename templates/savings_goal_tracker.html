@@ -31,7 +31,6 @@
             
                 <button type="submit" class="btn btn-secondary mt-3">Save Goal</button>
             </form>
-
         </div>
     </section>
 
@@ -63,6 +62,30 @@
                 </div>
             </div>
             {% endfor %}
+        </div>
+
+        <!-- Shared Goals -->
+        <h3 class="mt-5 mb-4 text-primary">Shared With You</h3>
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+          {% for goal in shared_goals %}
+          <div class="col">
+            <div class="card goal-card h-100 border-primary">
+              <div class="card-body">
+                <h5 class="card-title">{{ goal.goal_name }}</h5>
+                <p class="card-text"><strong>Target Amount:</strong> ${{ goal.target_amount }}</p>
+                <p class="card-text"><strong>Saved Amount:</strong> {{ goal.saved_amount }}</p>
+                <p class="card-text"><strong>Deadline:</strong> {{ goal.deadline }}</p>
+                <div class="progress mb-3">
+                    {% set progress = (goal.saved_amount / goal.target_amount * 100) | round(0) %}
+                    <div class="progress-bar bg-info" style="width: {{ progress }}%;">
+                      {{ progress }}%
+                    </div>
+                </div>
+                <p class="card-text"><em>Shared by another user</em></p>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
         </div>
     </div>
 </div>

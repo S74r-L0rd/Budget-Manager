@@ -526,6 +526,15 @@ def delete_photo():
         # Find the user profile
         profile = Profile.query.filter_by(user_id=user_id).first()
         if profile:
+            # Check if the photo is not default photo
+            if profile.photo != 'media/images/user-review1.svg':
+
+                file_name = os.path.basename(profile.photo)
+                file_path = os.path.join(app.config['UPLOAD_FOLDER'], file_name)
+                
+                # Delete the photo from /uploads directory
+                if os.path.exists(file_path):
+                    os.remove(file_path)
 
             # Set the photo field to the default value
             profile.photo = 'media/images/user-review1.svg'

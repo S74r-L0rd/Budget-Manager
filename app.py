@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify, send_file
-from datetime import timedelta
+from datetime import timedelta, datetime
 from db import init_db, db
 import pandas as pd
 import plotly.express as px
@@ -12,6 +12,8 @@ from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from models.budgetPlan import BudgetPlan
+from models.savings_goal import SavingsGoal
+from models.savings_goal_share import SavingsGoalShare
 import json
 import os
 
@@ -394,10 +396,47 @@ def budget_frequency_view(frequency):
                            step='result',
                            scroll_target_id='budget-planner-results')
 
-@app.route('/savings-goal-tracker')
+@app.route('/savings-goal-tracker', methods=['GET', 'POST'])
 @login_required_custom
 def savings_goal_tracker():
-    return render_template('savings_goal_tracker.html')
+    user_id = session.get('user_id')
+    
+    if request.method == 'POST':
+
+        deadline_str = request.form['deadline']
+        deadline = datetime.strptime(deadline_str, "%Y-%m-%d").date()
+        saved_amount = float(request.form['saved_amount'])
+
+        goal = SavingsGoal(
+            user_id=user_id,
+            goal_name=request.form['goal_name'],
+            target_amount=float(request.form['target_amount']),
+            saved_amount=saved_amount,
+            deadline=deadline
+        )
+        db.session.add(goal)
+        db.session.commit()
+
+        # Handle sharing
+        share_with_ids = request.form.getlist('share_with')
+        for shared_id in share_with_ids:
+            share = SavingsGoalShare(
+                goal_id=goal.id,
+                shared_with_user_id=int(shared_id),
+                tool_name='savings_goal'  # <---- Add this line
+            )
+            db.session.add(share)
+        db.session.commit()
+        flash("Goal added and shared!", "success")
+        return redirect(url_for('savings_goal_tracker'))
+
+    # Your own goals + goals shared with you
+    own_goals = SavingsGoal.query.filter_by(user_id=user_id).all()
+    shared_goal_ids = [s.goal_id for s in SavingsGoalShare.query.filter_by(shared_with_user_id=user_id).all()]
+    shared_goals = SavingsGoal.query.filter(SavingsGoal.id.in_(shared_goal_ids)).all()
+    
+    all_users = User.query.filter(User.id != user_id).all()
+    return render_template('savings_goal_tracker.html', own_goals=own_goals, shared_goals=shared_goals, users=all_users)
 
 @app.route('/future-expense-predictor')
 @login_required_custom
@@ -459,7 +498,17 @@ def expense_splitter():
 @app.route('/share')
 @login_required_custom
 def share():
-    return render_template('share.html')
+    user_id = session.get('user_id')
+
+    # Shared by me: I'm the owner and have shared it with others
+    shared_by_me = SavingsGoalShare.query.join(SavingsGoal).filter(SavingsGoal.user_id == user_id).all()
+
+    # Shared with me: Others shared their goal with me
+    shared_with_me = SavingsGoalShare.query.filter_by(shared_with_user_id=user_id).all()
+
+    return render_template('share.html',
+                           shared_by_me=shared_by_me,
+                           shared_with_me=shared_with_me)
 
 # Profile route
 @app.route('/profile')

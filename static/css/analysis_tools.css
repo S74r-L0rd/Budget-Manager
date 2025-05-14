@@ -1,3 +1,6 @@
+/* Styles for Analysis Tools Page */
+
+/* Expense Tracker Page */
 .expense-tracker-section {
     background-color: #DAD7CD;
     padding: 4rem 1rem;
@@ -120,6 +123,7 @@
   font-family: monospace;
 }
 
+/* Budget Form Styles */
 #budget-form-container {
   margin-top: 2rem;
   background-color: #ffffff;
@@ -392,4 +396,166 @@
   padding-top: -1rem;
   margin-top: -1rem;
   padding-bottom: 5rem;
+}
+
+/* Savings Goal Tracker */
+.goal-tracker-box {
+  background: #ffffff;
+  padding: 3rem;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  color: #333;
+}
+
+.goal-tracker-box h2 {
+  font-size: 2.5rem;
+  color: #344E41;
+  margin-bottom: 0.5rem;
+}
+
+.goal-tracker-box p {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  color: #555;
+}
+
+ .goal-form {
+  margin-top: 2rem;
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.goal-form input[type="text"],
+.goal-form input[type="number"],
+.goal-form input[type="date"],
+.goal-form select {
+  padding: 0.75rem 1rem;
+  border: 2px solid #A3B18A;
+  border-radius: 6px;
+  font-size: 1rem;
+  width: 100%;
+  background-color: #f6f6f6;
+  transition: border-color 0.3s ease;
+}
+
+.goal-form input:focus,
+.goal-form select:focus {
+  border-color: #3A5A40;
+  outline: none;
+  background-color: #fff;
+}
+
+.goal-form label {
+  font-weight: 600;
+  color: #344E41;
+}
+
+.goal-form .btn-secondary {
+  background-color: #A3B18A;
+  color: #000;
+  font-weight: bold;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.goal-form .btn-secondary:hover {
+  background-color: #8CA182;
+  color: #fff;
+}
+
+.goal-card {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  padding: 1.5rem;
+  transition: transform 0.3s ease;
+}
+
+.goal-card:hover {
+  transform: translateY(-5px);
+}
+
+.progress {
+  height: 20px;
+  border-radius: 8px;
+  background-color: #e8e8e8;
+}
+
+.progress-bar {
+  font-weight: bold;
+}
+
+.custom-multiselect {
+  border: 2px solid #A3B18A;
+  border-radius: 6px;
+  padding: 0.5rem;
+  background-color: #f6f6f6;
+  position: relative;
+  cursor: pointer;
+}
+
+.selected-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.selected-tags .tag {
+  background-color: #344E41;
+  color: white;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.dropdown-container {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  max-height: 200px;
+  overflow-y: auto;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  z-index: 10;
+  padding: 0.5rem;
+}
+
+.dropdown-container.show {
+  display: block;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  padding: 0.3rem;
+  font-size: 0.95rem;
+}
+
+.dropdown-item input {
+  margin-right: 0.5rem;
+}
+
+.highlighted {
+  outline: 3px solid #00bfa5;
+  border-radius: 12px;
+  transition: outline 0.4s ease-in-out;
 }

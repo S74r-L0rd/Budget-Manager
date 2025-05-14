@@ -176,11 +176,34 @@ body, h1, ul, li, a {
 }
 
  /* Style for tab panel */
-.list-group-item.active {
-    background-color: #a3b18a;
-    border-color: #a3b18a;
-    color: #fff;
+ .tab-bar {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 10px;
 }
+
+.tab-bar .nav-link-item {
+  margin: 5px 0;
+  padding: 12px 20px;
+  color: #333;
+  background-color: #fff;
+  border-radius: 6px;
+  text-align: center;
+  transition: all 0.3s ease;
+  font-weight: bold;
+}
+
+.tab-bar .nav-link-item:hover {
+  background-color: #e9ecef;
+  color: #000;
+}
+
+.tab-bar .nav-link-item.active {
+  background-color: #a3b18a;
+  color: #fff;
+}
+
 
 /* Style for Logout tab */
 .logout-btn:hover, .cancel-btn:hover {

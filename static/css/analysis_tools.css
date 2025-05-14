@@ -553,3 +553,9 @@
 .dropdown-item input {
   margin-right: 0.5rem;
 }
+
+.highlighted {
+  outline: 3px solid #00bfa5;
+  border-radius: 12px;
+  transition: outline 0.4s ease-in-out;
+}

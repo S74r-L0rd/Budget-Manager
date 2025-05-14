@@ -35,6 +35,36 @@
         </div>
     </section>
 
+    <div class="container my-5">
+        <!-- Own Goals -->
+        <h3 class="mb-4 text-success">Your Goals</h3>
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+            {% for goal in own_goals %}
+            <div class="col">
+                <div class="card goal-card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ goal.goal_name }}</h5>
+                        <p class="card-text"><strong>Target Amount:</strong> ${{ goal.target_amount }}</p>
+                        <p class="card-text"><strong>Saved Amount:</strong> {{ goal.saved_amount }}</p>
+                        <p class="card-text"><strong>Deadline:</strong> {{ goal.deadline }}</p>
+                        <div class="progress mb-3">
+                            {% set progress = (goal.saved_amount / goal.target_amount * 100) | round(0) %}
+                            <div class="progress-bar bg-success" style="width: {{ progress }}%;">
+                            {{ progress }}%
+                            </div>
+                        </div>
+                        <p class="card-text"><strong>Shared with:</strong></p>
+                        <div class="d-flex flex-wrap gap-2">
+                        {% for share in goal.shares %}
+                            <span class="badge bg-secondary">{{ share.shared_user.name }}</span>
+                        {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
 </div>
 
 {% endblock %}

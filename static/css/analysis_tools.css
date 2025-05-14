@@ -498,3 +498,58 @@
 .progress-bar {
   font-weight: bold;
 }
+
+.custom-multiselect {
+  border: 2px solid #A3B18A;
+  border-radius: 6px;
+  padding: 0.5rem;
+  background-color: #f6f6f6;
+  position: relative;
+  cursor: pointer;
+}
+
+.selected-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.selected-tags .tag {
+  background-color: #344E41;
+  color: white;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.dropdown-container {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  max-height: 200px;
+  overflow-y: auto;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  z-index: 10;
+  padding: 0.5rem;
+}
+
+.dropdown-container.show {
+  display: block;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  padding: 0.3rem;
+  font-size: 0.95rem;
+}
+
+.dropdown-item input {
+  margin-right: 0.5rem;
+}

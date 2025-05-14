@@ -22,13 +22,21 @@
                 <input type="number" step="0.01" name="saved_amount" placeholder="Current saved amount" required>
                 <input type="date" name="deadline" required>
             
-                <label>Select users to share with:</label>
-                <select name="share_with" multiple class="form-control">
-                {% for user in users %}
-                    <option value="{{ user.id }}">{{ user.name }}</option>
-                {% endfor %}
-                </select>
+                <label class="fw-bold mb-2 mt-3">Select users to share with:</label>
+                <div class="custom-multiselect" id="user-multiselect">
+                    <div class="selected-tags" id="selected-tags"></div>
+                    <div class="dropdown-container" id="dropdown-container">
+                        {% for user in users %}
+                        <label class="dropdown-item">
+                            <input type="checkbox" value="{{ user.id }}" data-name="{{ user.name }}">
+                            {{ user.name }}
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
             
+                <div id="hidden-share-inputs"></div>
+
                 <button type="submit" class="btn btn-secondary mt-3">Save Goal</button>
             </form>
         </div>
@@ -94,4 +102,11 @@
     </div>
 </div>
 
+{% endblock %}
+
+{% block scripts %}
+<script type="module">
+  import { setupMultiUserSelector } from "{{ url_for('static', filename='js/savings_goal_tracker.js') }}";
+  setupMultiUserSelector();
+</script>
 {% endblock %}

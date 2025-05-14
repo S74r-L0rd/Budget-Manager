@@ -58,12 +58,18 @@ document.addEventListener('DOMContentLoaded', () => {
             message: message
         };
 
-        // Send email using EmailJS
-        emailjs.send('service_l7alkef', 'template_6aszau3', templateParams)
+        // Fetch EmailJS configuration from backend
+        fetch('/api/emailjs-config')
+            .then(response => response.json())
+            .then(config => {
+                // Send email using EmailJS with fetched tokens
+                return emailjs.send(config.serviceId, config.templateId, templateParams);
+            })
             .then(() => {
                 alert('Message sent successfully!');
-                contactForm.reset(); // Clear form after successful submission
-            }, (error) => {
+                contactForm.reset();
+            })
+            .catch((error) => {
                 console.error('Email send failed:', error);
                 alert('Failed to send message. Please try again.');
             });

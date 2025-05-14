@@ -49,8 +49,18 @@
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody id="shared-by-me-list">
-                            <!-- Data will be populated via JavaScript -->
+                        <tbody>
+                            {% for share in shared_by_me %}
+                              <tr>
+                                  <td>{{ share.shared_user.name }}</td>
+                                  <td>Savings Goal</td>
+                                  <td>{{ share.goal.goal_name }}</td>
+                                  <td>{{ share.goal.created_at.strftime('%Y-%m-%d') }}</td>
+                                  <td>
+                                      <a href="{{ url_for('savings_goal_tracker') }}" class="btn btn-sm btn-outline-primary">View</a>
+                                  </td>
+                              </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>
@@ -72,9 +82,7 @@
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody id="shared-with-me-list">
-                            <!-- Data will be populated via JavaScript -->
-                        </tbody>
+                        
                     </table>
                 </div>
             </div>

@@ -824,3 +824,25 @@
 .remove-participant:hover {
   background-color: #bb2d3b;
 }
+
+/* Buttons for edit, create, delete expense */
+.btn-share {
+  margin-top: 2rem;
+  min-width: 130px;
+  text-align: center;
+}
+
+.d-flex.gap-2 > * {
+  margin-right: 5px;
+}
+
+.btn-share:hover {
+  background-color: #f0f0f0;
+  color: #333;
+  transition: 0.3s ease;
+}
+
+.btn-share:active {
+  background-color: #e0e0e0;
+  color: #111;
+}

@@ -250,3 +250,7 @@ main.main-content {
     color: #ffffff;
     margin-left: 0.5rem;
 }
+
+.pt-6 {
+  padding-top: 6rem;
+}

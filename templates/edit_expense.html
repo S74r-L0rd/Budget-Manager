@@ -1,0 +1,96 @@
+{% extends "layout_user.html" %}
+{% block title %}Edit Budget Plan{% endblock %}
+
+{% block styles %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/analysis.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/analysis_tools.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="main-content-with-navbar pt-6">
+    <!-- Flash Messages -->
+    {% if get_flashed_messages() %}
+    <div class="container mt-3">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endwith %}
+    </div>
+    {% endif %}
+    <section class="expense-splitter-section">
+        <div class="expense-splitter-box p-4 shadow-sm">
+            <h2 class="mb-3">Edit Expense Splitter</h2>
+            <p class="mb-4">Fill out the details to edit a shared expense.</p>
+
+            <form method="POST" action="{{ url_for('edit_expense', expense_id=expense.id) }}" class="expense-form">
+            <!-- Total Expense -->
+                <label for="total_expense" class="form-label">Total Expense</label>
+                <input type="number" id="total_expense" name="total_expense" class="form-control" value="{{ expense.total_amount if expense.total_amount is defined else '' }}" step="0.01" placeholder="$0.00" required>
+
+            <!-- Purpose -->
+                <label for="purpose" class="form-label">What's it for?</label>
+                <input type="text" id="purpose" name="purpose" class="form-control" value="{{ expense.purpose if expense.purpose is defined else '' }}" placeholder="E.g., Dinner, Rent, Trip" required>
+
+            <!-- Due Date -->
+                <label for="due_date" class="form-label">Due Date</label>
+                <input type="date" id="due_date" name="due_date" class="form-control"  value="{{ expense.due_date if expense.due_date is defined else '' }}" required>
+
+                <!-- Participant Selection -->
+                <label class="fw-bold mb-2 mt-3">Select Participants:</label>
+                <div class="custom-multiselect" id="user-multiselect">
+                    <div class="selected-tags" id="selected-tags">
+                        {% for user in users %}
+                        {% if user.id in participant_ids %}
+                        <span class="tag badge bg-primary text-white" data-id="{{ user.id }}">{{ user.name }}</span>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="dropdown-container" id="dropdown-container">
+                        {% for user in users %}
+                        <label class="dropdown-item">
+                            <input type="checkbox" value="{{ user.id }}" data-name="{{ user.name }}"
+                                {% if user.id in participant_ids %}checked{% endif %}>
+                            {{ user.name }}
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div id="hidden-share-inputs">
+                    {% for user in users %}
+                    {% if user.id in participant_ids %}
+                    <input type="hidden" name="share_with" value="{{ user.id }}">
+                    {% endif %}
+                    {% endfor %}
+                </div>
+
+                <!-- Submit Button -->
+                <div class="mt-4 d-flex justify-content-between">
+                    <a href="{{ url_for('expense_splitter') }}" class="btn btn-secondary">⬅ Back</a>
+                    <button type="submit" class="btn btn-primary ms-3">💾 Save Expense</button>
+                </div>
+            </form>
+        </div>
+    </section>
+    <div style="display: flex; justify-content: center;" class="my-4">
+        <a href="{{ url_for('analysis') }}" class="tool-button">⬅ Back to Toolkit</a>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/expense_splitter.js') }}" defer></script>
+<script type="module">
+    import {
+      setupMultiUserSelector
+    } from "{{ url_for('static', filename='js/expense_splitter.js') }}";
+  
+    setupMultiUserSelector();
+  </script>
+{% endblock %}

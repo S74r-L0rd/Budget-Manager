@@ -580,6 +580,26 @@ def future_expense_predictor():
                            shared_by_me=shared_by_me,
                            shared_with_me=shared_with_me)
 
+@app.route('/share-future-prediction', methods=['POST'])
+@login_required_custom
+def share_future_prediction():
+    user_id = session.get('user_id')
+    share_with_ids = request.form.getlist('share_with[]')
+
+    # Save share entries in the DB
+    for shared_id in share_with_ids:
+        share = SavingsGoalShare(
+            goal_id=None,  # Set None for non-goal tools
+            shared_with_user_id=int(shared_id),
+            tool_name='future_predictor',
+            created_at=datetime.utcnow()
+        )
+        db.session.add(share)
+
+    db.session.commit()
+    flash("Future prediction shared successfully!", "success")
+    return redirect(url_for('future_expense_predictor'))
+
 @app.route('/spending-personality-analyzer', methods=['GET', 'POST'])
 @login_required_custom
 def spending_personality_analyzer():

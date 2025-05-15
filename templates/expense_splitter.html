@@ -10,6 +10,19 @@
 
 {% block content %}
 <div class="main-content-with-navbar pt-6">
+
+    {% if get_flashed_messages() %}
+    <div class="container mt-3">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endwith %}
+    </div>
+    {% endif %}
     <section class="expense-splitter-section">
         <div class="expense-splitter-box p-4 shadow-sm">
             <h2 class="mb-3">💸 Expense Splitter Details</h2>

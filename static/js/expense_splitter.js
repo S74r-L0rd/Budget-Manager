@@ -1,82 +1,71 @@
-document.addEventListener("DOMContentLoaded", function() {
-    const participantsInput = document.getElementById("participants_hidden");
-    const participantsEmailField = document.getElementById("participants_email");
-    const addParticipantsBtn = document.getElementById("add-participants-btn");
-    const participantEmails = document.getElementById("participant-emails");
-    let participantsList = [];
+document.addEventListener("DOMContentLoaded", function () {
+    const container = document.getElementById("user-multiselect");
+    const dropdown = document.getElementById("dropdown-container");
+    const selectedTags = document.getElementById("selected-tags");
+    const hiddenInputs = document.getElementById("hidden-share-inputs");
 
-    // Clear participants when the page loads (for editing)
-    function clearParticipants() {
-        participantsList = [];
-        participantEmails.innerHTML = '<li class="list-group-item text-muted">No participants added yet.</li>';
-        updateParticipantsInput();
-    }
+    if (!container || !dropdown || !selectedTags || !hiddenInputs) return;
 
-    // Initialize: Clear participants when editing
-    if (window.location.href.includes("edit")) {
-        clearParticipants();
-    }
-
-    // Add participant on button click
-    addParticipantsBtn.addEventListener("click", function() {
-        const email = participantsEmailField.value.trim();
-
-        if (email && validateEmail(email) && !participantsList.includes(email)) {
-            participantsList.push(email);
-            addParticipantToList(email);
-            updateParticipantsInput();
-            participantsEmailField.value = "";
-            participantsEmailField.focus();
-        } else {
-            alert("Invalid or duplicate email address.");
+    // Toggle dropdown visibility on click
+    container.addEventListener("click", function (e) {
+        if (!e.target.matches('input[type="checkbox"]')) {
+            dropdown.classList.toggle("show");
         }
     });
 
-    // Function to add participant to the visual list
-    function addParticipantToList(email) {
-        // Remove unnecessary placeholder if it exists
-        const placeholder = participantEmails.querySelector(".text-muted");
-        if (placeholder) {
-            placeholder.remove();
+    // Hide dropdown when clicking outside
+    document.addEventListener("click", function (e) {
+        if (!container.contains(e.target)) {
+            dropdown.classList.remove("show");
         }
+    });
 
-        const listItem = document.createElement("li");
-        listItem.className = "list-group-item d-flex justify-content-between align-items-center participant-item";
-        listItem.setAttribute("data-email", email);
-        listItem.innerHTML = `
-            <span>${email}</span>
-            <button type="button" class="btn btn-sm btn-outline-dark remove-participant" data-email="${email}">✖</button>
-        `;
-        participantEmails.appendChild(listItem);
+    // Handle user selection and deselection
+    dropdown.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener("change", function () {
+            const userId = this.value;
+            const userName = this.dataset.name;
 
-        // Attach remove event
-        listItem.querySelector(".remove-participant").addEventListener("click", function() {
-            const removeEmail = this.getAttribute("data-email");
-            participantsList = participantsList.filter(e => e !== removeEmail);
-            updateParticipantsInput();
-            listItem.remove();
-            if (participantsList.length === 0) {
-                showNoParticipantsMessage();
+            if (this.checked) {
+                // Add tag and hidden input
+                addTag(userId, userName);
+                addHiddenInput(userId);
+            } else {
+                // Remove tag and hidden input
+                removeTag(userId);
+                removeHiddenInput(userId);
             }
         });
+    });
+
+    function addTag(userId, userName) {
+        const tag = document.createElement("span");
+        tag.className = "tag badge bg-primary text-white me-1";
+        tag.textContent = userName;
+        tag.dataset.id = userId;
+        tag.addEventListener("click", function () {
+            removeTag(userId);
+            removeHiddenInput(userId);
+            dropdown.querySelector(`input[value="${userId}"]`).checked = false;
+        });
+        selectedTags.appendChild(tag);
     }
 
-    // Update the hidden input field with the latest participants
-    function updateParticipantsInput() {
-        participantsInput.value = participantsList.join(",");
+    function removeTag(userId) {
+        const tag = selectedTags.querySelector(`[data-id="${userId}"]`);
+        if (tag) tag.remove();
     }
 
-    // Show the "No participants added yet" message
-    function showNoParticipantsMessage() {
-        const noParticipants = document.createElement("li");
-        noParticipants.className = "list-group-item text-muted";
-        noParticipants.textContent = "No participants added yet.";
-        participantEmails.appendChild(noParticipants);
+    function addHiddenInput(userId) {
+        const hidden = document.createElement("input");
+        hidden.type = "hidden";
+        hidden.name = "share_with";
+        hidden.value = userId;
+        hiddenInputs.appendChild(hidden);
     }
 
-    // Email validation function
-    function validateEmail(email) {
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailPattern.test(email);
+    function removeHiddenInput(userId) {
+        const hidden = hiddenInputs.querySelector(`input[value="${userId}"]`);
+        if (hidden) hidden.remove();
     }
 });

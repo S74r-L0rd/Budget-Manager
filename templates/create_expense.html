@@ -45,21 +45,33 @@
                 <!-- Hidden input to store participant emails -->
                 <input type="hidden" name="participants" id="participants_hidden" value="">
 
-                <!-- Invite participants -->
-                <label for="invite_participants" class="form-label">Invite Participants</label>
-                <div class="input-group mb-2">
-                    <input type="email" id="participants_email" class="form-control" placeholder="Enter participant's email" aria-describedby="add-participants-btn">
-                    <button type="button" class="btn btn-outline-secondary" id="add-participants-btn">➕ Add</button>
+                <!-- Participant Selection -->
+                <label class="fw-bold mb-2 mt-3">Select Participants:</label>
+                <div class="custom-multiselect" id="user-multiselect">
+                    <div class="selected-tags" id="selected-tags">
+                        {% for user in users %}
+                        {% if user.id in participant_ids %}
+                        <span class="tag badge bg-primary text-white" data-id="{{ user.id }}">{{ user.name }}</span>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="dropdown-container" id="dropdown-container">
+                        {% for user in users %}
+                        <label class="dropdown-item">
+                            <input type="checkbox" value="{{ user.id }}" data-name="{{ user.name }}"
+                                {% if user.id in participant_ids %}checked{% endif %}>
+                            {{ user.name }}
+                        </label>
+                        {% endfor %}
+                    </div>
                 </div>
 
-                <!-- Display Invited participants -->
-                <div class="mt-3">
-                    <h6>Participants</h6>
-                    <div id="participants-list" class="participants-list">
-                        <ul id="participant-emails" class="list-group">
-                            <li class="list-group-item text-muted">No participants added yet.</li>
-                        </ul>
-                    </div>
+                <div id="hidden-share-inputs">
+                    {% for user in users %}
+                    {% if user.id in participant_ids %}
+                    <input type="hidden" name="share_with" value="{{ user.id }}">
+                    {% endif %}
+                    {% endfor %}
                 </div>
 
                 <!-- Submit Button -->

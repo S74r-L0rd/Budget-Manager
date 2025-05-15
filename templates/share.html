@@ -43,8 +43,8 @@
                         <thead>
                             <tr>
                                 <th>Shared With</th>
-                                <th>Type</th>
-                                <th>Tool Name</th>
+                                <th>Shared Detail</th>
+                                <th>Tool Used</th>
                                 <th>Shared Date</th>
                                 <th>Actions</th>
                             </tr>
@@ -54,8 +54,8 @@
                                 {% for share in shared_by_me %}
                                 <tr>
                                     <td>{{ share.shared_user.name }}</td>
-                                    <td>Savings Goal</td>
                                     <td>{{ share.goal.goal_name }}</td>
+                                    <td>Savings Goal Tracker</td>
                                     <td>{{ share.goal.created_at.strftime('%Y-%m-%d') }}</td>
                                     <td>
                                         <a href="{{ url_for('savings_goal_tracker') }}#goal-{{ share.goal.id }}" class="btn btn-sm btn-outline-primary">View</a>
@@ -84,8 +84,8 @@
                         <thead>
                             <tr>
                                 <th>Shared By</th>
-                                <th>Type</th>
-                                <th>Tool Name</th>
+                                <th>Shared Detail</th>
+                                <th>Tool Used</th>
                                 <th>Shared Date</th>
                                 <th>Actions</th>
                             </tr>
@@ -95,8 +95,8 @@
                                 {% for share in shared_with_me %}
                                 <tr>
                                     <td>{{ share.goal.owner.name }}</td>
-                                    <td>Savings Goal</td>
                                     <td>{{ share.goal.goal_name }}</td>
+                                    <td>Savings Goal Tracker</td>
                                     <td>{{ share.goal.created_at.strftime('%Y-%m-%d') }}</td>
                                     <td>
                                         <a href="{{ url_for('savings_goal_tracker') }}#goal-{{ share.goal.id }}" class="btn btn-sm btn-outline-success">View</a>

@@ -1,55 +1,43 @@
 /* Contact Hero Section */
+.contact-hero-section {
+    min-height: 100vh;
+    background-color: #dee4d3;
+    padding-left: 10rem;
+}
 
-.contact-hero {
+.contact-hero-row > div {
+    padding-left: 6rem;
+    padding-right: 6rem;
+}
+
+.contact-illustration {
     width: 100%;
-    height: 100vh;
-    background: #dee4d3;
-    padding-top: 120px;
-    padding-bottom: 60px;
+    height: 450px;
+}
+
+.get-started-btn {
+    border-color: #000;
+    color: #fff;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+ 
+.get-started-btn:hover {
+    background-color: #3A5A40 !important;
+    border-color: #3A5A40 !important;
+    color: #fff !important;
+}
+ 
+.learn-more-btn {
+    border: 2px solid #000;
     color: #000;
-    display: flex;
+    background-color: transparent;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
-
-#contact-form {
-    scroll-margin-top: 100px;
-}
-
-.hero-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 2rem;
-    display: flex;
-    align-items: center;
-    gap: 4rem;
-}
-
-.hero-content {
-    flex: 1;
-}
-
-.hero-content h1 {
-    font-size: 3rem;
-    font-weight: 700;
-    margin-bottom: 1.5rem;
-    color: #000;
-}
-
-.hero-description {
-    font-size: 1.25rem;
-    line-height: 1.6;
-    opacity: 0.9;
-    max-width: 600px;
-}
-
-.hero-image {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-}
-
-.hero-image img {
-    max-width: 100%;
-    height: auto;
+ 
+.learn-more-btn:hover {
+    background-color: #A3B18A !important;
+    border-color: #A3B18A !important;
+    color: #000 !important;
 }
 
 /* Contact Form Section */

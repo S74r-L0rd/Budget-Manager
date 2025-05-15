@@ -560,6 +560,49 @@
   transition: outline 0.4s ease-in-out;
 }
 
+/* Future Expense Predictor Styles */
+
+.shared-card {
+  background-color: #fff;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  border-left: 6px solid #a3b18a;
+  transition: transform 0.2s ease;
+}
+
+.shared-card:hover {
+  transform: translateY(-3px);
+}
+
+.shared-card h5 {
+  color: #344E41;
+  margin-bottom: 0.75rem;
+  font-size: 1.2rem;
+}
+
+.shared-card p {
+  margin: 0.4rem 0;
+  font-size: 0.95rem;
+}
+
+.shared-by-me-card {
+  border-left-color: #6a994e;
+}
+
+.shared-with-me-card {
+  border-left-color: #40916c;
+}
+
+.alert {
+  background-color: #f4f9f4;
+  border-left: 5px solid #40916c;
+  color: #344E41;
+  padding: 1rem 1.5rem;
+  margin-top: 1.5rem;
+  border-radius: 8px;
+}
+
 /* Expense Splitter Style */
 .expense-splitter-section {
   background-color: #DAD7CD;

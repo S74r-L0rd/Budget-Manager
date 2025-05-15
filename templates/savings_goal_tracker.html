@@ -94,7 +94,7 @@
         <div class="row row-cols-1 row-cols-md-2 g-4">
           {% for goal in shared_goals %}
           <div class="col">
-            <div class="card goal-card h-100 border-primary" id="goal-{{ goal.id }}">
+            <div class="card goal-card h-100" id="goal-{{ goal.id }}">
               <div class="card-body">
                 <h5 class="card-title">{{ goal.goal_name }}</h5>
                 <p class="card-text"><strong>Target Amount:</strong> ${{ goal.target_amount }}</p>

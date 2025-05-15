@@ -49,6 +49,17 @@ def login_required_custom(f):
         return f(*args, **kwargs)
     return decorated_function
 
+def generate_summary(forecast_series):
+    recent = forecast_series.iloc[-3:]
+    direction = recent.diff().mean()
+
+    if direction > 0:
+        return "⚠️ Your future expenses are trending upward. Consider revisiting your budget!"
+    elif direction < 0:
+        return "✅ Great! Your future expenses show a decreasing trend. Keep up the good work!"
+    else:
+        return "ℹ️ Your expenses seem stable. Monitor regularly to stay on track."
+
 @app.route('/')
 def home():
     return render_template('home.html')

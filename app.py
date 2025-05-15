@@ -448,6 +448,43 @@ def savings_goal_tracker():
     all_users = User.query.filter(User.id != user_id).all()
     return render_template('savings_goal_tracker.html', own_goals=own_goals, shared_goals=shared_goals, users=all_users)
 
+@app.route('/savings-goal/success')
+@login_required_custom
+def savings_goal_success():
+    goal_id = request.args.get('goal_id', type=int)
+    return render_template('savings_goal_success.html', goal_id=goal_id)
+
+@app.route("/edit-goal/<int:goal_id>", methods=["GET", "POST"])
+@login_required_custom
+def edit_savings_goal(goal_id):
+    user_id = session.get('user_id')
+    goal = SavingsGoal.query.filter_by(id=goal_id, user_id=user_id).first_or_404()
+
+    if request.method == "POST":
+        goal.goal_name = request.form["goal_name"]
+        goal.target_amount = float(request.form["target_amount"])
+        goal.saved_amount = float(request.form["saved_amount"])
+        goal.deadline = datetime.strptime(request.form["deadline"], "%Y-%m-%d").date()
+
+        # Update shared users
+        db.session.query(SavingsGoalShare).filter_by(goal_id=goal.id).delete()
+        share_with_ids = request.form.getlist("share_with")
+        for shared_id in share_with_ids:
+            share = SavingsGoalShare(
+                goal_id=goal.id,
+                shared_with_user_id=int(shared_id),
+                tool_name='savings_goal'
+            )
+            db.session.add(share)
+
+        db.session.commit()
+        flash("✅ Goal updated successfully!", "success")
+        return redirect(url_for("savings_goal_success", goal_id=goal.id))
+
+    users = User.query.filter(User.id != user_id).all()
+    shared_user_ids = [share.shared_user.id for share in goal.shares]
+    return render_template("edit_goal.html", goal=goal, users=users, shared_user_ids=shared_user_ids)
+
 @app.route('/future-expense-predictor')
 @login_required_custom
 def future_expense_predictor():

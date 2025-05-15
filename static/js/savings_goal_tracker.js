@@ -14,6 +14,13 @@ export function setupMultiUserSelector() {
       }
     });
 
+    // Hide dropdown if clicking anywhere outside container
+    document.addEventListener("click", function (e) {
+      if (!container.contains(e.target)) {
+        dropdown.classList.remove("show");
+      }
+    });
+
     // Update selected tags and hidden inputs
     dropdown.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
       checkbox.addEventListener("change", function () {

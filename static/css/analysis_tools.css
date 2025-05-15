@@ -599,9 +599,34 @@
   font-weight: bold;
 }
 
-/* Dropdown for expenses */
-.expense-dropdown label {
+
+/* Styling for selectable card for expenses */
+.expense-card {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  padding: 1rem;
+  transition: transform 0.3s ease;
+}
+
+.expense-card:hover {
+  transform: translateY(-5px);
+  cursor: pointer;
+}
+
+.selected-card {
+  border: 3px solid #a3b18a;
+  background-color: #e9f7ff;
+}
+
+.card-title {
+  font-size: 1.2rem;
   font-weight: bold;
+}
+
+.card-text {
+  font-size: 0.95rem;
+  color: #555;
 }
 
 /* Expense summary */

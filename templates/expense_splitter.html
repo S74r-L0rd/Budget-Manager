@@ -15,18 +15,6 @@
             <h2 class="mb-3">💸 Expense Splitter Details</h2>
             <p class="text-muted">View and manage your shared expense details.</p>
             
-            <!-- Multiple Expenses Dropdown -->
-            <div class="mb-3 expense-dropdown">
-                <label for="expenseSelect" class="form-label">Select Expense:</label>
-                <select id="expenseSelect" class="form-select">
-                    {% for exp in expenses %}
-                        <option value="{{ exp.id }}" {% if exp.id == expense.id %}selected{% endif %}>
-                            {{ exp.purpose }} - {{ exp.due_date }}
-                        </option>
-                    {% endfor %}
-                </select>
-            </div>
-
             <!-- Expense Details Block-->
             <div class="expense-details mt-4">
                 <h5>Expense Summary</h5>
@@ -63,7 +51,7 @@
                             <th>Paid</th>
                             <th>Remaining</th>
                             <th>Status</th>
-                            <th>Action</th>
+                            <th>Record Payment</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -83,8 +71,8 @@
                                 <!-- Record payment here -->
                                 <form method="POST" action="{{ url_for('update_payment') }}" class="d-inline payment-form">
                                     <input type="hidden" name="expense_id" value="{{ expense.id }}">
-                                    <input type="number" name="amount" placeholder="Enter Payment" min="0" step="0.01" class="form-control mb-2" required>
-                                    <button type="submit" class="btn btn-sm btn-primary btn-pay">💵 Pay</button>
+                                    <input type="number" name="amount" min="0" step="0.01" class="form-control mb-2" required>
+                                    <button type="submit" class="btn btn-sm btn-primary btn-pay">💵 Record</button>
                                 </form>
                             </td>
                         </tr> 
@@ -138,6 +126,24 @@
                 <a href="{{ url_for('create_expense') }}" class="btn btn-outline-dark btn-share"> ➕ Create</a>
             </div>
     </section>
+    <!-- Selectable cards for Multiple expenses -->
+    <h3 class="mt-5 mb-4 text-primary text-center">Select Your Shared Expenses</h3>
+    <div class="container">
+        <div class="row row-cols-1 row-cols-md-3 g-3 justify-content-center">
+            {% for exp in expenses %}
+            <div class="col-auto">
+                <div class="card expense-card text-center shadow {% if exp.id == expense.id %}selected-card{% endif %}" id="{{ exp.id }}">
+                    <div class="card-body d-flex flex-column justify-content-center">
+                        <h5 class="card-title mb-2">{{ exp.purpose }}</h5>
+                        <p class="card-text mb-1"><strong>Created by:</strong> {{ creator_name }}</p>
+                        <p class="card-text"><strong>Due Date:</strong> {{ exp.due_date }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
     <div style="display: flex; justify-content: center;" class="my-4">
         <a href="{{ url_for('analysis') }}" class="tool-button">⬅ Back to Toolkit</a>
     </div>
@@ -146,19 +152,29 @@
 
 {% block scripts %}
 <script>
-// Function for dropdown
-document.addEventListener('DOMContentLoaded', function() {
-    const expenseSelect = document.getElementById("expenseSelect");
-    expenseSelect.addEventListener("change", function() {
-        const selectedExpenseId = this.value;
-        window.location.href = "{{ url_for('expense_splitter') }}?expense_id=" + selectedExpenseId;
-    });
+document.addEventListener("DOMContentLoaded", function() {
+    const expenseCards = document.querySelectorAll(".expense-card");
 
-    // Automatically set the dropdown label based on the selected expense
-    const selectedExpenseId = "{{ selected_expense.id if selected_expense else '' }}";
-    if (selectedExpenseId) {
-        expenseSelect.value = selectedExpenseId;
+    // Function to handle card selection and redirection
+    function selectExpenseCard(card) {
+        const expenseId = card.getAttribute("id");
+
+        // Remove 'selected' class from all cards
+        expenseCards.forEach(c => c.classList.remove("selected-card"));
+
+        // Add 'selected' class to the clicked card
+        card.classList.add("selected-card");
+
+        // Redirect to the selected expense page
+        window.location.href = `/expense-splitter?expense_id=${expenseId}`;
     }
+
+    // Add event listener to each expense card
+    expenseCards.forEach(card => {
+        card.addEventListener("click", function() {
+            selectExpenseCard(this);
+        });
+    });
 });
 </script>
 {% endblock %}

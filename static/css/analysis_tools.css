@@ -808,3 +808,28 @@
   background-color: #e0e0e0;
   color: #111;
 }
+
+/* Style for modal */
+.modal-content {
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+  background-color: #344E41;
+  color: white;
+}
+
+.modal-footer button {
+  margin: 0 5px;
+}
+
+.text-danger {
+  font-size: 0.9rem;
+  margin-top: 5px;
+}
+
+.btn-expense-modal {
+  min-width: 120px;
+  padding: 10px 20px;
+}

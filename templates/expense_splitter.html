@@ -12,10 +12,10 @@
 <div class="main-content-with-navbar pt-6">
 
     {% if get_flashed_messages() %}
-    <div class="container mt-3">
+    <div class="container mt-3" id="flash-container">
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% for category, message in messages %}
-                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                <div class="alert alert-{{ category }} alert-dismissible fade show clickable-flash" role="alert">
                     {{ message }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
@@ -132,9 +132,9 @@
                     ✏️ Edit
                 </a>
                 <!-- Delete New Expense Button -->
-                <form method="POST" action="{{ url_for('delete_expense', expense_id=expense.id) }}" class="d-inline" onsubmit="return confirmDelete();">
-                    <button type="submit" class="btn btn-outline-dark btn-share">🗑️ Delete</button>
-                </form>
+                <button type="button" class="btn btn-outline-dark btn-share" data-bs-toggle="modal" data-bs-target="#deleteExpenseModal">
+                    🗑️ Delete
+                </button>
                 <!-- Create New Expense Button -->
                 <a href="{{ url_for('create_expense') }}" class="btn btn-outline-dark btn-share"> ➕ Create</a>
             </div>
@@ -161,10 +161,50 @@
         <a href="{{ url_for('analysis') }}" class="tool-button">⬅ Back to Toolkit</a>
     </div>
 </div>
+
+<!-- Delete Expense Modal -->
+<div class="modal fade" id="deleteExpenseModal" tabindex="-1" aria-labelledby="deleteExpenseLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteExpenseLabel">Delete Expense</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete your shared expense?
+            </div>
+            <div class="modal-footer d-flex">
+                <form method="POST" action="{{ url_for('delete_expense', expense_id=expense.id) }}" class="d-inline">
+                    <button type="submit" class="btn btn-secondary btn-expense-modal">Delete</button>
+                </form>
+                <button type="button" class="btn btn-outline-secondary btn-expense-modal" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block scripts %}
 <script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Automatically close flash messages after 4 seconds (4000 milliseconds)
+    setTimeout(function() {
+        const flashMessages = document.querySelectorAll('.alert-dismissible');
+        flashMessages.forEach(function(flash) {
+            flash.classList.add('fade-out');
+            setTimeout(() => flash.remove(), 1000); // Remove after fade-out
+        });
+    }, 4000);
+
+
+    // Click-to-dismiss flash messages
+    document.querySelectorAll('.clickable-flash').forEach(function(flash) {
+        flash.addEventListener('click', function() {
+            flash.classList.add('fade-out');
+            setTimeout(() => flash.remove(), 300); // Faster fade on click
+        });
+    });
+});
 document.addEventListener("DOMContentLoaded", function() {
     const expenseCards = document.querySelectorAll(".expense-card");
 
@@ -193,4 +233,5 @@ function confirmDelete() {
     return confirm("Are you sure you want to delete this expense?");
 }
 </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
 {% endblock %}

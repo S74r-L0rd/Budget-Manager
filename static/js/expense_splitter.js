@@ -69,3 +69,32 @@ document.addEventListener("DOMContentLoaded", function () {
         if (hidden) hidden.remove();
     }
 });
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Automatically close flash messages after 4 seconds (4000 milliseconds)
+    setTimeout(function() {
+        const flashContainer = document.getElementById("flash-container");
+        if (flashContainer) {
+            flashContainer.classList.add("fade-out");
+            setTimeout(() => flashContainer.remove(), 1000); // Remove after fade-out
+        }
+    }, 4000);
+    // Fade-out CSS effect
+    const style = document.createElement('style');
+    style.innerHTML = `
+    .fade-out {
+        opacity: 0;
+        transition: opacity 1s ease-out;
+    }
+    `;
+    document.head.appendChild(style);
+
+    // Show Delete Account Modal
+    function showDeleteAccountModal() {
+        const deleteModal = new bootstrap.Modal(document.getElementById("deleteAccountModal"));
+        deleteModal.show();
+    }
+});
+
+
+  

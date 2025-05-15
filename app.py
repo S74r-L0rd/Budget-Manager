@@ -14,6 +14,8 @@ from werkzeug.utils import secure_filename
 from models.budgetPlan import BudgetPlan
 from models.savings_goal import SavingsGoal
 from models.savings_goal_share import SavingsGoalShare
+from models.Expense import Expense
+from models.ExpenseParticipant import ExpenseParticipant
 import json
 import os
 from os import getenv
@@ -537,10 +539,309 @@ def spending_personality_analyzer():
     )
 
 
-@app.route('/expense-splitter')
+@app.route('/expense-splitter', methods=['GET'])
 @login_required_custom
 def expense_splitter():
-    return render_template('expense_splitter.html')
+    user_id = session.get('user_id')
+
+    # Fetch all expenses where the user is either the creator or a participant
+    created_expenses = Expense.query.filter_by(creator_id=user_id).all()
+    participant_expenses = ExpenseParticipant.query.filter_by(user_id=user_id).all()
+    expense_ids = [p.expense_id for p in participant_expenses]
+    participant_expenses = Expense.query.filter(Expense.id.in_(expense_ids)).all()
+
+    # Combine both sets of expenses, avoiding duplicates
+    expenses = list({exp.id: exp for exp in created_expenses + participant_expenses}.values())
+
+    # Check if there are any expenses
+    if not expenses:
+        return redirect(url_for('create_expense'))
+
+    # Select the most recent or specified expense
+    selected_expense_id = request.args.get("expense_id")
+    selected_expense = None
+    if selected_expense_id:
+        selected_expense = next((exp for exp in expenses if exp.id == int(selected_expense_id)), None)
+
+    # Fallback to the first expense if no valid selection
+    if not selected_expense and expenses:
+        selected_expense = expenses[0]
+
+    # Fetch participants for the selected expense
+    participants = []
+    creator_name = ""
+    my_payment = None
+    if selected_expense:
+        all_participants = ExpenseParticipant.query.filter_by(expense_id=selected_expense.id).all()
+        for participant in all_participants:
+            # Exclude the creator from the participants list
+            if participant.user_id != user_id:
+                participant.name = db.session.get(User, participant.user_id).name
+                participants.append(participant)
+
+        my_payment = ExpenseParticipant.query.filter_by(expense_id=selected_expense.id, user_id=user_id).first()
+        if my_payment:
+            my_payment.amount_paid = round(my_payment.amount_paid, 2)
+            my_payment.amount_due = round(my_payment.amount_due, 2)
+        else:
+            my_payment = ExpenseParticipant(
+            expense_id=selected_expense.id,
+            user_id=user_id,
+            amount_paid=0.0,
+            amount_due=round(selected_expense.total_amount / (len(all_participants) + 1), 2),  # Including the creator
+            status="Pending"
+        )
+
+        creator = db.session.get(User, selected_expense.creator_id)
+        creator_name = creator.name if creator else ""
+
+    return render_template(
+        'expense_splitter.html',
+        expenses=expenses,
+        expense=selected_expense,
+        participants=participants,
+        creator_name=creator_name,
+        my_payment=my_payment
+    )
+
+@app.route('/expense-splitter/create', methods=['GET', 'POST'])
+@login_required_custom
+def create_expense():
+    user_id = session.get('user_id')
+    if request.method == 'POST':
+        purpose = request.form.get('purpose', '')
+        total_amount = float(request.form.get('total_expense', 0.0))
+        due_date_str = request.form.get('due_date', '')
+        participants_raw = request.form.get('participants', '')
+
+        # Split participants if not empty
+        participants = [p.strip() for p in participants_raw.split(',') if p.strip()]
+
+        try:
+            due_date = datetime.strptime(due_date_str, '%Y-%m-%d')
+        except ValueError:
+            flash("Invalid date format. Please use YYYY-MM-DD.", "danger")
+            return redirect(url_for('create_expense'))
+
+        if not purpose or not total_amount:
+            flash("Purpose and Total Amount are required.", "danger")
+            return redirect(url_for('create_expense'))
+
+        # Include the creator as a participant if not already added
+        creator = User.query.get(user_id)
+        creator_email = creator.email
+        if creator_email not in participants:
+            participants.insert(0, creator_email)
+
+        # Calculate amount per participant
+        num_participants = len(participants)
+        if num_participants == 0:
+            flash("At least one participant is required.", "danger")
+            return redirect(url_for('create_expense'))
+
+        amount_per_person = total_amount / num_participants
+
+        # Create the expense
+        expense = Expense(
+            purpose=purpose,
+            total_amount=total_amount,
+            due_date=due_date,
+            creator_id=user_id
+        )
+        db.session.add(expense)
+        db.session.commit()
+
+        # Add participants to the database
+        for email in participants:
+            user = User.query.filter_by(email=email).first()
+            if user:
+                participant = ExpenseParticipant(
+                    expense_id=expense.id,
+                    user_id=user.id,
+                    amount_due=amount_per_person,
+                    amount_paid=0.0,
+                    status="Pending"
+                )
+                db.session.add(participant)
+
+        db.session.commit()
+        flash("Expense created successfully!", "success")
+        return redirect(url_for('expense_splitter', expense_id=expense.id))
+
+    return render_template('create_expense.html', expense={})
+
+@app.route('/expense-splitter/edit/<int:expense_id>', methods=['GET', 'POST'])
+@login_required_custom
+def edit_expense(expense_id):
+    try:
+        user_id = session.get('user_id')
+        expense = Expense.query.get(expense_id)
+
+        if request.method == 'POST':
+            purpose = request.form.get("purpose")
+            total_amount = float(request.form.get("total_expense") or 0.0)
+            due_date_str = request.form.get("due_date")
+            participants_raw = request.form.get("participants", "")
+            participants_list = [p.strip() for p in participants_raw.split(",") if p.strip()]
+
+
+            # Validation: Ensure participants are provided
+            if not participants_list:
+                flash("Please add at least one participant.", "danger")
+                return redirect(url_for('edit_expense', expense_id=expense_id))
+            
+            # Update the expense details
+            expense.purpose = purpose
+            expense.total_amount = total_amount
+            expense.due_date = datetime.strptime(due_date_str, '%Y-%m-%d').date()
+
+            # Clear existing participants and update with new ones
+            ExpenseParticipant.query.filter_by(expense_id=expense_id).delete()
+
+            # Always include the creator as a participant
+            creator = db.session.get(User, user_id)
+            if creator:
+                if creator.email not in participants_list:
+                    participants_list.insert(0, creator.email)
+
+            # Add updated participants to the expense
+            num_participants = len(participants_list)
+            if num_participants == 0:
+                flash("At least one participant is required.", "danger")
+                return redirect(url_for('edit_expense', expense_id=expense_id))
+            amount_per_person = round(total_amount / num_participants, 2)
+
+            # Add new participants to the expense
+            for email in participants_list:
+                participant_user = User.query.filter_by(email=email).first()
+                if participant_user:
+                    participant = ExpenseParticipant(
+                        expense_id=expense.id,
+                        user_id=participant_user.id,
+                        amount_due=amount_per_person,
+                        amount_paid=0.0,
+                        status="Pending"
+                    )
+                    db.session.add(participant)
+
+            db.session.commit()
+            return redirect(url_for('expense_splitter', expense_id=expense.id))
+
+        participants = ExpenseParticipant.query.filter_by(expense_id=expense.id).all()
+        participant_emails = [db.session.get(User, p.user_id).email for p in participants]
+        return render_template('edit_expense.html', expense=expense, participants=participant_emails)
+    
+    except Exception as e:
+        flash(f"Error editing expense: {str(e)}", "danger")
+        db.session.rollback()
+        return redirect(url_for('expense_splitter'))
+
+
+@app.route('/expense-splitter/delete/<int:expense_id>', methods=['POST'])
+@login_required_custom
+def delete_expense(expense_id):
+    try:
+        expense = Expense.query.get(expense_id)
+        if not expense:
+            flash("Expense not found!", "danger")
+            return redirect(url_for('expense_splitter'))
+
+        # Delete related participants first
+        ExpenseParticipant.query.filter_by(expense_id=expense_id).delete()
+        
+        # Delete the expense itself
+        db.session.delete(expense)
+        db.session.commit()
+        
+        flash('Expense deleted successfully!', 'success')
+        return redirect(url_for('expense_splitter'))
+    except Exception as e:
+        db.session.rollback()
+        flash(f"Error deleting expense: {str(e)}", "danger")
+        return redirect(url_for('expense_splitter'))
+
+@app.route('/expense-splitter/pay', methods=['POST'])
+@login_required_custom
+def update_payment():
+    try:
+        expense_id = int(request.form['expense_id'])
+        amount_paid = float(request.form['amount'])
+        user_id = session.get('user_id')
+
+        participant = ExpenseParticipant.query.filter_by(expense_id=expense_id, user_id=user_id).first()
+        if participant:
+            # Validate the payment amount does not exceed the remaining amount
+            remaining = max(participant.amount_due - participant.amount_paid, 0)
+            if amount_paid > remaining:
+                flash(f"Payment exceeds the remaining amount of ${remaining:.2f}.", "danger")
+                return redirect(url_for('expense_splitter', expense_id=expense_id))
+
+            # Update the paid amount
+            participant.amount_paid += amount_paid
+
+            # Recalculate the remaining amount after payment
+            remaining = max(participant.amount_due - participant.amount_paid, 0)
+
+            # Update status based on the remaining amount
+            if remaining <= 0:
+                participant.amount_paid = participant.amount_due  # Align paid amount with due amount
+                participant.status = "Paid"
+            elif participant.amount_paid > 0:
+                participant.status = "Partial"
+            else:
+                participant.status = "Pending"
+
+            db.session.commit()
+            flash('Payment recorded successfully!', 'success')
+            return redirect(url_for('expense_splitter', expense_id=expense_id))
+        else:
+            flash("No participant record found.", "danger")
+    except Exception as e:
+        db.session.rollback()
+        flash(f"Error recording payment: {str(e)}", "danger")
+
+    return redirect(url_for('expense_splitter', expense_id=expense_id))
+
+    
+def calculate_remaining(expense_id):
+    try:
+        participants = ExpenseParticipant.query.filter_by(expense_id=expense_id).all()
+        result = []
+
+        for participant in participants:
+            # Calculate remaining amount
+            remaining = max(participant.amount_due - participant.amount_paid, 0)
+
+            # Update status based on the remaining amount
+            if remaining == 0:
+                status = "Paid"
+                badge_class = "bg-success"
+            elif participant.amount_paid > 0:
+                status = "Partial"
+                badge_class = "bg-warning"
+            else:
+                status = "Pending"
+                badge_class = "bg-danger"
+
+            # Update the status in the database (to ensure consistency)
+            participant.status = status
+            db.session.commit()
+
+            # Append the calculated data for each participant
+            result.append({
+                "user_id": participant.user_id,
+                "name": User.query.filter_by(id=participant.user_id).first().name,
+                "amount_paid": round(participant.amount_paid, 2),
+                "remaining": round(remaining, 2),
+                "status": status,
+                "badge_class": badge_class
+            })
+
+        return result
+
+    except Exception as e:
+        flash(f"Error calculating remaining amount: {str(e)}", "danger")
+        return []
 
 @app.route('/share')
 @login_required_custom

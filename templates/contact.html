@@ -23,18 +23,23 @@
 
 {% block content %}
 <!-- Hero Section -->
-<section class="contact-hero">
-    <div class="hero-container">
-        <div class="hero-content">
-            <h1>Get in Touch With Us</h1>
-            <p class="hero-description">Have questions about our budget management tools? Our team is here to help you make the most of your financial journey.</p>
-            <div>    
-                <button data-target="contact-form" class="btn btn-dark btn-lg get-started-btn">Contact Us</button>
-                <button data-target="faq" class="btn btn-outline-dark btn-lg learn-more-btn">FAQ</button>
+<section class="container-fluid d-flex justify-content-center align-items-center text-center text-dark pt-5 py-5 contact-hero-section">
+    <div class="row align-items-center contact-hero-row">
+        <!-- Left column: Texts and buttons -->
+        <div class="col-md-6 text-center text-md-start ps-md-5">
+            <h1 class="display-3 fw-bold mb-4">Get in Touch With Us</h1>
+            <p class="lead">Have questions about our budget management tools? Our team is here to help you make the most of your financial journey.</p>
+            <div class="d-flex mt-3 gap-3 buttons">
+                <button data-target="contact-form" class="btn btn-dark btn-lg mt-4 get-started-btn">Contact Us</button>
+                <button data-target="faq" class="btn btn-outline-dark btn-lg mt-4 ms-3 learn-more-btn">FAQ</button>
             </div>
         </div>
-        <div class="hero-image">
-            <img src="{{ url_for('static', filename='media/images/contact-hero.svg') }}" alt="Contact Support Illustration">
+
+        <!-- Right column: Illustration -->
+        <div class="col-md-6 text-center w-60 position-relative">
+            <div class="contact-illustration">
+                <img src="{{ url_for('static', filename='media/images/contact-hero.svg') }}" alt="Contact Support Illustration" class="w-75">
+            </div>
         </div>
     </div>
 </section>

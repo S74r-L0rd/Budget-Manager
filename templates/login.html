@@ -467,11 +467,11 @@
         
         // fill data
         {% if email %}
-        document.getElementById("forgotEmail").value = "{{ email }}";
+        document.getElementById("forgotEmail").value = {{ email | tojson }};
         {% endif %}
         
         {% if code %}
-        document.getElementById("verificationCode").value = "{{ code }}";
+        document.getElementById("verificationCode").value = {{ code | tojson }};
         {% endif %}
       });
     </script>

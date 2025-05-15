@@ -65,37 +65,7 @@
         </div>
         {% endif %}
 
-        <div class="container pt-6">
-            <!-- Shared by Me -->
-            <h4 class="text-success mb-3 pt-6">Shared by Me</h4>
-            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-5">
-                {% for share in shared_by_me %}
-                <div class="col">
-                    <div class="shared-card shared-by-me-card">
-                        <h5>Future Expense Predictor</h5>
-                        <p><strong>Shared With:</strong> {{ share.shared_user.name }}</p>
-                        <p><strong>Date:</strong> {{ share.created_at.strftime('%Y-%m-%d') if share.created_at else "N/A" }}</p>
-                        <p class="small text-muted">Predicted using uploaded expense history.</p>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-
-            <!-- Shared with Me -->
-            <h4 class="text-info mb-3 pt-6">Shared with Me</h4>
-            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 pb-5">
-                {% for share in shared_with_me %}
-                <div class="col">
-                    <div class="shared-card shared-with-me-card">
-                        <h5>Future Expense Predictor</h5>
-                        <p><strong>Shared By:</strong> {{ share.goal.owner.name }}</p>
-                        <p><strong>Date:</strong> {{ share.created_at.strftime('%Y-%m-%d') if share.created_at else "N/A" }}</p>
-                        <p class="small text-muted">Explore trends shared with you for review.</p>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
+        
     </section>
 
     <div style="display: flex; justify-content: center;" class="my-4">
@@ -103,32 +73,6 @@
     </div>
 </div>
 
-<!-- Share Modal -->
-<div class="modal fade" id="shareModal" tabindex="-1" aria-labelledby="shareModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <form method="POST" action="{{ url_for('share_future_prediction') }}">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="shareModalLabel">Share Analysis</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <p>Select users you want to share this analysis with:</p>
-            <div class="form-group">
-              <select name="share_with[]" multiple class="form-control" size="8" required>
-                {% for user in users %}
-                  <option value="{{ user.id }}">{{ user.name }}</option>
-                {% endfor %}
-              </select>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="submit" class="btn btn-primary">Share</button>
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          </div>
-        </div>
-      </form>
-    </div>
-</div>
+
 
 {% endblock %}

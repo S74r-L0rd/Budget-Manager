@@ -36,37 +36,37 @@
           <a href="{{ url_for('download_template') }}" class="btn-primary">⬇ Download Excel Template</a>
       
           <!-- Upload Form -->
-          <form action="{{ url_for('upload_expenses') }}" method="POST" enctype="multipart/form-data" class="upload-form">
+          <form method="POST" enctype="multipart/form-data" class="upload-form">
             <label for="file">Upload Filled Template</label>
             <input type="file" name="file" id="file" accept=".xlsx" required>
             <button type="submit" class="btn-secondary">🔮 Predict Future</button>
           </form>
         </div>
-
-        {% if show_results %}
-        <div class="container mt-5">
-            <h4 class="mb-4">Predicted Expense Trend</h4>
-
-            {% if summary %}
-                <div class="alert alert-info text-center fs-5 fw-semibold my-4">
-                    {{ summary }}
-                </div>
-            {% endif %}
-            
-            <div class="chart-section">
-                {{ chart | safe }}
-            </div>
-
-            <div class="mt-4 text-center">
-                <button class="tool-button" data-bs-toggle="modal" data-bs-target="#shareModal">
-                📤 Share This Analysis
-                </button>
-            </div>
-        </div>
-        {% endif %}
     </section>
 
-    <div class="container pt-6">
+    {% if show_results %}
+    <div class="container mt-5">
+        <h4 class="mb-4">Predicted Expense Trend</h4>
+
+        {% if summary %}
+            <div class="alert alert-info text-center fs-5 fw-semibold my-4">
+                {{ summary }}
+            </div>
+        {% endif %}
+        
+        <div class="chart-section">
+            {{ chart | safe }}
+        </div>
+
+        <div class="mt-4 text-center">
+            <button class="tool-button" data-bs-toggle="modal" data-bs-target="#shareModal">
+            📤 Share This Analysis
+            </button>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="container pt-4">
         <!-- Shared by Me -->
         <h4 class="text-success mb-3 pt-6">Shared by Me</h4>
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-5">
@@ -83,7 +83,7 @@
         </div>
 
         <!-- Shared with Me -->
-        <h4 class="text-info mb-3 pt-6">Shared with Me</h4>
+        <h4 class="text-info mb-3 pt-5">Shared with Me</h4>
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 pb-5">
             {% for share in shared_with_me %}
             <div class="col">

@@ -485,10 +485,89 @@ def edit_savings_goal(goal_id):
     shared_user_ids = [share.shared_user.id for share in goal.shares]
     return render_template("edit_goal.html", goal=goal, users=users, shared_user_ids=shared_user_ids)
 
-@app.route('/future-expense-predictor')
+@app.route('/future-expense-predictor', methods=['GET', 'POST'])
 @login_required_custom
 def future_expense_predictor():
-    return render_template('future_expense_predictor.html')
+    user_id = session.get('user_id')
+
+    if request.method == 'POST':
+        file = request.files['file']
+        if file and file.filename.endswith('.xlsx'):
+            df = pd.read_excel(file)
+
+            if not {'Date', 'Category', 'Amount'}.issubset(df.columns):
+                flash("Invalid file format", "danger")
+                return redirect(url_for('future_expense_predictor'))
+
+            # Preprocess
+            df['Date'] = pd.to_datetime(df['Date'])
+            df = df.groupby('Date').sum().resample('M').sum().reset_index()
+
+            # Simple prediction (e.g. Linear Regression)
+            from sklearn.linear_model import LinearRegression
+            import numpy as np
+            df['Timestamp'] = df['Date'].map(datetime.toordinal)
+            X = df[['Timestamp']]
+            y = df['Amount']
+
+            model = LinearRegression()
+            model.fit(X, y)
+
+            # Predict for next 6 months
+            future_dates = pd.date_range(df['Date'].max(), periods=7, freq='M')[1:]
+            future_df = pd.DataFrame({'Date': future_dates})
+            future_df['Timestamp'] = future_df['Date'].map(datetime.toordinal)
+            future_df['Amount'] = model.predict(future_df[['Timestamp']])
+            forecast_series = future_df['Amount']
+            summary = generate_summary(forecast_series)
+
+            shared_by_me = SavingsGoalShare.query.join(SavingsGoal).filter(SavingsGoal.user_id == user_id).all()
+            shared_with_me = SavingsGoalShare.query.filter_by(shared_with_user_id=user_id).all()
+
+            # Plot
+            import plotly.graph_objs as go
+            fig = go.Figure()
+            fig.add_trace(go.Scatter(x=df['Date'], y=df['Amount'], name='Historical'))
+            fig.add_trace(go.Scatter(x=future_df['Date'], y=future_df['Amount'], name='Predicted', line=dict(dash='dash')))
+            fig.update_layout(title='Future Expense Prediction', xaxis_title='Date', yaxis_title='Amount')
+
+            chart = fig.to_html(full_html=False)
+
+            # Fetch only future predictor shares
+            shared_by_me = SavingsGoalShare.query.filter_by(
+                tool_name='future_predictor'
+            ).filter(SavingsGoalShare.goal_id == None).all()
+
+            shared_with_me = SavingsGoalShare.query.filter_by(
+                tool_name='future_predictor',
+                shared_with_user_id=user_id
+            ).all()
+
+            users = User.query.filter(User.id != user_id).all()
+
+            return render_template('future_expense_predictor.html',
+                                chart=chart,
+                                show_results=True,
+                                summary=summary,
+                                shared_by_me=shared_by_me,
+                                shared_with_me=shared_with_me,
+                                users=users)
+
+    # On GET, show filtered shares even if no prediction run
+    user_id = session.get('user_id')
+    shared_by_me = SavingsGoalShare.query.filter_by(
+        tool_name='future_predictor'
+    ).filter(SavingsGoalShare.goal_id == None).all()
+
+    shared_with_me = SavingsGoalShare.query.filter_by(
+        tool_name='future_predictor',
+        shared_with_user_id=user_id
+    ).all()
+
+    return render_template('future_expense_predictor.html',
+                           show_results=False,
+                           shared_by_me=shared_by_me,
+                           shared_with_me=shared_with_me)
 
 @app.route('/spending-personality-analyzer', methods=['GET', 'POST'])
 @login_required_custom

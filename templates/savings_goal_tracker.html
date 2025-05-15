@@ -106,7 +106,10 @@
                       {{ progress }}%
                     </div>
                 </div>
-                <p class="card-text"><em>Shared by another user</em></p>
+                <p class="card-text"><strong>Shared by:</strong></p>
+                <div class="d-flex flex-wrap gap-2">
+                    <span class="badge bg-secondary">{{ goal.owner.name }}</span>
+                </div>
               </div>
             </div>
           </div>

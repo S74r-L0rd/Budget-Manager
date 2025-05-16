@@ -504,8 +504,6 @@ def edit_savings_goal(goal_id):
 @app.route('/future-expense-predictor', methods=['GET', 'POST'])
 @login_required_custom
 def future_expense_predictor():
-    from models.future_prediction_share import FuturePredictionShare  # ensure this model is defined
-
     user_id = session.get('user_id')
 
     if request.method == 'POST':

@@ -3,6 +3,9 @@ import sys
 import os
 from test.testConfig import BaseTestCase
 from flask import session
+from models.user import User
+from models.userProfile import Profile
+from db import db
 
 # Add project root directory to python path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -13,24 +16,28 @@ TEST_FILES_DIR = os.path.join(os.path.dirname(__file__), 'test_files')
 class TestAuth(BaseTestCase):
     def setUp(self):
         super().setUp()
-        # Register and login a test user before profile tests
-        self.client.post(
-            '/register',
-            data={
-                'signupName': 'profileuser',
-                'signupEmail': 'profile@example.com',
-                'signupPassword': '123',
-                'confirmPassword': '123'
-            }
-        )
-        self.client.post(
+
+        # Register a test user in database
+        user = User(name='profileuser', 
+                    email='profile@example.com', 
+                    password='123')
+        db.session.add(user)
+        db.session.commit()
+
+        profile = Profile(user_id=user.id, email='profile@example.com', name='profileuser')
+        profile.save_to_db()
+        
+        # Log in with the test user
+        response = self.client.post(
             '/login',
             data={
                 'loginEmail': 'profile@example.com',
                 'loginPassword': '123'
-            }
+            },
+            follow_redirects=True
         )
-
+        self.assertEqual(response.status_code, 200)
+       
     def test_profile_load(self):
         # Test if profile page loads successfully
         response = self.client.get('/profile', follow_redirects=True)

@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
     cards.forEach(card => observer.observe(card));
 
     // Smooth scrolling functionality
-    function scrollToElementSmoothly(id, offset = 150, duration = 600) {
+    function scrollToElementSmoothly(id, offset = 90, duration = 600) {
         const target = document.getElementById(id);
         if (!target) return;
         

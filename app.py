@@ -537,6 +537,12 @@ def future_expense_predictor():
             forecast_series = future_df['Amount']
             summary = generate_summary(forecast_series)
 
+            # Store prediction in session for potential future use
+            session['future_prediction'] = {
+                'forecast': future_df[['Date', 'Amount']].to_dict(orient='records'),
+                'summary': summary
+            }
+
             # Plot
             import plotly.graph_objs as go
             fig = go.Figure()

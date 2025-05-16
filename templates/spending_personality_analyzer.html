@@ -8,12 +8,6 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/spending_analyser.css') }}">
 {% endblock %}
 
-{% block scripts %}
-<script src="{{ url_for('static', filename='js/spending_personality_analyzer.js') }}"></script>
-<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
-{% endblock %}
-
 {% block content %}
 <div class="main-content-with-navbar">
     <!-- Flash -->
@@ -375,4 +369,5 @@ import { scrollToElementSmoothly } from "{{ url_for('static', filename='js/spend
     });
 });
 </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
 {% endblock %}

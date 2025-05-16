@@ -6,8 +6,10 @@
         <title>{% block title %}User Layout{% endblock %}</title>
         <!-- Block for external styles -->
         {% block styles %}{% endblock %}
+                <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
         <!-- Block for external scripts -->
         {% block scripts %}{% endblock %}
+        <script src="{{ url_for('static', filename='js/navbar.js') }}"></script>
     </head>
     <body data-scroll-target-id="{{ scroll_target_id | default('') }}" {% block body_tag_attrs %}{% endblock %}>
         <!-- Navbar Section -->
@@ -18,6 +20,11 @@
                     <img src="{{ url_for('static', filename='media/images/logo.png') }}" alt="budgetmanager" class="logo">
                     <span class="brand-name">BudgetManager</span>
                 </a>
+            </div>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
             </div>
             <!-- Navigation links -->
             <ul>

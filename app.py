@@ -64,6 +64,17 @@ def generate_summary(forecast_series):
         return "✅ Great! Future expenses show a decreasing trend. Keep up the good work!"
     else:
         return "ℹ️ Expenses seem stable. Monitor regularly to stay on track."
+    
+def normalize_share_entry(tool_name, shared_by, shared_with, date, detail, anchor_id=None, id=None):
+    return {
+        "tool": tool_name,
+        "shared_by": shared_by,
+        "shared_with": shared_with,
+        "date": date.strftime("%Y-%m-%d") if isinstance(date, datetime) else date,
+        "detail": detail,
+        "anchor_id": anchor_id,
+        "id": id
+    }
 
 @app.route('/')
 def home():
@@ -547,6 +558,12 @@ def future_expense_predictor():
             future_df['Amount'] = model.predict(future_df[['Timestamp']])
             forecast_series = future_df['Amount']
             summary = generate_summary(forecast_series)
+
+            # Save prediction to session for sharing
+            session['future_prediction'] = {
+                'summary': summary,
+                'forecast': future_df.to_dict(orient='records')
+            }
 
             # Save prediction persistently in MyPrediction table
             new_prediction = MyPrediction(
@@ -1113,15 +1130,41 @@ def update_payment():
 def share():
     user_id = session.get('user_id')
 
-    # Shared by me: I'm the owner and have shared it with others
-    shared_by_me = SavingsGoalShare.query.join(SavingsGoal).filter(SavingsGoal.user_id == user_id).all()
+    # Shared by me
+    savings_shared_by_me = SavingsGoalShare.query.join(SavingsGoal).filter(SavingsGoal.user_id == user_id).all()
+    personality_shared_by_me = SpendingPersonalityShare.query.filter_by(owner_id=user_id).all()
+    future_shared_by_me = FuturePredictionShare.query.filter_by(owner_id=user_id).all()
 
-    # Shared with me: Others shared their goal with me
-    shared_with_me = SavingsGoalShare.query.filter_by(shared_with_user_id=user_id).all()
+    # Shared with me
+    savings_shared_with_me = SavingsGoalShare.query.filter_by(shared_with_user_id=user_id).all()
+    personality_shared_with_me = SpendingPersonalityShare.query.filter_by(shared_with_user_id=user_id).all()
+    future_shared_with_me = FuturePredictionShare.query.filter_by(shared_with_user_id=user_id).all()
+
+    # Normalize all shared records into a common format
+    all_shared_by_me = []
+    all_shared_with_me = []
+
+    for s in savings_shared_by_me:
+        all_shared_by_me.append(normalize_share_entry("Savings Goal Tracker", s.goal.owner.name, s.shared_user.name, s.goal.created_at, s.goal.goal_name, anchor_id=f"shared-card-{s.id}", id=s.id))
+
+    for s in personality_shared_by_me:
+        all_shared_by_me.append(normalize_share_entry("Spending Personality Analyzer", s.owner.name, s.shared_user.name, s.created_at, s.cluster_name, anchor_id=f"shared-card-{s.id}", id=s.id))
+
+    for s in future_shared_by_me:
+        all_shared_by_me.append(normalize_share_entry("Future Expense Predictor", s.owner.name, s.shared_user.name, s.created_at, s.summary, anchor_id=f"shared-card-{s.id}", id=s.id))
+
+    for s in savings_shared_with_me:
+        all_shared_with_me.append(normalize_share_entry("Savings Goal Tracker", s.goal.owner.name, s.shared_user.name, s.goal.created_at, s.goal.goal_name, anchor_id=f"shared-card-{s.id}", id=s.id))
+
+    for s in personality_shared_with_me:
+        all_shared_with_me.append(normalize_share_entry("Spending Personality Analyzer", s.owner.name, s.shared_user.name, s.created_at, s.cluster_name, anchor_id=f"shared-card-{s.id}", id=s.id))
+
+    for s in future_shared_with_me:
+        all_shared_with_me.append(normalize_share_entry("Future Expense Predictor", s.owner.name, s.shared_user.name, s.created_at, s.summary, anchor_id=f"shared-card-{s.id}", id=s.id))
 
     return render_template('share.html',
-                           shared_by_me=shared_by_me,
-                           shared_with_me=shared_with_me)
+                           shared_by_me=all_shared_by_me,
+                           shared_with_me=all_shared_with_me)
 
 # Profile route
 @app.route('/profile')

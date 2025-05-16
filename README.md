@@ -485,3 +485,14 @@ The application will run at http://127.0.0.1:5000/, which can be accessed throug
 
 ### 9.6 Run Tests
 See the "7.2 Test Execution Commands" section above for instructions.
+
+
+## 10.Reference
+
+In the development of this project, we have utilised Generative AI tools to enhance code generation and problem-solving. The following AI tools were utilised:
+
+GitHub Copilot: Utilised for code completion in vscode, detecting syntax error and in-file code related queries.
+ChatGPT 4.0: Utilised for problem solving questions and general technology related questions. Also, utilised for code generation and design suggestions.
+Claude: Utilised for code revision and queries.
+
+These tools were employed for our advanced web development.

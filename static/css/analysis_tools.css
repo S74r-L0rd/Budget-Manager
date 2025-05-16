@@ -876,3 +876,19 @@
   min-width: 120px;
   padding: 10px 20px;
 }
+
+.checkbox-option {
+  background-color: #f8f9fa; /* subtle light gray */
+  border-radius: 6px;
+  padding: 8px 12px;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+}
+
+.checkbox-option:hover {
+  background-color: #e9ecef; /* slightly darker on hover */
+}
+
+.checkbox-option input[type="checkbox"] {
+  margin-right: 10px;
+}

@@ -1,0 +1,268 @@
+<html lang="en"><head>
+    <title>ValueError: time data '51231-02-20' does not match format '%Y-%m-%d'
+ // Werkzeug Debugger</title>
+    <link rel="stylesheet" href="?__debugger__=yes&amp;cmd=resource&amp;f=style.css">
+    <link rel="shortcut icon" href="?__debugger__=yes&amp;cmd=resource&amp;f=console.png">
+    <script src="?__debugger__=yes&amp;cmd=resource&amp;f=debugger.js"></script>
+    <script>
+      var CONSOLE_MODE = false,
+          EVALEX = true,
+          EVALEX_TRUSTED = false,
+          SECRET = "AuZYwaGgHoG04W98YTeY";
+    </script>
+  </head>
+  <body style="background-color: #fff">
+    <div class="debugger">
+<h1>ValueError</h1>
+<div class="detail">
+  <p class="errormsg">ValueError: time data '51231-02-20' does not match format '%Y-%m-%d'
+</p>
+</div>
+<h2 class="traceback" style="cursor: pointer;">Traceback <em>(most recent call last)</em></h2>
+<div class="traceback">
+  <h3></h3>
+  <ul><li><div class="frame" id="frame-2092512728912">
+  <h4>File <cite class="filename">"C:\Users\aakas\OneDrive\Documents\UWA\Budget-Manager\.venv\Lib\site-packages\flask\app.py"</cite>,
+      line <em class="line">1536</em>,
+      in <code class="function">__call__</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">    </span>) -&gt; cabc.Iterable[bytes]:<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>"""The WSGI server calls the Flask application object as the<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>WSGI application. This calls :meth:`wsgi_app`, which can be<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>wrapped to apply middleware.<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>"""<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">        </span>return self.wsgi_app(environ, start_response)
+<span class="ws">        </span>       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2092512729200">
+  <h4>File <cite class="filename">"C:\Users\aakas\OneDrive\Documents\UWA\Budget-Manager\.venv\Lib\site-packages\flask\app.py"</cite>,
+      line <em class="line">1514</em>,
+      in <code class="function">wsgi_app</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">            </span>try:<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">                </span>ctx.push()<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">                </span>response = self.full_dispatch_request()<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>except Exception as e:<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">                </span>error = e<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">                </span>response = self.handle_exception(e)
+<span class="ws">                </span>           ^^^^^^^^^^^^^^^^^^^^^^^^<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>except:  # noqa: B001<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">                </span>error = sys.exc_info()[1]<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">                </span>raise<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>return response(environ, start_response)<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>finally:<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2092512730784">
+  <h4>File <cite class="filename">"C:\Users\aakas\OneDrive\Documents\UWA\Budget-Manager\.venv\Lib\site-packages\flask\app.py"</cite>,
+      line <em class="line">1511</em>,
+      in <code class="function">wsgi_app</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">        </span>ctx = self.request_context(environ)<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>error: BaseException | None = None<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>try:<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>try:<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">                </span>ctx.push()<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">                </span>response = self.full_dispatch_request()
+<span class="ws">                </span>           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>except Exception as e:<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">                </span>error = e<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">                </span>response = self.handle_exception(e)<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>except:  # noqa: B001<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">                </span>error = sys.exc_info()[1]<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2092512729488">
+  <h4>File <cite class="filename">"C:\Users\aakas\OneDrive\Documents\UWA\Budget-Manager\.venv\Lib\site-packages\flask\app.py"</cite>,
+      line <em class="line">919</em>,
+      in <code class="function">full_dispatch_request</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">            </span>request_started.send(self, _async_wrapper=self.ensure_sync)<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>rv = self.preprocess_request()<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>if rv is None:<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">                </span>rv = self.dispatch_request()<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>except Exception as e:<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">            </span>rv = self.handle_user_exception(e)
+<span class="ws">            </span>     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>return self.finalize_request(rv)<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws"></span> <img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">    </span>def finalize_request(<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>self,<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>rv: ft.ResponseReturnValue | HTTPException,<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2092512730208">
+  <h4>File <cite class="filename">"C:\Users\aakas\OneDrive\Documents\UWA\Budget-Manager\.venv\Lib\site-packages\flask\app.py"</cite>,
+      line <em class="line">917</em>,
+      in <code class="function">full_dispatch_request</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws"></span> <img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>try:<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>request_started.send(self, _async_wrapper=self.ensure_sync)<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>rv = self.preprocess_request()<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>if rv is None:<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">                </span>rv = self.dispatch_request()
+<span class="ws">                </span>     ^^^^^^^^^^^^^^^^^^^^^^^<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>except Exception as e:<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>rv = self.handle_user_exception(e)<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>return self.finalize_request(rv)<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws"></span> <img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">    </span>def finalize_request(<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2092512730064">
+  <h4>File <cite class="filename">"C:\Users\aakas\OneDrive\Documents\UWA\Budget-Manager\.venv\Lib\site-packages\flask\app.py"</cite>,
+      line <em class="line">902</em>,
+      in <code class="function">dispatch_request</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">            </span>and req.method == "OPTIONS"<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>):<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>return self.make_default_options_response()<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span># otherwise dispatch to the handler for that endpoint<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>view_args: dict[str, t.Any] = req.view_args  # type: ignore[assignment]<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">        </span>return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+<span class="ws">        </span>       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws"></span> <img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">    </span>def full_dispatch_request(self) -&gt; Response:<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>"""Dispatches the request and on top of that performs request<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>pre and postprocessing as well as HTTP exception catching and<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>error handling.<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2092512730352">
+  <h4>File <cite class="filename">"C:\Users\aakas\OneDrive\Documents\UWA\Budget-Manager\app.py"</cite>,
+      line <em class="line">54</em>,
+      in <code class="function">decorated_function</code></h4>
+  <div class="source "><pre class="line before"><span class="ws">    </span>@wraps(f)<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">    </span>def decorated_function(*args, **kwargs):<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>if 'user_id' not in session:<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>flash('please login first', 'warning')<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>return redirect(url_for('login'))<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">        </span>return f(*args, **kwargs)
+<span class="ws">        </span>       ^^^^^^^^^^^^^^^^^^<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">    </span>return decorated_function<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws"></span> <img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws"></span>def generate_summary(forecast_series):<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">    </span>recent = forecast_series.iloc[-3:]<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">    </span>direction = recent.diff().mean()<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2092512736256">
+  <h4>File <cite class="filename">"C:\Users\aakas\OneDrive\Documents\UWA\Budget-Manager\app.py"</cite>,
+      line <em class="line">453</em>,
+      in <code class="function">savings_goal_tracker</code></h4>
+  <div class="source "><pre class="line before"><span class="ws">    </span>user_id = session.get('user_id')<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws"></span> <img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">    </span>if request.method == 'POST':<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws"></span> <img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">        </span>deadline_str = request.form['deadline']<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">        </span>deadline = datetime.strptime(deadline_str, "%Y-%m-%d").date()
+<span class="ws">        </span>           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>saved_amount = float(request.form['saved_amount'])<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws"></span> <img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>goal = SavingsGoal(<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>user_id=user_id,<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">            </span>goal_name=request.form['goal_name'],<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2092512736400">
+  <h4>File <cite class="filename">"C:\Python312\Lib\_strptime.py"</cite>,
+      line <em class="line">554</em>,
+      in <code class="function">_strptime_datetime</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">    </span>return time.struct_time(tt[:time._STRUCT_TM_ITEMS])<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws"></span> <img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws"></span>def _strptime_datetime(cls, data_string, format="%a %b %d %H:%M:%S %Y"):<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">    </span>"""Return a class cls instance based on the input string and the<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">    </span>format string."""<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">    </span>tt, fraction, gmtoff_fraction = _strptime(data_string, format)
+<span class="ws">    </span>                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">    </span>tzname, gmtoff = tt[-2:]<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">    </span>args = tt[:6] + (fraction,)<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">    </span>if gmtoff is not None:<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>tzdelta = datetime_timedelta(seconds=gmtoff, microseconds=gmtoff_fraction)<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>if tzname:<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+
+</li><li><div class="frame" id="frame-2092512736544">
+  <h4>File <cite class="filename">"C:\Python312\Lib\_strptime.py"</cite>,
+      line <em class="line">333</em>,
+      in <code class="function">_strptime</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">            </span>except IndexError:<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">                </span>raise ValueError("stray %% in format '%s'" % format) from None<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">            </span>_regex_cache[format] = format_regex<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">    </span>found = format_regex.match(data_string)<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line before"><span class="ws">    </span>if not found:<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line current"><span class="ws">        </span>raise ValueError("time data %r does not match format %r" %
+<span class="ws">        </span>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">                         </span>(data_string, format))<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">    </span>if len(data_string) != found.end():<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">        </span>raise ValueError("unconverted data remains: %s" %<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws">                          </span>data_string[found.end():])<img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre>
+<pre class="line after"><span class="ws"></span> <img src="?__debugger__=yes&amp;cmd=resource&amp;f=console.png&amp;s=AuZYwaGgHoG04W98YTeY" title="Open an interactive python shell in this frame"></pre></div>
+</div>
+</li></ul>
+  <blockquote>ValueError: time data '51231-02-20' does not match format '%Y-%m-%d'
+</blockquote>
+</div>
+
+<div class="plain hidden">
+    <p>
+      This is the Copy/Paste friendly version of the traceback.
+    </p>
+    <pre>Traceback (most recent call last):
+  File "C:\Users\aakas\OneDrive\Documents\UWA\Budget-Manager\.venv\Lib\site-packages\flask\app.py", line 1536, in __call__
+    return self.wsgi_app(environ, start_response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\aakas\OneDrive\Documents\UWA\Budget-Manager\.venv\Lib\site-packages\flask\app.py", line 1514, in wsgi_app
+    response = self.handle_exception(e)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\aakas\OneDrive\Documents\UWA\Budget-Manager\.venv\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\aakas\OneDrive\Documents\UWA\Budget-Manager\.venv\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\aakas\OneDrive\Documents\UWA\Budget-Manager\.venv\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\aakas\OneDrive\Documents\UWA\Budget-Manager\.venv\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\aakas\OneDrive\Documents\UWA\Budget-Manager\app.py", line 54, in decorated_function
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\aakas\OneDrive\Documents\UWA\Budget-Manager\app.py", line 453, in savings_goal_tracker
+    deadline = datetime.strptime(deadline_str, "%Y-%m-%d").date()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python312\Lib\_strptime.py", line 554, in _strptime_datetime
+    tt, fraction, gmtoff_fraction = _strptime(data_string, format)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python312\Lib\_strptime.py", line 333, in _strptime
+    raise ValueError("time data %r does not match format %r" %
+ValueError: time data '51231-02-20' does not match format '%Y-%m-%d'
+</pre>
+</div>
+<div class="explanation">
+  The debugger caught an exception in your WSGI application.  You can now
+  look at the traceback which led to the error.  <span class=""><p>To switch between the interactive traceback and the plaintext one, you can click on the "Traceback" headline. From the text traceback you can also create a paste of it. For code execution mouse-over the frame you want to debug and click on the console icon on the right side.</p><p>You can execute arbitrary Python code in the stack frames and there are some extra helpers available for introspection:</p><ul><li><code>dump()</code> shows all variables in the frame</li><li><code>dump(obj)</code> dumps all that's known about the object</li></ul></span>
+</div>
+      <div class="footer">
+        Brought to you by <strong class="arthur">DON'T PANIC</strong>, your
+        friendly Werkzeug powered traceback interpreter.
+      </div>
+    </div>
+
+    <div class="pin-prompt">
+      <div class="inner">
+        <h3>Console Locked</h3>
+        <p>
+          The console is locked and needs to be unlocked by entering the PIN.
+          You can find the PIN printed out on the standard output of your
+          shell that runs the server.
+        </p><form>
+          <p>PIN:
+            <input type="text" name="pin" size="14">
+            <input type="submit" name="btn" value="Confirm Pin">
+        </p></form>
+      </div>
+    </div>
+  
+
+
+
+</body></html>

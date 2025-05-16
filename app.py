@@ -19,6 +19,7 @@ from models.ExpenseParticipant import ExpenseParticipant
 from flask_wtf.csrf import CSRFProtect
 from models.future_prediction_share import FuturePredictionShare
 from models.my_prediction import MyPrediction
+from models.spending_personality_share import SpendingPersonalityShare
 import json
 import os
 from os import getenv
@@ -73,6 +74,17 @@ def generate_summary(forecast_series):
         return "✅ Great! Future expenses show a decreasing trend. Keep up the good work!"
     else:
         return "ℹ️ Expenses seem stable. Monitor regularly to stay on track."
+    
+def normalize_share_entry(tool_name, shared_by, shared_with, date, detail, anchor_id=None, id=None):
+    return {
+        "tool": tool_name,
+        "shared_by": shared_by,
+        "shared_with": shared_with,
+        "date": date.strftime("%Y-%m-%d") if isinstance(date, datetime) else date,
+        "detail": detail,
+        "anchor_id": anchor_id,
+        "id": id
+    }
 
 @app.route('/')
 def home():
@@ -173,6 +185,13 @@ def reset_password():
 def logout():
     session.clear()  # Clear user session
     return redirect(url_for('login'))
+
+@app.template_filter('fromjson')
+def fromjson_filter(value):
+    try:
+        return json.loads(value)
+    except Exception:
+        return []
 
 @app.route('/dashboard')
 @login_required_custom
@@ -516,6 +535,20 @@ def edit_savings_goal(goal_id):
     shared_user_ids = [share.shared_user.id for share in goal.shares]
     return render_template("edit_goal.html", goal=goal, users=users, shared_user_ids=shared_user_ids)
 
+@app.route('/delete-goal/<int:goal_id>', methods=['POST'])
+@login_required_custom
+def delete_savings_goal(goal_id):
+    user_id = session.get('user_id')
+    goal = SavingsGoal.query.filter_by(id=goal_id, user_id=user_id).first_or_404()
+
+    # Delete related shares first
+    SavingsGoalShare.query.filter_by(goal_id=goal.id).delete()
+    db.session.delete(goal)
+    db.session.commit()
+    
+    flash("🗑️ Goal deleted successfully.", "success")
+    return redirect(url_for('savings_goal_tracker'))
+
 @app.route('/future-expense-predictor', methods=['GET', 'POST'])
 @login_required_custom
 def future_expense_predictor():
@@ -553,6 +586,12 @@ def future_expense_predictor():
             future_df['Amount'] = model.predict(future_df[['Timestamp']])
             forecast_series = future_df['Amount']
             summary = generate_summary(forecast_series)
+
+            # Save prediction to session for sharing
+            session['future_prediction'] = {
+                'summary': summary,
+                'forecast': future_df.to_dict(orient='records')
+            }
 
             # Save prediction persistently in MyPrediction table
             new_prediction = MyPrediction(
@@ -717,6 +756,11 @@ def delete_my_prediction(id):
 @app.route('/spending-personality-analyzer', methods=['GET', 'POST'])
 @login_required_custom
 def spending_personality_analyzer():
+    user_id = session.get('user_id')
+    shared_by_me = SpendingPersonalityShare.query.filter_by(owner_id=user_id).all()
+    shared_with_me = SpendingPersonalityShare.query.filter_by(shared_with_user_id=user_id).all()
+    users = User.query.filter(User.id != user_id).all()
+
     if request.method == 'POST':
         file = request.files.get('file')
         if not file or not file.filename.endswith('.xlsx'):
@@ -737,7 +781,17 @@ def spending_personality_analyzer():
             demographic_df = pd.read_csv('base_demographic_spending.csv')
 
             # Run clustering
-            cluster_label, insights, bar_chart = spending_personality(user_df, demographic_df)
+            cluster_label, insights_raw, bar_chart = spending_personality(user_df, demographic_df)
+
+            # Sanitize insights for safe JSON serialization
+            insights = [
+                {
+                    "category": str(item.get("category", "")),
+                    "message": str(item.get("message", "")),
+                    "percentage": float(item.get("percentage", 0))
+                }
+                for item in insights_raw
+            ]
 
             return render_template(
                     'spending_personality_analyzer.html',
@@ -745,7 +799,10 @@ def spending_personality_analyzer():
                     insights=insights,
                     bar_chart=json.dumps(bar_chart),
                     is_loaded=True,
-                    scroll_to_results=True
+                    scroll_to_results=True,
+                    shared_by_me=shared_by_me,
+                    shared_with_me=shared_with_me,
+                    users=users
                 )
 
         except Exception as e:
@@ -757,8 +814,69 @@ def spending_personality_analyzer():
         insights=[],
         cluster_name="No data",
         bar_chart={},
-        is_loaded=False
+        is_loaded=False,
+        shared_by_me=shared_by_me,
+        shared_with_me=shared_with_me,
+        users=users
     )
+
+@app.route('/share-spending-personality', methods=['POST'])
+@login_required_custom
+def share_spending_personality():
+    user_id = session.get('user_id')
+    share_with_ids = request.form.getlist('share_with[]')
+    cluster_name = request.form.get('cluster_name', '')
+    top_insights = request.form.get('top_insights', '')
+    note = request.form.get('note', '')
+
+    for shared_id in share_with_ids:
+        share = SpendingPersonalityShare(
+            owner_id=user_id,
+            shared_with_user_id=int(shared_id),
+            cluster_name=cluster_name,
+            top_insights=top_insights,
+            note=note
+        )
+        db.session.add(share)
+
+    db.session.commit()
+    flash("Spending Personality shared successfully!", "success")
+    return redirect(url_for('spending_personality_analyzer'))
+
+
+@app.route('/edit-spending-share', methods=['POST'])
+@login_required_custom
+def edit_spending_share():
+    share_id = request.form.get('share_id')
+    new_note = request.form.get('note', '')
+    new_user_id = request.form.get('new_user_id')
+
+    share = SpendingPersonalityShare.query.filter_by(id=share_id).first()
+    if share and share.owner_id == session.get('user_id'):
+        share.note = new_note
+        if new_user_id and int(new_user_id) != share.shared_with_user_id:
+            share.shared_with_user_id = int(new_user_id)
+        db.session.commit()
+        flash("Shared analysis updated successfully.", "success")
+    else:
+        flash("You are not authorized to edit this item.", "danger")
+
+    return redirect(url_for('spending_personality_analyzer', edited_share_id=share_id))
+
+
+@app.route('/delete-spending-share/<int:id>', methods=['POST'])
+@login_required_custom
+def delete_spending_share(id):
+    share = SpendingPersonalityShare.query.filter_by(id=id).first()
+    if share and share.owner_id == session.get('user_id'):
+        db.session.delete(share)
+        db.session.commit()
+        flash("Shared analysis deleted successfully.", "success")
+    else:
+        flash("You are not authorized to delete this item.", "danger")
+
+    return redirect(url_for('spending_personality_analyzer'))
+
 
 # Route for expense splitter
 @app.route('/expense-splitter', methods=['GET'])
@@ -1040,15 +1158,41 @@ def update_payment():
 def share():
     user_id = session.get('user_id')
 
-    # Shared by me: I'm the owner and have shared it with others
-    shared_by_me = SavingsGoalShare.query.join(SavingsGoal).filter(SavingsGoal.user_id == user_id).all()
+    # Shared by me
+    savings_shared_by_me = SavingsGoalShare.query.join(SavingsGoal).filter(SavingsGoal.user_id == user_id).all()
+    personality_shared_by_me = SpendingPersonalityShare.query.filter_by(owner_id=user_id).all()
+    future_shared_by_me = FuturePredictionShare.query.filter_by(owner_id=user_id).all()
 
-    # Shared with me: Others shared their goal with me
-    shared_with_me = SavingsGoalShare.query.filter_by(shared_with_user_id=user_id).all()
+    # Shared with me
+    savings_shared_with_me = SavingsGoalShare.query.filter_by(shared_with_user_id=user_id).all()
+    personality_shared_with_me = SpendingPersonalityShare.query.filter_by(shared_with_user_id=user_id).all()
+    future_shared_with_me = FuturePredictionShare.query.filter_by(shared_with_user_id=user_id).all()
+
+    # Normalize all shared records into a common format
+    all_shared_by_me = []
+    all_shared_with_me = []
+
+    for s in savings_shared_by_me:
+        all_shared_by_me.append(normalize_share_entry("Savings Goal Tracker", s.goal.owner.name, s.shared_user.name, s.goal.created_at, s.goal.goal_name, anchor_id=f"shared-card-{s.id}", id=s.id))
+
+    for s in personality_shared_by_me:
+        all_shared_by_me.append(normalize_share_entry("Spending Personality Analyzer", s.owner.name, s.shared_user.name, s.created_at, s.cluster_name, anchor_id=f"shared-card-{s.id}", id=s.id))
+
+    for s in future_shared_by_me:
+        all_shared_by_me.append(normalize_share_entry("Future Expense Predictor", s.owner.name, s.shared_user.name, s.created_at, s.summary, anchor_id=f"shared-card-{s.id}", id=s.id))
+
+    for s in savings_shared_with_me:
+        all_shared_with_me.append(normalize_share_entry("Savings Goal Tracker", s.goal.owner.name, s.shared_user.name, s.goal.created_at, s.goal.goal_name, anchor_id=f"shared-card-{s.id}", id=s.id))
+
+    for s in personality_shared_with_me:
+        all_shared_with_me.append(normalize_share_entry("Spending Personality Analyzer", s.owner.name, s.shared_user.name, s.created_at, s.cluster_name, anchor_id=f"shared-card-{s.id}", id=s.id))
+
+    for s in future_shared_with_me:
+        all_shared_with_me.append(normalize_share_entry("Future Expense Predictor", s.owner.name, s.shared_user.name, s.created_at, s.summary, anchor_id=f"shared-card-{s.id}", id=s.id))
 
     return render_template('share.html',
-                           shared_by_me=shared_by_me,
-                           shared_with_me=shared_with_me)
+                           shared_by_me=all_shared_by_me,
+                           shared_with_me=all_shared_with_me)
 
 # Profile route
 @app.route('/profile')

@@ -8,4 +8,8 @@ static/.DS_Store
 static/media/.DS_Store
 
 __pycache__/
-
+after_submit.html
+after_submit.png
+before_submit.png
+post_submit_debug.html
+post_submit_debug.png

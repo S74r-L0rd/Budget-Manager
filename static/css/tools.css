@@ -91,7 +91,7 @@
 }
 
 #tool-list {
-  scroll-margin-top: 100px; /* adjust this to match your header height */
+  scroll-margin-top: 100px;
 }
 
 .tool-icon {
@@ -112,4 +112,164 @@
 
 .step-icon {
   font-size: 2rem;
+}
+
+/* Responsiveness Adjustment */
+@media screen and (min-width: 2056px) {
+  .tools-hero-section {
+    padding-left: 6rem;
+  }
+
+  .tool-card-title, .tool-title-orange {
+    font-size: 1.5rem;
+  }
+
+  .tools-illustration {
+    max-height: 600px;
+  }
+
+  .tool-card {
+    padding: 2rem;
+  }
+
+  .how-step {
+    font-size: 1.25rem;
+  }
+}
+
+
+@media screen and (max-width: 1440px) {
+  .tools-hero-section {
+    padding-left: 3rem;
+  }
+
+  .tool-card-title, .tool-title-orange {
+    font-size: 1.3rem;
+  }
+
+  .tools-illustration {
+    max-height: 500px;
+  }
+
+  .tool-card {
+    padding: 1.75rem;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .tools-hero-section {
+    padding-left: 2rem;
+  }
+
+  .tools-illustration {
+    max-height: 400px;
+  }
+
+  .tool-card {
+    padding: 1.5rem;
+  }
+
+  .tool-card-title, .tool-title-orange {
+    font-size: 1.1rem;
+  }
+
+  .tool-card-description {
+    font-size: 0.95rem;
+  }
+
+  .how-step {
+    font-size: 1.1rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .tools-hero-section {
+    padding-left: 1rem;
+  }
+
+  .tools-illustration {
+    max-height: 350px;
+  }
+
+  .tool-card {
+    padding: 1.2rem;
+  }
+
+  .tool-card-title, .tool-title-orange {
+    font-size: 1rem;
+  }
+
+  .tool-card-description {
+    font-size: 0.9rem;
+  }
+
+  .how-step {
+    font-size: 1rem;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .tools-hero-section {
+    padding-left: 0.5rem;
+  }
+
+  .tools-illustration {
+    max-height: 300px;
+  }
+
+  .tool-card {
+    padding: 1rem;
+  }
+
+  .tool-card-title, .tool-title-orange {
+    font-size: 0.9rem;
+  }
+
+  .tool-card-description {
+    font-size: 0.85rem;
+  }
+
+  .how-step {
+    font-size: 0.95rem;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  .tool-card-title, .tool-title-orange {
+    font-size: 0.85rem;
+  }
+
+  .tool-card-description {
+    font-size: 0.8rem;
+  }
+
+  .how-step {
+    font-size: 0.9rem;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .tools-hero-section {
+    padding-left: 0.3rem;
+  }
+
+  .tools-illustration {
+    max-height: 250px;
+  }
+
+  .tool-card {
+    padding: 0.8rem;
+  }
+
+  .tool-card-title, .tool-title-orange {
+    font-size: 0.8rem;
+  }
+
+  .tool-card-description {
+    font-size: 0.75rem;
+  }
+
+  .how-step {
+    font-size: 0.85rem;
+  }
 }

@@ -1,5 +1,14 @@
 # Project Name: Budget-Manager
 
+## Group Members
+
+| UWA ID    | Name                         | GitHub Username        |
+|-----------|------------------------------|------------------------|
+| 24038357  | Iliyas Akhmet                | ilikmeister            |
+| 23746416  | Chaewon Seo                  | febius47 / Chaewon Seo |
+| 24525791  | Aakash Kozhukkunnon Othayoth | S74r-L0rd              |
+| 22794111  | Ying Hu                      | Minanow                |
+
 ## 1. Project Introduction
 
 Budget-Manager is a Flask-based web application designed to help users manage personal finances, track expenses, create budget plans, and set savings goals. It provides features such as user registration, login, expense recording, budget setting, consumption analysis, and includes automated UI testing using Selenium.

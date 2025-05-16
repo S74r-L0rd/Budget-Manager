@@ -24,6 +24,7 @@
                 <li><a href="{{ url_for('dashboard') }}" class="{{ 'active' if request.endpoint == 'dashboard' }}">Dashboard</a></li>
                 <li><a href="{{ url_for('analysis') }}" class="{{ 'active' if request.endpoint == 'analysis' }}">Analysis</a></li>
                 <li><a href="{{ url_for('share') }}" class="{{ 'active' if request.endpoint == 'share' }}">Sharing Hub</a></li>
+                <li><a href="{{ url_for('contact') }}" class="{{ 'active' if request.endpoint == 'contact' }}">Contact Us</a></li>
                 <li><a href="{{ url_for('profile') }}" class="{{ 'active' if request.endpoint == 'profile' }}">Profile</a></li>
             </ul>
         </nav>
@@ -56,6 +57,7 @@
                     <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
                     <li><a href="{{ url_for('analysis') }}">Analysis</a></li>
                     <li><a href="{{ url_for('share') }}">Sharing Hub</a></li>
+                    <li><a href="{{ url_for('contact') }}" class="{{ 'active' if request.endpoint == 'contact' }}">Contact Us</a></li>
                     <li><a href="{{ url_for('profile') }}">Profile</a></li>
                 </ul>
                 <div class="footer-copy">

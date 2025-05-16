@@ -31,7 +31,7 @@ class TestSavingsGoalTracker(BaseTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn(b'Savings Goal Tracker', response.data)
         self.assertIn(b'Your Goals', response.data)
-        logger.info("✓ Page loaded with expected content")
+        logger.info("Page loaded with expected content")
 
     def test_goal_submission_redirect(self):
         """Test POST form submission"""
@@ -45,7 +45,7 @@ class TestSavingsGoalTracker(BaseTestCase):
         response = self.client.post('/savings-goal-tracker', data=data, follow_redirects=True)
         self.assertEqual(response.status_code, 200)
         self.assertIn(b'Goal added and shared!', response.data)
-        logger.info("✓ Goal submission and flash message confirmed")
+        logger.info("Goal submission and flash message confirmed")
 
     def test_goal_appears_in_own_goals(self):
         """Test a goal appears in 'Your Goals'"""
@@ -63,7 +63,7 @@ class TestSavingsGoalTracker(BaseTestCase):
         response = self.client.get('/savings-goal-tracker')
         self.assertEqual(response.status_code, 200)
         self.assertIn(b'Manual Goal', response.data)
-        logger.info("✓ Manual goal appears in rendered HTML")
+        logger.info("Manual goal appears in rendered HTML")
 
     def test_goal_deletion(self):
         """Test deleting a goal"""
@@ -81,7 +81,7 @@ class TestSavingsGoalTracker(BaseTestCase):
         response = self.client.post(f'/delete-goal/{goal.id}', follow_redirects=True)
         self.assertEqual(response.status_code, 200)
         self.assertNotIn(b'Delete Me', response.data)
-        logger.info("✓ Goal deleted successfully and no longer appears")
+        logger.info("Goal deleted successfully and no longer appears")
 
 if __name__ == '__main__':
     unittest.main()

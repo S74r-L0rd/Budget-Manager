@@ -1,0 +1,13 @@
+.card-title {
+  font-weight: 600;
+}
+
+.card-body p, .card-body ul {
+  font-size: 0.95rem;
+}
+
+.list-group-item {
+  background-color: #f8f9fa;
+  border: none;
+  margin-bottom: 4px;
+}

@@ -719,7 +719,7 @@ def spending_personality_analyzer():
     if request.method == 'POST':
         file = request.files.get('file')
         if not file or not file.filename.endswith('.xlsx'):
-            flash("❌ Please upload a valid Excel (.xlsx) file.", "danger")
+            flash("Please upload a valid Excel (.xlsx) file.", "danger")
             return render_template('invalid_template.html', back_url=url_for('spending_personality_analyzer'))
 
         try:
@@ -729,7 +729,7 @@ def spending_personality_analyzer():
             # Check for required columns
             required_cols = {'Date', 'Category', 'Amount'}
             if not required_cols.issubset(user_df.columns):
-                flash("❌ Invalid Excel format. Required columns: Date, Category, Amount.", "danger")
+                flash("Invalid Excel format. Required columns: Date, Category, Amount.", "danger")
                 return render_template('invalid_template.html', back_url=url_for('spending_personality_analyzer'))
             
             # Load demographic spending data
@@ -761,7 +761,7 @@ def spending_personality_analyzer():
                 )
 
         except Exception as e:
-            flash(f"❌ Error processing file: {str(e)}", "danger")
+            flash(f"Error processing file: {str(e)}", "danger")
             return redirect(url_for('spending_personality_analyzer'))
 
     return render_template(

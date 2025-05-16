@@ -17,18 +17,18 @@
 {% block content %}
 <div class="main-content-with-navbar">
     <!-- Flash -->
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-        <div class="alert-container">
-        {% for category, message in messages %}
-            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        {% endfor %}
-        </div>
+    {% if get_flashed_messages() %}
+    <div class="container mt-3" id="flash-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert" data-bs-delay="4000">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endwith %}
+    </div>
     {% endif %}
-    {% endwith %}
     <section class="container personality-section">
         <div class="personality-container">
             <h2>Spending Personality Analyzer</h2>
@@ -337,8 +337,9 @@
 
 </div>
 {% if scroll_to_results %}
+
 <script type="module">
-  import { scrollToElementSmoothly } from "{{ url_for('static', filename='js/spending_personality_analyzer.js') }}";
+import { scrollToElementSmoothly } from "{{ url_for('static', filename='js/spending_personality_analyzer.js') }}";
   
   document.addEventListener("DOMContentLoaded", () => {
     requestAnimationFrame(() => {
@@ -347,4 +348,31 @@
   });
 </script>
 {% endif %}
+{% endblock %}
+
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/spending_personality_analyzer.js') }}"></script>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+<script>document.addEventListener("DOMContentLoaded", function() {
+    // Automatically close flash messages after 4 seconds (4000 milliseconds)
+    setTimeout(function() {
+        const flashMessages = document.querySelectorAll('.alert-dismissible');
+        flashMessages.forEach(function(flash) {
+            flash.classList.add('fade-out');
+            setTimeout(() => flash.remove(), 1000); // Remove after fade-out
+        });
+    }, 4000);
+
+
+    // Click-to-dismiss flash messages
+    document.querySelectorAll('.clickable-flash').forEach(function(flash) {
+        flash.addEventListener('click', function() {
+            flash.classList.add('fade-out');
+            setTimeout(() => flash.remove(), 300); // Faster fade on click
+        });
+    });
+});
+</script>
 {% endblock %}

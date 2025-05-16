@@ -580,13 +580,21 @@ def future_expense_predictor():
 def share_future_prediction():
     user_id = session.get('user_id')
     share_with_ids = request.form.getlist('share_with[]')
+    note = request.form.get('note', '').strip()
 
-    # Save share entries in the DB
+    prediction_data = session.get('future_prediction', {})
+
+    if not prediction_data:
+        flash("No prediction data available to share.", "danger")
+        return redirect(url_for('future_expense_predictor'))
+
     for shared_id in share_with_ids:
         share = FuturePredictionShare(
             owner_id=user_id,
             shared_with_user_id=int(shared_id),
-            created_at=datetime.utcnow()
+            summary=prediction_data.get('summary'),
+            prediction_data=json.dumps(prediction_data.get('forecast')),
+            note=note
         )
         db.session.add(share)
 

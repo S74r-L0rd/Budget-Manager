@@ -76,6 +76,21 @@
                     <h5>Future Expense Predictor</h5>
                     <p><strong>Shared With:</strong> {{ share.shared_user.name }}</p>
                     <p><strong>Date:</strong> {{ share.created_at.strftime('%Y-%m-%d') if share.created_at else "N/A" }}</p>
+                    {% if share.note %}
+                    <p><strong>Note:</strong> {{ share.note }}</p>
+                    {% endif %}
+                    {% if share.parsed_forecast %}
+                    <p><strong>Top Predictions:</strong></p>
+                    <ul class="small text-muted">
+                        {% for item in share.parsed_forecast[:3] %}
+                        <li>{{ item['Date'] }}: ${{ item['Amount'] | round(2) }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    {% if share.summary %}
+                        <p><strong>Summary:</strong> {{ share.summary }}</p>
+                    {% endif %}
+                    <br>
                     <p class="small text-muted">Predicted using uploaded expense history.</p>
                 </div>
             </div>
@@ -83,14 +98,29 @@
         </div>
 
         <!-- Shared with Me -->
-        <h4 class="text-info mb-3 pt-5">Shared with Me</h4>
+        <h4 class="text-primary mb-3 pt-5">Shared with Me</h4>
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 pb-5">
             {% for share in shared_with_me %}
             <div class="col">
                 <div class="shared-card shared-with-me-card">
                     <h5>Future Expense Predictor</h5>
-                    <p><strong>Shared By:</strong> {{ share.goal.owner.name }}</p>
+                    <p><strong>Shared By:</strong> {{ share.owner.name if share.owner else 'Unknown' }}</p>
                     <p><strong>Date:</strong> {{ share.created_at.strftime('%Y-%m-%d') if share.created_at else "N/A" }}</p>
+                    {% if share.note %}
+                    <p><strong>Note:</strong> {{ share.note }}</p>
+                    {% endif %}
+                    {% if share.parsed_forecast %}
+                    <p><strong>Top Predictions:</strong></p>
+                    <ul class="small text-muted">
+                        {% for item in share.parsed_forecast[:3] %}
+                        <li>{{ item['Date'] }}: ${{ item['Amount'] | round(2) }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    {% if share.summary %}
+                        <p><strong>Summary:</strong> {{ share.summary }}</p>
+                    {% endif %}
+                    <br>
                     <p class="small text-muted">Explore trends shared with you for review.</p>
                 </div>
             </div>
@@ -135,5 +165,10 @@
       </form>
     </div>
 </div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
 
 {% endblock %}

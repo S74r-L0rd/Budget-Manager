@@ -57,11 +57,11 @@ def generate_summary(forecast_series):
     direction = recent.diff().mean()
 
     if direction > 0:
-        return "⚠️ Your future expenses are trending upward. Consider revisiting your budget!"
+        return "⚠️ Future expenses are trending upward. Consider revisiting your budget!"
     elif direction < 0:
-        return "✅ Great! Your future expenses show a decreasing trend. Keep up the good work!"
+        return "✅ Great! Future expenses show a decreasing trend. Keep up the good work!"
     else:
-        return "ℹ️ Your expenses seem stable. Monitor regularly to stay on track."
+        return "ℹ️ Expenses seem stable. Monitor regularly to stay on track."
 
 @app.route('/')
 def home():
@@ -556,6 +556,28 @@ def future_expense_predictor():
             shared_with_me = FuturePredictionShare.query.filter_by(shared_with_user_id=user_id).all()
             users = User.query.filter(User.id != user_id).all()
 
+            # Normalize forecast keys for template rendering
+            def normalize_forecast(row):
+                return {
+                    "Date": row.get("Date") or row.get("date"),
+                    "Amount": row.get("Amount") or row.get("amount")
+                }
+            
+            # Parse prediction JSON for display
+            for share in shared_with_me:
+                try:
+                    parsed = json.loads(share.prediction_data or "[]")
+                    share.parsed_forecast = [normalize_forecast(row) for row in parsed]
+                except:
+                    share.parsed_forecast = []
+
+            for share in shared_by_me:
+                try:
+                    parsed = json.loads(share.prediction_data or "[]")
+                    share.parsed_forecast = [normalize_forecast(row) for row in parsed]
+                except:
+                    share.parsed_forecast = []
+
             return render_template('future_expense_predictor.html',
                                    chart=chart,
                                    show_results=True,
@@ -569,6 +591,20 @@ def future_expense_predictor():
     shared_with_me = FuturePredictionShare.query.filter_by(shared_with_user_id=user_id).all()
     users = User.query.filter(User.id != user_id).all()
 
+    # Normalize keys on GET too
+    def normalize_forecast(row):
+        return {
+            "Date": row.get("Date") or row.get("date"),
+            "Amount": row.get("Amount") or row.get("amount")
+        }
+    
+    for share in shared_by_me + shared_with_me:
+        try:
+            parsed = json.loads(share.prediction_data or "[]")
+            share.parsed_forecast = [normalize_forecast(row) for row in parsed]
+        except:
+            share.parsed_forecast = []
+    
     return render_template('future_expense_predictor.html',
                            show_results=False,
                            shared_by_me=shared_by_me,
@@ -588,12 +624,21 @@ def share_future_prediction():
         flash("No prediction data available to share.", "danger")
         return redirect(url_for('future_expense_predictor'))
 
+    # Converted datetime to string before JSON dumping
+    forecast_serialized = [
+        {
+            "Date": row["Date"].strftime('%Y-%m-%d') if isinstance(row["Date"], datetime) else row["Date"],
+            "Amount": row["Amount"]
+        }
+        for row in prediction_data.get("forecast", [])
+    ]
+
     for shared_id in share_with_ids:
         share = FuturePredictionShare(
             owner_id=user_id,
             shared_with_user_id=int(shared_id),
             summary=prediction_data.get('summary'),
-            prediction_data=json.dumps(prediction_data.get('forecast')),
+            prediction_data=json.dumps(forecast_serialized),
             note=note
         )
         db.session.add(share)

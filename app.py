@@ -16,6 +16,7 @@ from models.savings_goal import SavingsGoal
 from models.savings_goal_share import SavingsGoalShare
 from models.Expense import Expense
 from models.ExpenseParticipant import ExpenseParticipant
+from models.future_prediction_share import FuturePredictionShare
 import json
 import os
 from os import getenv

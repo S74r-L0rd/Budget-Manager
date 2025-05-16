@@ -95,6 +95,17 @@
                 </div>
             </div>
             {% endfor %}
+
+            {% if shared_by_me|length == 0 %}
+            <div class="col-12 w-100">
+                <div class="card goal-card text-center bg-white shadow-sm p-4 border-0">
+                    <div class="card-body text-muted">
+                        <h5 class="card-title text-success mb-3">No Expense Predictions Yet</h5>
+                        <p class="card-text">You haven't set any savings goals yet. Use the form above to create your first goal.</p>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
         </div>
 
         <!-- Shared with Me -->
@@ -125,6 +136,17 @@
                 </div>
             </div>
             {% endfor %}
+
+            {% if shared_with_me|length == 0 %}
+            <div class="col-12 w-100">
+                <div class="card goal-card text-center bg-white shadow-sm p-4 border-0">
+                    <div class="card-body text-muted">
+                        <h5 class="card-title text-primary mb-3">No Shared Expense Predictions</h5>
+                        <p class="card-text">No goals have been shared with you yet. Shared savings goals from others will appear here.</p>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
         </div>
     </div>
 

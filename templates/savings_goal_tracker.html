@@ -49,7 +49,7 @@
         <div class="row row-cols-1 row-cols-md-2 g-4">
             {% for goal in own_goals %}
             <div class="col">
-                <div class="card goal-card h-100" id="goal-{{ goal.id }}">
+                <div class="card goal-card h-100" id="shared-card-{{ goal.id }}">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-start">
                             <h5 class="card-title mb-1">{{ goal.goal_name }}</h5>
@@ -94,7 +94,7 @@
         <div class="row row-cols-1 row-cols-md-2 g-4">
           {% for goal in shared_goals %}
           <div class="col">
-            <div class="card goal-card h-100" id="goal-{{ goal.id }}">
+            <div class="card goal-card h-100" id="shared-card-{{ goal.id }}">
               <div class="card-body">
                 <h5 class="card-title">{{ goal.goal_name }}</h5>
                 <p class="card-text"><strong>Target Amount:</strong> ${{ goal.target_amount }}</p>
@@ -145,4 +145,5 @@
   setupMultiUserSelector();
   scrollToHashWithOffset();
 </script>
+<script src="{{ url_for('static', filename='js/scroll_offset.js') }}"></script>
 {% endblock %}

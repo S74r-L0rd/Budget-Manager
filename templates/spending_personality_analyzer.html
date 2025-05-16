@@ -145,7 +145,7 @@
         <h3 class="mt-5 mb-4 text-success">Shared by Me</h3>
         <div class="row row-cols-1 row-cols-md-2 g-4">
         {% for share in shared_by_me %}
-        <div class="col">
+        <div class="col" id="shared-card-{{ share.id }}">
             <div class="card h-100">
             <div class="card h-100 shadow-sm border-0 rounded-3">
                 <div class="card-body p-4">
@@ -220,7 +220,7 @@
         <h3 class="mt-5 mb-4 text-primary">Shared with Me</h3>
         <div class="row row-cols-1 row-cols-md-2 g-4">
         {% for share in shared_with_me %}
-        <div class="col">
+        <div class="col" id="shared-card-{{ share.id }}">
             <div class="card h-100 shadow-sm border-0 rounded-3">
             <div class="card-body p-4">
 
@@ -370,4 +370,5 @@ import { scrollToElementSmoothly } from "{{ url_for('static', filename='js/spend
 });
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{{ url_for('static', filename='js/scroll_offset.js') }}"></script>
 {% endblock %}

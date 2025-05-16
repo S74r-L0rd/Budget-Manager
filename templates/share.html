@@ -51,14 +51,14 @@
                         </thead>
                         <tbody>
                             {% if shared_by_me %}
-                                {% for share in shared_by_me %}
+                                {% for item in shared_by_me %}
                                 <tr>
-                                    <td>{{ share.shared_user.name }}</td>
-                                    <td>{{ share.goal.goal_name }}</td>
-                                    <td>Savings Goal Tracker</td>
-                                    <td>{{ share.goal.created_at.strftime('%Y-%m-%d') }}</td>
+                                    <td>{{ item.shared_with }}</td>
+                                    <td>{{ item.detail }}</td>
+                                    <td>{{ item.tool }}</td>
+                                    <td>{{ item.date }}</td>
                                     <td>
-                                        <a href="{{ url_for('savings_goal_tracker') }}#goal-{{ share.goal.id }}" class="btn btn-sm btn-outline-primary">View</a>
+                                        <a href="{{ url_for(item.tool|lower|replace(' ', '_')) }}#shared-card-{{ item.id }}" class="btn btn-sm btn-outline-primary">View</a>
                                     </td>
                                 </tr>
                                 {% endfor %}
@@ -92,14 +92,14 @@
                         </thead>
                         <tbody>
                             {% if shared_with_me %}
-                                {% for share in shared_with_me %}
+                                {% for item in shared_with_me %}
                                 <tr>
-                                    <td>{{ share.goal.owner.name }}</td>
-                                    <td>{{ share.goal.goal_name }}</td>
-                                    <td>Savings Goal Tracker</td>
-                                    <td>{{ share.goal.created_at.strftime('%Y-%m-%d') }}</td>
+                                    <td>{{ item.shared_by }}</td>
+                                    <td>{{ item.detail }}</td>
+                                    <td>{{ item.tool }}</td>
+                                    <td>{{ item.date }}</td>
                                     <td>
-                                        <a href="{{ url_for('savings_goal_tracker') }}#goal-{{ share.goal.id }}" class="btn btn-sm btn-outline-success">View</a>
+                                        <a href="{{ url_for(item.tool|lower|replace(' ', '_')) }}#shared-card-{{ item.id }}" class="btn btn-sm btn-outline-success">View</a>
                                     </td>
                                 </tr>
                                 {% endfor %}

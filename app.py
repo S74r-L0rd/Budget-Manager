@@ -505,6 +505,9 @@ def edit_savings_goal(goal_id):
 @login_required_custom
 def future_expense_predictor():
     user_id = session.get('user_id')
+    chart = None
+    summary = None
+    show_results = False
 
     if request.method == 'POST':
         file = request.files['file']
@@ -519,7 +522,7 @@ def future_expense_predictor():
             df['Date'] = pd.to_datetime(df['Date'])
             df = df.groupby('Date').sum().resample('M').sum().reset_index()
 
-            # Simple prediction (e.g. Linear Regression)
+            # Prediction
             from sklearn.linear_model import LinearRegression
             import numpy as np
             df['Timestamp'] = df['Date'].map(datetime.toordinal)
@@ -529,19 +532,12 @@ def future_expense_predictor():
             model = LinearRegression()
             model.fit(X, y)
 
-            # Predict for next 6 months
             future_dates = pd.date_range(df['Date'].max(), periods=7, freq='M')[1:]
             future_df = pd.DataFrame({'Date': future_dates})
             future_df['Timestamp'] = future_df['Date'].map(datetime.toordinal)
             future_df['Amount'] = model.predict(future_df[['Timestamp']])
             forecast_series = future_df['Amount']
             summary = generate_summary(forecast_series)
-
-            # Store prediction in session for potential future use
-            session['future_prediction'] = {
-                'forecast': future_df[['Date', 'Amount']].to_dict(orient='records'),
-                'summary': summary
-            }
 
             # Plot
             import plotly.graph_objs as go
@@ -551,62 +547,31 @@ def future_expense_predictor():
             fig.update_layout(title='Future Expense Prediction', xaxis_title='Date', yaxis_title='Amount')
             chart = fig.to_html(full_html=False)
 
-            # Fetch future prediction shares using new model
-            shared_by_me = FuturePredictionShare.query.filter_by(owner_id=user_id).all()
-            shared_with_me = FuturePredictionShare.query.filter_by(shared_with_user_id=user_id).all()
-            users = User.query.filter(User.id != user_id).all()
+            show_results = True
 
-            # Normalize forecast keys for template rendering
-            def normalize_forecast(row):
-                return {
-                    "Date": row.get("Date") or row.get("date"),
-                    "Amount": row.get("Amount") or row.get("amount")
-                }
-            
-            # Parse prediction JSON for display
-            for share in shared_with_me:
-                try:
-                    parsed = json.loads(share.prediction_data or "[]")
-                    share.parsed_forecast = [normalize_forecast(row) for row in parsed]
-                except:
-                    share.parsed_forecast = []
-
-            for share in shared_by_me:
-                try:
-                    parsed = json.loads(share.prediction_data or "[]")
-                    share.parsed_forecast = [normalize_forecast(row) for row in parsed]
-                except:
-                    share.parsed_forecast = []
-
-            return render_template('future_expense_predictor.html',
-                                   chart=chart,
-                                   show_results=True,
-                                   summary=summary,
-                                   shared_by_me=shared_by_me,
-                                   shared_with_me=shared_with_me,
-                                   users=users)
-
-    # On GET: retrieve share info using new model
+    # On GET or after POST: Load shared data
     shared_by_me = FuturePredictionShare.query.filter_by(owner_id=user_id).all()
     shared_with_me = FuturePredictionShare.query.filter_by(shared_with_user_id=user_id).all()
     users = User.query.filter(User.id != user_id).all()
 
-    # Normalize keys on GET too
+    # Normalize forecast keys for safety
     def normalize_forecast(row):
         return {
             "Date": row.get("Date") or row.get("date"),
             "Amount": row.get("Amount") or row.get("amount")
         }
-    
+
     for share in shared_by_me + shared_with_me:
         try:
             parsed = json.loads(share.prediction_data or "[]")
             share.parsed_forecast = [normalize_forecast(row) for row in parsed]
-        except:
+        except Exception:
             share.parsed_forecast = []
-    
+
     return render_template('future_expense_predictor.html',
-                           show_results=False,
+                           chart=chart,
+                           show_results=show_results,
+                           summary=summary,
                            shared_by_me=shared_by_me,
                            shared_with_me=shared_with_me,
                            users=users)
@@ -645,6 +610,38 @@ def share_future_prediction():
 
     db.session.commit()
     flash("Future prediction shared successfully!", "success")
+    return redirect(url_for('future_expense_predictor'))
+
+@app.route('/edit-future-prediction-note', methods=['POST'])
+@login_required_custom
+def edit_future_prediction_note():
+    share_id = request.form.get('share_id')
+    new_note = request.form.get('note', '').strip()
+    new_user_id = request.form.get('new_user_id')
+
+    share = FuturePredictionShare.query.filter_by(id=share_id).first()
+    if share and share.owner_id == session.get('user_id'):
+        share.note = new_note
+        if new_user_id and int(new_user_id) != share.shared_with_user_id:
+            share.shared_with_user_id = int(new_user_id)
+        db.session.commit()
+        flash("Note and recipient updated successfully.", "success")
+    else:
+        flash("You are not authorized to edit this item.", "danger")
+
+    return redirect(url_for('future_expense_predictor', edited_share_id=share_id))
+
+@app.route('/delete-future-prediction-share/<int:share_id>', methods=['POST'])
+@login_required_custom
+def delete_future_prediction_share(share_id):
+    share = FuturePredictionShare.query.filter_by(id=share_id).first()
+    if share and share.owner_id == session.get('user_id'):
+        db.session.delete(share)
+        db.session.commit()
+        flash("Shared prediction deleted.", "success")
+    else:
+        flash("You are not authorized to delete this item.", "danger")
+
     return redirect(url_for('future_expense_predictor'))
 
 @app.route('/spending-personality-analyzer', methods=['GET', 'POST'])

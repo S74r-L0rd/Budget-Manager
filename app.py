@@ -161,6 +161,13 @@ def logout():
     session.clear()  # Clear user session
     return redirect(url_for('login'))
 
+@app.template_filter('fromjson')
+def fromjson_filter(value):
+    try:
+        return json.loads(value)
+    except Exception:
+        return []
+
 @app.route('/dashboard')
 @login_required_custom
 def dashboard():
@@ -704,6 +711,11 @@ def delete_my_prediction(id):
 @app.route('/spending-personality-analyzer', methods=['GET', 'POST'])
 @login_required_custom
 def spending_personality_analyzer():
+    user_id = session.get('user_id')
+    shared_by_me = SpendingPersonalityShare.query.filter_by(owner_id=user_id).all()
+    shared_with_me = SpendingPersonalityShare.query.filter_by(shared_with_user_id=user_id).all()
+    users = User.query.filter(User.id != user_id).all()
+
     if request.method == 'POST':
         file = request.files.get('file')
         if not file or not file.filename.endswith('.xlsx'):
@@ -724,7 +736,17 @@ def spending_personality_analyzer():
             demographic_df = pd.read_csv('base_demographic_spending.csv')
 
             # Run clustering
-            cluster_label, insights, bar_chart = spending_personality(user_df, demographic_df)
+            cluster_label, insights_raw, bar_chart = spending_personality(user_df, demographic_df)
+
+            # Sanitize insights for safe JSON serialization
+            insights = [
+                {
+                    "category": str(item.get("category", "")),
+                    "message": str(item.get("message", "")),
+                    "percentage": float(item.get("percentage", 0))
+                }
+                for item in insights_raw
+            ]
 
             return render_template(
                     'spending_personality_analyzer.html',
@@ -732,17 +754,15 @@ def spending_personality_analyzer():
                     insights=insights,
                     bar_chart=json.dumps(bar_chart),
                     is_loaded=True,
-                    scroll_to_results=True
+                    scroll_to_results=True,
+                    shared_by_me=shared_by_me,
+                    shared_with_me=shared_with_me,
+                    users=users
                 )
 
         except Exception as e:
             flash(f"❌ Error processing file: {str(e)}", "danger")
             return redirect(url_for('spending_personality_analyzer'))
-
-    user_id = session.get('user_id')
-    shared_by_me = SpendingPersonalityShare.query.filter_by(owner_id=user_id).all()
-    shared_with_me = SpendingPersonalityShare.query.filter_by(shared_with_user_id=user_id).all()
-    users = User.query.filter(User.id != user_id).all()
 
     return render_template(
         'spending_personality_analyzer.html',

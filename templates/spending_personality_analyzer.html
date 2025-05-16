@@ -5,11 +5,13 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/analysis.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/analysis_tools.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/spending_analyser.css') }}">
 {% endblock %}
 
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/spending_personality_analyzer.js') }}"></script>
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -74,7 +76,7 @@
                                 <div class="insight-card">
                                     <div class="insight-header">
                                         <span class="insight-category">{{ insight.category }}</span>
-                                        {% if insight.difference > 0 %}
+                                        {% if insight.percentage > 50 %}
                                             <span class="insight-icon increase">↑</span>
                                         {% else %}
                                             <span class="insight-icon decrease">↓</span>
@@ -110,6 +112,13 @@
                     <a href="{{ url_for('spending_personality_analyzer') }}" class="btn btn-secondary">🔁 Analyze Again</a>
                 </div>
 
+                <!-- Share Personality Button -->
+                <div class="text-center mt-3">
+                    <button class="tool-button" data-bs-toggle="modal" data-bs-target="#sharePersonalityModal">
+                        📤 Share This Analysis
+                    </button>
+                </div>
+
                 <!-- Chart Rendering Script -->
                 <script>
                     document.addEventListener("DOMContentLoaded", function() {
@@ -136,6 +145,196 @@
     <div style="display: flex; justify-content: center;" class="back-to-toolkit-button">
         <a href="{{ url_for('analysis') }}" class="tool-button">⬅ Back to Toolkit</a>
     </div>
+
+    <div class="container my-5">
+        <!-- Shared By Me -->
+        <h3 class="mt-5 mb-4 text-success">Shared by Me</h3>
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+        {% for share in shared_by_me %}
+        <div class="col">
+            <div class="card h-100">
+            <div class="card h-100 shadow-sm border-0 rounded-3">
+                <div class="card-body p-4">
+
+                    <h5 class="card-title text-primary mb-2">Spending Personality Report</h5>
+                    <h6 class="mb-3"><span class="badge bg-success">{{ share.cluster_name }}</span></h6>
+
+                    <p class="mb-2">
+                    <strong>Note:</strong> {{ share.note or '—' }}
+                    </p>
+                    <p class="mb-3">
+                    <strong>Shared With:</strong> <span class="badge bg-secondary">{{ share.shared_user.name }}</span>
+                    </p>
+
+                    <p class="fw-bold mb-2">Insights:</p>
+                    <ul class="list-group mb-4">
+                    {% for insight in share.top_insights | fromjson %}
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                        <div class="ms-2 me-auto">
+                        <div class="fw-semibold">{{ insight.category }}</div>
+                        <small class="text-muted">{{ insight.message }}</small>
+                        </div>
+                    </li>
+                    {% endfor %}
+                    </ul>
+
+                    <form method="POST" action="{{ url_for('edit_spending_share') }}" class="d-flex flex-column gap-3">
+                    <input type="hidden" name="share_id" value="{{ share.id }}">
+
+                    <textarea name="note" placeholder="Update note..." class="form-control">{{ share.note }}</textarea>
+
+                    <select name="new_user_id" class="form-select">
+                        {% for user in users %}
+                        <option value="{{ user.id }}" {% if user.id == share.shared_user.id %}selected{% endif %}>{{ user.name }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <div class="d-flex justify-content-between">
+                        <button type="submit" class="btn btn-outline-primary btn-sm px-4">💾 Save</button>
+                        <a href="#"
+                            class="btn btn-outline-danger btn-sm px-4"
+                            data-bs-toggle="modal"
+                            data-bs-target="#deleteSpendingShareModal"
+                            onclick="document.getElementById('deleteSpendingShareForm').action='{{ url_for('delete_spending_share', id=share.id) }}'">
+                            🗑 Delete
+                        </a>
+                    </div>
+                    </form>
+
+                    <form id="delete-form-{{ share.id }}" method="POST"
+                        action="{{ url_for('delete_spending_share', id=share.id) }}"
+                        style="display:none;"></form>
+                </div>
+            </div>
+            </div>
+        </div>
+        {% endfor %}
+
+        {% if shared_by_me|length == 0 %}
+            <div class="col-12 w-100">
+                <div class="card goal-card text-center bg-white shadow-sm p-4 border-0">
+                    <div class="card-body text-muted">
+                        <h5 class="card-title text-success mb-3">No Personality Report Shared Yet</h5>
+                        <p class="card-text">You haven't shared any spending personality report yet. Use the form above to create your first personality report.</p>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        </div>
+
+        <!-- Shared With Me -->
+        <h3 class="mt-5 mb-4 text-primary">Shared with Me</h3>
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+        {% for share in shared_with_me %}
+        <div class="col">
+            <div class="card h-100 shadow-sm border-0 rounded-3">
+            <div class="card-body p-4">
+
+                <h5 class="card-title text-primary mb-2">Spending Personality Report</h5>
+                <h6 class="mb-3"><span class="badge bg-success">{{ share.cluster_name }}</span></h6>
+
+                <p class="mb-2">
+                <strong>Note:</strong> {{ share.note or '—' }}
+                </p>
+                <p class="mb-3">
+                <strong>Shared By:</strong> <span class="badge bg-secondary">{{ share.owner.name }}</span>
+                </p>
+
+                <p class="fw-bold mb-2">Insights:</p>
+                <ul class="list-group">
+                {% for insight in share.top_insights | fromjson %}
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="ms-2 me-auto">
+                    <div class="fw-semibold">{{ insight.category }}</div>
+                    <small class="text-muted">{{ insight.message }}</small>
+                    </div>
+                </li>
+                {% endfor %}
+                </ul>
+
+            </div>
+            </div>
+        </div>
+        {% endfor %}
+
+        {% if shared_with_me|length == 0 %}
+            <div class="col-12 w-100">
+                <div class="card goal-card text-center bg-white shadow-sm p-4 border-0">
+                    <div class="card-body text-muted">
+                        <h5 class="card-title text-primary mb-3">No Shared Spending Personality Report</h5>
+                        <p class="card-text">No spending personality report have been shared with you yet. Shared spending personality report from others will appear here.</p>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        </div>
+    </div>
+
+
+    <!-- Share Modal -->
+    <div class="modal fade" id="sharePersonalityModal" tabindex="-1" aria-labelledby="sharePersonalityModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <form method="POST" action="{{ url_for('share_spending_personality') }}">
+        <!-- Hidden inputs to pass analysis data -->
+        <input type="hidden" name="cluster_name" value="{{ cluster_name }}">
+        <textarea name="top_insights" style="display: none;">{{ insights | tojson }}</textarea>
+
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="sharePersonalityModalLabel">Share Spending Personality</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+            <p>Select users you want to share this personality insight with:</p>
+
+            <!-- User checkbox list -->
+            <div class="form-check" style="max-height: 250px; overflow-y: auto;">
+                {% for user in users %}
+                <div class="mb-2">
+                    <input class="form-check-input" type="checkbox" name="share_with[]" value="{{ user.id }}" id="personality-user-{{ user.id }}">
+                    <label class="form-check-label" for="personality-user-{{ user.id }}">{{ user.name }}</label>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Optional note -->
+            <div class="form-group mt-3">
+                <label for="note">Optional Note:</label>
+                <textarea name="note" class="form-control" rows="3" placeholder="Add a message..."></textarea>
+            </div>
+            </div>
+
+            <div class="modal-footer d-flex">
+            <button type="submit" class="btn btn-secondary">📤 Share</button>
+            <button type="button" class="btn btn-outline-secondary btn-expense-modal" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+        </form>
+    </div>
+    </div>
+
+    <!-- Delete Spending Personality Share Modal -->
+    <div class="modal fade" id="deleteSpendingShareModal" tabindex="-1" aria-labelledby="deleteSpendingShareModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <form method="POST" id="deleteSpendingShareForm">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="deleteSpendingShareModalLabel">Delete Shared Analysis</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            Are you sure you want to delete this shared personality insight?
+            </div>
+            <div class="modal-footer d-flex justify-content-end">
+            <button type="submit" class="btn btn-danger">Delete</button>
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+        </form>
+    </div>
+    </div>
+
 </div>
 {% if scroll_to_results %}
 <script type="module">

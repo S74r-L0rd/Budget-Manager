@@ -579,10 +579,12 @@ def future_expense_predictor():
         shared_with_user_id=user_id
     ).all()
 
+    users = User.query.filter(User.id != user_id).all()
     return render_template('future_expense_predictor.html',
                            show_results=False,
                            shared_by_me=shared_by_me,
-                           shared_with_me=shared_with_me)
+                           shared_with_me=shared_with_me,
+                           users=users)
 
 @app.route('/share-future-prediction', methods=['POST'])
 @login_required_custom

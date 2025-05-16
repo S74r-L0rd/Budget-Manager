@@ -17,6 +17,7 @@ from models.savings_goal_share import SavingsGoalShare
 from models.Expense import Expense
 from models.ExpenseParticipant import ExpenseParticipant
 from models.future_prediction_share import FuturePredictionShare
+from models.my_prediction import MyPrediction
 import json
 import os
 from os import getenv
@@ -538,6 +539,22 @@ def future_expense_predictor():
             future_df['Amount'] = model.predict(future_df[['Timestamp']])
             forecast_series = future_df['Amount']
             summary = generate_summary(forecast_series)
+
+            # Save prediction persistently in MyPrediction table
+            new_prediction = MyPrediction(
+                user_id=user_id,
+                prediction_data=json.dumps([
+                    {
+                        "Date": row["Date"].strftime('%Y-%m-%d') if isinstance(row["Date"], datetime) else row["Date"],
+                        "Amount": row["Amount"]
+                    } for row in future_df.to_dict(orient='records')
+                ]),
+                summary=summary,
+                note=""
+            )
+
+            db.session.add(new_prediction)
+            db.session.commit()
 
             # Plot
             import plotly.graph_objs as go

@@ -1,4 +1,4 @@
-{% extends "layout.html" %}
+{% extends layout %}
 
 {% block title %}Contact Us{% endblock %}
 
@@ -14,10 +14,13 @@
 <script src="{{ url_for('static', filename='js/contact.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <script>
-    // Initialize EmailJS with public key
-    (function() {
-        emailjs.init("aHYc_wqESe1OCccIK");
-    })();
+    // Initialize EmailJS
+    fetch('/api/emailjs-config')
+        .then(response => response.json())
+        .then(config => {
+            emailjs.init(config.publicKey);
+        })
+        .catch(error => console.error('Error initializing EmailJS:', error));
 </script>
 {% endblock %}
 

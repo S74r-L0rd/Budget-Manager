@@ -68,6 +68,55 @@
     {% endif %}
 
     <div class="container pt-4">
+        <!-- My Predicted Reports -->
+        <h4 class="text-dark mb-3 pt-5">My Predicted Reports</h4>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 pb-5">
+        {% for pred in my_predictions %}
+        <div class="col" id="my-prediction-card-{{ pred.id }}">
+            <div class="shared-card">
+            <h5>Prediction Report</h5>
+            <p><strong>Date:</strong> {{ pred.created_at.strftime('%Y-%m-%d') }}</p>
+            {% if pred.note %}
+                <p><strong>Note:</strong> {{ pred.note }}</p>
+            {% else %}
+                <p><strong>Note:</strong><em class="text-muted"> N/A</em></p>
+            {% endif %}
+            {% if pred.parsed_forecast %}
+                <p><strong>Top Predictions:</strong></p>
+                <ul class="small text-muted">
+                {% for item in pred.parsed_forecast[:3] %}
+                    <li>{{ item['Date'] }}: ${{ item['Amount'] | round(2) }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+            <p><strong>Summary:</strong> {{ pred.summary }}</p>
+            <div class="mt-2 d-flex gap-2">
+                <button class="btn btn-sm btn-outline-primary"
+                        data-bs-toggle="modal"
+                        data-bs-target="#editMyPredictionModal"
+                        data-id="{{ pred.id }}"
+                        data-note="{{ pred.note | e }}">Edit</button>
+
+                <a href="#" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteMyPredictionModal" data-prediction-id="{{ pred.id }}">
+                    Delete
+                </a>
+            </div>
+            </div>
+        </div>
+        {% endfor %}
+        </div>
+
+        {% if my_predictions|length == 0 %}
+        <div class="col-12 w-100">
+            <div class="card goal-card text-center bg-white shadow-sm p-4 border-0">
+            <div class="card-body text-muted">
+                <h5 class="card-title text-dark mb-3">No Past Predictions</h5>
+                <p class="card-text">You haven’t saved any predictions yet.</p>
+            </div>
+            </div>
+        </div>
+        {% endif %}
+
         <!-- Shared by Me -->
         <h4 class="text-success mb-3 pt-6">Shared by Me</h4>
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-5">
@@ -287,6 +336,52 @@
         <div class="modal-footer d-flex">
           <button type="submit" class="btn btn-secondary btn-expense-modal">Delete</button>
           <button type="button" class="btn btn-outline-secondary btn-expense-modal" data-bs-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Edit My Prediction Modal -->
+<div class="modal fade" id="editMyPredictionModal" tabindex="-1" aria-labelledby="editMyPredictionModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <form method="POST" id="editMyPredictionForm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editMyPredictionModalLabel">Edit Note</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" name="note" id="edit-my-note-hidden" />
+          <div class="form-group">
+            <label for="edit-my-note">Note:</label>
+            <textarea class="form-control" id="edit-my-note" rows="4" placeholder="Update your note here..."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary px-4">Save Changes</button>
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Delete My Prediction Modal -->
+<div class="modal fade" id="deleteMyPredictionModal" tabindex="-1" aria-labelledby="deleteMyPredictionModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <form method="POST" id="deleteMyPredictionForm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteMyPredictionModalLabel">Delete Prediction</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to delete this prediction?
+        </div>
+        <div class="modal-footer d-flex">
+          <button type="submit" class="btn btn-secondary">Delete</button>
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
         </div>
       </div>
     </form>

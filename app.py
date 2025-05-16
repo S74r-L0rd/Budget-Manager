@@ -585,13 +585,21 @@ def future_expense_predictor():
         except Exception:
             share.parsed_forecast = []
 
+    my_predictions = MyPrediction.query.filter_by(user_id=user_id).all()
+    for pred in my_predictions:
+        try:
+            pred.parsed_forecast = json.loads(pred.prediction_data or "[]")
+        except Exception:
+            pred.parsed_forecast = []
+
     return render_template('future_expense_predictor.html',
                            chart=chart,
                            show_results=show_results,
                            summary=summary,
                            shared_by_me=shared_by_me,
                            shared_with_me=shared_with_me,
-                           users=users)
+                           users=users,
+                           my_predictions=my_predictions)
 
 @app.route('/share-future-prediction', methods=['POST'])
 @login_required_custom
@@ -659,6 +667,37 @@ def delete_future_prediction_share(share_id):
     else:
         flash("You are not authorized to delete this item.", "danger")
 
+    return redirect(url_for('future_expense_predictor'))
+
+@app.route('/edit-my-prediction-note/<int:id>', methods=['POST'])
+@login_required_custom
+def edit_my_prediction_note(id):
+    user_id = session.get('user_id')
+    note = request.form.get('note', '').strip()
+
+    prediction = MyPrediction.query.filter_by(id=id, user_id=user_id).first()
+    if not prediction:
+        flash("Prediction not found or unauthorized.", "danger")
+        return redirect(url_for('future_expense_predictor'))
+
+    prediction.note = note
+    db.session.commit()
+    flash("Note updated successfully.", "success")
+    return redirect(url_for('future_expense_predictor', edited_id=id))
+
+@app.route('/delete-my-prediction/<int:id>', methods=['POST'])
+@login_required_custom
+def delete_my_prediction(id):
+    user_id = session.get('user_id')
+
+    prediction = MyPrediction.query.filter_by(id=id, user_id=user_id).first()
+    if not prediction:
+        flash("Prediction not found or unauthorized.", "danger")
+        return redirect(url_for('future_expense_predictor'))
+
+    db.session.delete(prediction)
+    db.session.commit()
+    flash("Prediction deleted successfully.", "success")
     return redirect(url_for('future_expense_predictor'))
 
 @app.route('/spending-personality-analyzer', methods=['GET', 'POST'])

@@ -16,6 +16,7 @@ from models.savings_goal import SavingsGoal
 from models.savings_goal_share import SavingsGoalShare
 from models.Expense import Expense
 from models.ExpenseParticipant import ExpenseParticipant
+from flask_wtf.csrf import CSRFProtect
 import json
 import os
 from os import getenv
@@ -28,6 +29,15 @@ app = Flask(__name__)
 app.secret_key = 'your-very-secret-key'  # Replace with a strong secret in production
 # set session lifetime to 7 days
 app.permanent_session_lifetime = timedelta(days=7)
+
+# CSRF protection   
+csrf = CSRFProtect()
+# default disable CSRF protection
+app.config['WTF_CSRF_CHECK_DEFAULT'] = False
+# but enable CSRF protection for forms with csrf_token field
+app.config['WTF_CSRF_ENABLED'] = True
+# initialize application
+csrf.init_app(app)
 
 CATEGORIES = ["Rent", "Travel", "Entertainment", "Utilities", "Groceries",
               "Insurance", "Debt Repayments", "Loan", "Medical"]
@@ -78,12 +88,16 @@ def contact():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    # in login and register routes, since the template already contains the csrf_token field,
+    # the CSRF token will be automatically verified, no additional code is needed
     if request.method == 'POST':
         return login_user()
     return render_template('login.html')
 
 @app.route('/register', methods=['POST'])
 def register():
+    # in login and register routes, since the template already contains the csrf_token field,
+    # the CSRF token will be automatically verified, no additional code is needed
     return register_user()
 
 @app.route('/get_verification_code', methods=['POST'])

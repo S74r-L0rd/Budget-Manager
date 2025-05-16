@@ -72,7 +72,9 @@ def tools():
 
 @app.route('/contact')
 def contact():
-    return render_template('contact.html')
+    if 'user_id' in session:
+        return render_template('contact.html', layout='layout_user.html')
+    return render_template('contact.html', layout='layout.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -1104,7 +1106,8 @@ def delete_account():
 def get_emailjs_config():
     return jsonify({
         'serviceId': getenv('EMAILJS_SERVICE_ID'),
-        'templateId': getenv('EMAILJS_TEMPLATE_ID')
+        'templateId': getenv('EMAILJS_TEMPLATE_ID'),
+        'publicKey': getenv('EMAILJS_PUBLIC_KEY')
     })
 
 if __name__ == '__main__':

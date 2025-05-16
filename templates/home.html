@@ -43,9 +43,9 @@
 <section class="container-fluid bg-white d-flex justify-content-center align-items-center text-center text-dark py-5 px-4 home-services-section" id="home-services-section">
     <div class="row align-items-center home-services-row">
         <!-- BudgetManager Explanation -->
-        <div class="col-md-6 text-center text-md-start ps-md-5">
-            <h1 class="display-3 fw-bold"><span class="highlight">What we do?</span></h1>
-            <p class="lead mt-5">BudgetManager helps you to manage your budget and expenses.<br>You simply set your budget and track your spending.<br>
+        <div class="col-md-6 text-center text-md-start ps-md-5 order-md-2 order-1">
+            <h1 class="display-3 fw-bold text-start mt-4 mb-5">What we do?</h1>
+            <p class="lead text-start mb-5">BudgetManager helps you to manage your budget and expenses.<br>You simply set your budget and track your spending.<br>
                 We will analyse your financial habits and you just follow our advice.<br><br>With BudgetManager, your dream is not far away!</p>
         </div>
         <div class="carousel slide col-md-6" data-bs-ride="carousel" id="service-carousel">
@@ -56,28 +56,27 @@
                 <button type="button" data-bs-target="#service-carousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
             </div>
             <!-- Each content for Service Carousel -->
-            <!-- TODO: Substitute the images to service screenshots and the descriptions (Change text colour and size as well) -->
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img src="{{ url_for('static', filename='media/images/hero_image1.svg') }}" class="d-block w-100 carousel-img" alt="service1-carousel">
                     <div class="carousel-caption d-none d-md-block">
-                        <h5>Track your expenses and be alert with your spending habit.</h5>
-                        <p>Description of first service</p>
+                        <h5>Simply upload and click, Done!</h5>
+                        <p>Just need your spendings data.</p>
                     </div>
+                    <img src="{{ url_for('static', filename='media/images/carousel1.png') }}" class="d-block w-100 carousel-img" alt="service1-carousel">
                 </div>
                 <div class="carousel-item">
-                    <img src="{{ url_for('static', filename='media/images/hero_image1.svg') }}" class="d-block w-100 carousel-img" alt="service2-carousel">
                     <div class="carousel-caption d-none d-md-block">
-                        <h5>Set your saving goals.</h5>
-                        <p>Description of second service</p>
+                        <h5>Make your financial dream come true</h5>
+                        <p>Plan your budget, Set your dream goal, Analyze your spendings</p>
                     </div>
+                    <img src="{{ url_for('static', filename='media/images/carousel2.png') }}" class="d-block w-100 carousel-img" alt="service2-carousel">
                 </div>
                 <div class="carousel-item">
-                    <img src="{{ url_for('static', filename='media/images/hero_image1.svg') }}" class="d-block w-100 carousel-img" alt="service3-carousel">
                     <div class="carousel-caption d-none d-md-block">
-                        <h5>Share your state with your friends and family.</h5>
-                        <p>Description of third service</p>
+                        <h5>Do you need some engaging?</h5>
+                        <p>Share your state with your friends and family.</p>
                     </div>
+                    <img src="{{ url_for('static', filename='media/images/carousel3.png') }}" class="d-block w-100 carousel-img" alt="service3-carousel">
                 </div>
 
                 <!-- Previous and Next Buttons for Service Carousel -->
@@ -96,26 +95,37 @@
 
 <!-- User review section -->
 <section class="container-fluid bg-light d-flex justify-content-center align-items-center text-center text-dark py-5 px-4 user-review-section" id="user-review-section">
-    <div class="row align-items-center w-100">
+    <div class="row align-items-center justify-content-center w-100">
 
         <!-- Heading for user review -->
         <div class="col-12 text-center text-md-start ps-md-5 mb-5">
-            <h1 class="display-3 fw-bold"><span class="highlight">What our users say?</span></h1>
+            <h1 class="display-3 fw-bold text-start mt-4 mb-5">What our users say?</h1>
         </div>
-        <!-- User images and reviews -->
-        <div class="col-md-6 col-lg-6 mb-4 mt-4 d-flex flex-column align-items-center mt-5 user-review">
-            <img src="{{ url_for('static', filename='media/images/user-review1.svg') }}" class="rounded-circle mb-3 img-fluid w-25 user-review-img" alt="user-review image 1">
-            <h5 class="fw-bold mb-1">Harry Poter, 19</h5>
-            <p class="mt-2">"I just started to earn money and I didn't know what to do with them. But BudgetManager helped me to learn how to manage money.</p>
+
+        <!-- User Review Card 1 -->
+        <div class="col-md-6 col-lg-5 mb-4 d-flex justify-content-center">
+            <div class="card user-review-card shadow-sm">
+                <div class="card-body text-center d-flex flex-column justify-content-center align-items-center">
+                    <img src="{{ url_for('static', filename='media/images/user-review1.svg') }}" class="rounded-circle user-review-img mb-3" alt="user-review image 1">
+                    <h5 class="card-title fw-bold mb-1">Harry Potter, 19</h5>
+                    <p class="card-text">"I just started to earn money and I didn't know what to do with it. BudgetManager helped me learn how to manage my money."</p>
+                </div>
+            </div>
         </div>
-        <div class="col-md-6 col-lg-6 mb-4 mt-4 d-flex flex-column align-items-center mt-5 user-review">
-            <img src="{{ url_for('static', filename='media/images/user-review2.svg') }}" class="rounded-circle mb-3 img-fluid w-25 user-review-img" alt="user-review image 2">
-            <h5 class="fw-bold mb-1">Hermione Granger, 33</h5>
-            <p class="mt-5">"I was able to achieve the saving goal for this year faster thanks to BudgetManager!</p>
+
+        <!-- User Review Card 2 -->
+        <div class="col-md-6 col-lg-5 mb-4 d-flex justify-content-center">
+            <div class="card user-review-card shadow-sm">
+                <div class="card-body text-center d-flex flex-column justify-content-center align-items-center">
+                    <img src="{{ url_for('static', filename='media/images/user-review2.svg') }}" class="rounded-circle user-review-img mb-3" alt="user-review image 2">
+                    <h5 class="card-title fw-bold mb-1">Hermione Granger, 33</h5>
+                    <p class="card-text">"I was able to achieve my savings goal faster this year thanks to BudgetManager!"</p>
+                </div>
+            </div>
         </div>
+
     </div>
 </section>
-
 <!-- Last action button -->
 <section class="container-fluid d-flex justify-content-center align-items-center text-center text-dark py-5 px-4 custom-bg last-action-section" id="last-action-section">
     <div class="row align-items-center justify-content-center w-100">

@@ -96,10 +96,19 @@ main.main-content {
   padding-right: 6rem;
 }
 
+.home-services-row h1, .home-services-row lead {
+  color: #344e41;
+}
+
+.user-review-section h1 {
+  color: #344e41;
+}
+
 /* Images Size for Services carousel*/
 .carousel-img {
   max-height: 400px;
   max-width: 100%;
+  margin-top: 80px;
 }
 
 /* Style for Carousel icon and caption */
@@ -110,22 +119,48 @@ main.main-content {
   border-radius: 50%;
   padding: 10px;
 }
+
 .carousel-caption {
-  top: 10%;
-  bottom: auto;
-  color: #000;
-  margin-bottom: 1rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  background-color: #344e41;
+  color: #fff;
+  padding: 15px;
+  border-radius: 0 0 8px 8px;
 }
 
-/* User Review Section */
-.user-review-section {
-  min-height: 90vh;
+.carousel-caption h5 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: bold;
 }
 
-.user-review:hover {
-  transform: scale(1.05);
+.carousel-caption p {
+  margin: 0;
+  font-size: 1rem;
 }
 
+.carousel-img {
+  position: relative;
+}
+
+@media (max-width: 768px) {
+  .carousel-caption {
+      font-size: 0.9rem;
+      padding: 10px;
+  }
+
+  .carousel-caption h5 {
+      font-size: 1.2rem;
+  }
+
+  .carousel-caption p {
+      font-size: 0.8rem;
+  }
+}
 /* Last Action Section */
 .last-action-section {
   min-height: 70vh;
@@ -133,13 +168,6 @@ main.main-content {
 
 .custom-bg {
   background-color: #a3b18a;
-}
-
-/* Highlighter effect */
-.highlight {
-  background: linear-gradient(transparent 60%, #a3b18a 40%);
-  padding: 2px 5px; 
-  border-radius: 3px;
 }
 
 /* Brand Section */
@@ -164,4 +192,70 @@ main.main-content {
 
 .pt-6 {
   padding-top: 6rem;
+}
+
+/* User review card */
+.user-review-card {
+  width: 100%;
+  max-width: 550px;
+  height: 400px;   
+  background-color: #fff;
+  border-radius: 15px;
+  transition: transform 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-review-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.user-review-img {
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
+  border: 3px solid #ddd;
+  margin: 0 auto;
+  display: block;
+}
+
+.card-title {
+  font-size: 1.4rem;
+  color: #333;
+}
+
+.card-text {
+  font-size: 1.1rem;
+  color: #555;
+  padding: 0 15px;
+  text-align: center;
+}
+.card-body {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .user-review-card {
+      max-width: 90%;
+      height: auto;
+  }
+
+  .user-review-img {
+      width: 90px;
+      height: 90px;
+  }
+
+  .card-title {
+      font-size: 1.2rem;
+  }
+
+  .card-text {
+      font-size: 1rem;
+  }
 }

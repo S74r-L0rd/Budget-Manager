@@ -358,3 +358,156 @@ body, h1, ul, li, a {
   background-color: #588157;
   border-color: #a3b18a;
 }
+
+
+/* Reponsive Adjustment */
+@media screen and (min-width: 2056px) {
+  .navbar a {
+      font-size: 1.5rem;
+  }
+
+  .profile-container {
+      gap: 50px;
+  }
+
+  .profile-content, .profile-sidebar {
+      padding: 40px;
+  }
+
+  .profile-image-container {
+      width: 350px;
+      height: 350px;
+  }
+}
+
+@media screen and (max-width: 1440px) {
+  .navbar a {
+      font-size: 1.3rem;
+  }
+
+  .profile-container {
+      gap: 40px;
+  }
+
+  .profile-content, .profile-sidebar {
+      padding: 30px;
+  }
+
+  .profile-image-container {
+      width: 300px;
+      height: 300px;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .navbar a {
+      font-size: 1.1rem;
+  }
+
+  .profile-section {
+      padding: 4rem 1rem;
+  }
+
+  .profile-container {
+      flex-direction: column;
+      gap: 30px;
+  }
+
+  .profile-image-container {
+      width: 250px;
+      height: 250px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .navbar a {
+      font-size: 1rem;
+  }
+
+  .profile-section {
+      padding: 3rem 1rem;
+  }
+
+  .profile-image-container {
+      width: 200px;
+      height: 200px;
+  }
+
+  .profile-content, .profile-sidebar {
+      padding: 20px;
+  }
+
+  .profile-details {
+      font-size: 1rem;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .navbar {
+      padding: 0.8rem 1rem;
+  }
+
+  .navbar a {
+      font-size: 0.95rem;
+  }
+
+  .profile-section {
+      padding: 2rem 0.5rem;
+  }
+
+  .profile-container {
+      flex-direction: column;
+      gap: 20px;
+  }
+
+  .profile-image-container {
+      width: 150px;
+      height: 150px;
+  }
+
+  .profile-details {
+      font-size: 0.9rem;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  .navbar a {
+      font-size: 0.85rem;
+  }
+
+  .profile-section {
+      padding: 1.5rem 0.5rem;
+  }
+
+  .profile-image-container {
+      width: 130px;
+      height: 130px;
+  }
+
+  .profile-details {
+      font-size: 0.85rem;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .navbar {
+      padding: 0.5rem 0.5rem;
+  }
+
+  .navbar a {
+      font-size: 0.8rem;
+  }
+
+  .profile-section {
+      padding: 1rem 0.3rem;
+  }
+
+  .profile-image-container {
+      width: 100px;
+      height: 100px;
+  }
+
+  .profile-details {
+      font-size: 0.8rem;
+  }
+}

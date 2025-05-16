@@ -504,6 +504,8 @@ def edit_savings_goal(goal_id):
 @app.route('/future-expense-predictor', methods=['GET', 'POST'])
 @login_required_custom
 def future_expense_predictor():
+    from models.future_prediction_share import FuturePredictionShare  # ensure this model is defined
+
     user_id = session.get('user_id')
 
     if request.method == 'POST':
@@ -537,50 +539,32 @@ def future_expense_predictor():
             forecast_series = future_df['Amount']
             summary = generate_summary(forecast_series)
 
-            shared_by_me = SavingsGoalShare.query.join(SavingsGoal).filter(SavingsGoal.user_id == user_id).all()
-            shared_with_me = SavingsGoalShare.query.filter_by(shared_with_user_id=user_id).all()
-
             # Plot
             import plotly.graph_objs as go
             fig = go.Figure()
             fig.add_trace(go.Scatter(x=df['Date'], y=df['Amount'], name='Historical'))
             fig.add_trace(go.Scatter(x=future_df['Date'], y=future_df['Amount'], name='Predicted', line=dict(dash='dash')))
             fig.update_layout(title='Future Expense Prediction', xaxis_title='Date', yaxis_title='Amount')
-
             chart = fig.to_html(full_html=False)
 
-            # Fetch only future predictor shares
-            shared_by_me = SavingsGoalShare.query.filter_by(
-                tool_name='future_predictor'
-            ).filter(SavingsGoalShare.goal_id == None).all()
-
-            shared_with_me = SavingsGoalShare.query.filter_by(
-                tool_name='future_predictor',
-                shared_with_user_id=user_id
-            ).all()
-
+            # Fetch future prediction shares using new model
+            shared_by_me = FuturePredictionShare.query.filter_by(owner_id=user_id).all()
+            shared_with_me = FuturePredictionShare.query.filter_by(shared_with_user_id=user_id).all()
             users = User.query.filter(User.id != user_id).all()
 
             return render_template('future_expense_predictor.html',
-                                chart=chart,
-                                show_results=True,
-                                summary=summary,
-                                shared_by_me=shared_by_me,
-                                shared_with_me=shared_with_me,
-                                users=users)
+                                   chart=chart,
+                                   show_results=True,
+                                   summary=summary,
+                                   shared_by_me=shared_by_me,
+                                   shared_with_me=shared_with_me,
+                                   users=users)
 
-    # On GET, show filtered shares even if no prediction run
-    user_id = session.get('user_id')
-    shared_by_me = SavingsGoalShare.query.filter_by(
-        tool_name='future_predictor'
-    ).filter(SavingsGoalShare.goal_id == None).all()
-
-    shared_with_me = SavingsGoalShare.query.filter_by(
-        tool_name='future_predictor',
-        shared_with_user_id=user_id
-    ).all()
-
+    # On GET: retrieve share info using new model
+    shared_by_me = FuturePredictionShare.query.filter_by(owner_id=user_id).all()
+    shared_with_me = FuturePredictionShare.query.filter_by(shared_with_user_id=user_id).all()
     users = User.query.filter(User.id != user_id).all()
+
     return render_template('future_expense_predictor.html',
                            show_results=False,
                            shared_by_me=shared_by_me,

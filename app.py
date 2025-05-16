@@ -18,6 +18,7 @@ from models.Expense import Expense
 from models.ExpenseParticipant import ExpenseParticipant
 from models.future_prediction_share import FuturePredictionShare
 from models.my_prediction import MyPrediction
+from models.spending_personality_share import SpendingPersonalityShare
 import json
 import os
 from os import getenv
@@ -738,13 +739,79 @@ def spending_personality_analyzer():
             flash(f"❌ Error processing file: {str(e)}", "danger")
             return redirect(url_for('spending_personality_analyzer'))
 
+    user_id = session.get('user_id')
+    shared_by_me = SpendingPersonalityShare.query.filter_by(owner_id=user_id).all()
+    shared_with_me = SpendingPersonalityShare.query.filter_by(shared_with_user_id=user_id).all()
+    users = User.query.filter(User.id != user_id).all()
+
     return render_template(
         'spending_personality_analyzer.html',
         insights=[],
         cluster_name="No data",
         bar_chart={},
-        is_loaded=False
+        is_loaded=False,
+        shared_by_me=shared_by_me,
+        shared_with_me=shared_with_me,
+        users=users
     )
+
+@app.route('/share-spending-personality', methods=['POST'])
+@login_required_custom
+def share_spending_personality():
+    user_id = session.get('user_id')
+    share_with_ids = request.form.getlist('share_with[]')
+    cluster_name = request.form.get('cluster_name', '')
+    top_insights = request.form.get('top_insights', '')
+    note = request.form.get('note', '')
+
+    for shared_id in share_with_ids:
+        share = SpendingPersonalityShare(
+            owner_id=user_id,
+            shared_with_user_id=int(shared_id),
+            cluster_name=cluster_name,
+            top_insights=top_insights,
+            note=note
+        )
+        db.session.add(share)
+
+    db.session.commit()
+    flash("Spending Personality shared successfully!", "success")
+    return redirect(url_for('spending_personality_analyzer'))
+
+
+@app.route('/edit-spending-share', methods=['POST'])
+@login_required_custom
+def edit_spending_share():
+    share_id = request.form.get('share_id')
+    new_note = request.form.get('note', '')
+    new_user_id = request.form.get('new_user_id')
+
+    share = SpendingPersonalityShare.query.filter_by(id=share_id).first()
+    if share and share.owner_id == session.get('user_id'):
+        share.note = new_note
+        if new_user_id and int(new_user_id) != share.shared_with_user_id:
+            share.shared_with_user_id = int(new_user_id)
+        db.session.commit()
+        flash("Shared analysis updated successfully.", "success")
+    else:
+        flash("You are not authorized to edit this item.", "danger")
+
+    return redirect(url_for('spending_personality_analyzer', edited_share_id=share_id))
+
+
+@app.route('/delete-spending-share/<int:id>', methods=['POST'])
+@login_required_custom
+def delete_spending_share(id):
+    share = SpendingPersonalityShare.query.filter_by(id=id).first()
+    if share and share.owner_id == session.get('user_id'):
+        db.session.delete(share)
+        db.session.commit()
+        flash("Shared analysis deleted successfully.", "success")
+    else:
+        flash("You are not authorized to delete this item.", "danger")
+
+    return redirect(url_for('spending_personality_analyzer'))
+
 
 # Route for expense splitter
 @app.route('/expense-splitter', methods=['GET'])

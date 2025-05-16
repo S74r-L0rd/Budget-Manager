@@ -579,10 +579,9 @@ def share_future_prediction():
 
     # Save share entries in the DB
     for shared_id in share_with_ids:
-        share = SavingsGoalShare(
-            goal_id=None,  # Set None for non-goal tools
+        share = FuturePredictionShare(
+            owner_id=user_id,
             shared_with_user_id=int(shared_id),
-            tool_name='future_predictor',
             created_at=datetime.utcnow()
         )
         db.session.add(share)

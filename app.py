@@ -521,6 +521,20 @@ def edit_savings_goal(goal_id):
     shared_user_ids = [share.shared_user.id for share in goal.shares]
     return render_template("edit_goal.html", goal=goal, users=users, shared_user_ids=shared_user_ids)
 
+@app.route('/delete-goal/<int:goal_id>', methods=['POST'])
+@login_required_custom
+def delete_savings_goal(goal_id):
+    user_id = session.get('user_id')
+    goal = SavingsGoal.query.filter_by(id=goal_id, user_id=user_id).first_or_404()
+
+    # Delete related shares first
+    SavingsGoalShare.query.filter_by(goal_id=goal.id).delete()
+    db.session.delete(goal)
+    db.session.commit()
+    
+    flash("🗑️ Goal deleted successfully.", "success")
+    return redirect(url_for('savings_goal_tracker'))
+
 @app.route('/future-expense-predictor', methods=['GET', 'POST'])
 @login_required_custom
 def future_expense_predictor():

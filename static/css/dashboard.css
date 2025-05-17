@@ -83,9 +83,27 @@
 }
 
 /* Responsive effect */
-@media (max-width: 768px) {
+@media screen and (max-width: 2560px) {
   .dashboard-container {
-    padding-top: 60px;
+    padding-top: 10rem;
+  }
+}
+
+@media screen and (max-width: 1440px) {
+  .dashboard-container {
+    padding-top: 10rem;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .dashboard-container {
+    padding-top: 10rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .dashboard-container {
+    padding-top: 10rem;
     padding-bottom: 15px;
   }
 
@@ -124,9 +142,9 @@
   }
 }
 
-@media (max-width: 576px) {
+@media screen and (max-width: 576px) {
   .dashboard-container {
-    padding-top: 50px;
+    padding-top: 8rem;
     padding-bottom: 10px;
   }
 

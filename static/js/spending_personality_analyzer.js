@@ -1,12 +1,18 @@
 document.addEventListener("DOMContentLoaded", function() {
     if (typeof barData !== "undefined" && Object.keys(barData).length > 0) {
-        Plotly.newPlot('barChart', barData.data, barData.layout);
+        Plotly.newPlot('barChart', barData.data, barData.layout, {
+              autosize: true,
+              responsive: true
+            });
     } else {
         console.error("No valid bar chart data.");
     }
 
     if (typeof pieData !== "undefined" && Object.keys(pieData).length > 0) {
-        Plotly.newPlot('pieChart', pieData.data, pieData.layout);
+        Plotly.newPlot('pieChart', pieData.data, pieData.layout, {
+              autosize: true,
+              responsive: true
+            });
     } else {
         console.error("No valid pie chart data.");
     }

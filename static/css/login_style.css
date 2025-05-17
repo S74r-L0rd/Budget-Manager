@@ -347,3 +347,147 @@ body {
 .modal-backdrop.show {
   opacity: 0.7;
 }
+
+@media screen and (max-width: 768px) {
+  .login-section {
+    padding: 6rem 1rem;
+  }
+
+  .login-form-section {
+    padding: 30px 20px;
+  }
+
+  .platform-intro {
+    padding: 30px 20px;
+  }
+
+  .platform-title {
+    font-size: 2rem;
+  }
+
+  .platform-tagline {
+    font-size: 1.1rem;
+  }
+
+  .platform-desc {
+    font-size: 0.95rem;
+  }
+
+  .feature-item {
+    font-size: 0.95rem;
+  }
+
+  .form-control,
+  .btn-primary {
+    font-size: 1rem;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .login-section {
+    padding: 7rem 1rem;
+  }
+
+  .login-form-section {
+    padding: 25px 15px;
+  }
+
+  .platform-intro {
+    padding: 25px 15px;
+  }
+
+  .platform-title {
+    font-size: 1.8rem;
+  }
+
+  .platform-tagline {
+    font-size: 1rem;
+  }
+
+  .platform-desc,
+  .feature-item {
+    font-size: 0.9rem;
+  }
+
+  .form-control,
+  .btn-primary {
+    font-size: 0.95rem;
+  }
+
+  .check-icon,
+  .feature-icon {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  .login-section {
+    padding: 7rem 0.8rem;
+  }
+
+  .login-form-section,
+  .platform-intro {
+    padding: 20px 12px;
+  }
+
+  .platform-title {
+    font-size: 1.6rem;
+  }
+
+  .platform-tagline {
+    font-size: 0.95rem;
+  }
+
+  .platform-desc,
+  .feature-item {
+    font-size: 0.85rem;
+  }
+
+  .form-control,
+  .btn-primary {
+    font-size: 0.9rem;
+  }
+
+  .check-icon,
+  .feature-icon {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .login-section {
+    padding: 7rem 0.6rem;
+  }
+
+  .login-form-section,
+  .platform-intro {
+    padding: 18px 10px;
+  }
+
+  .platform-title {
+    font-size: 1.4rem;
+  }
+
+  .platform-tagline {
+    font-size: 0.9rem;
+  }
+
+  .platform-desc,
+  .feature-item {
+    font-size: 0.8rem;
+  }
+
+  .form-control,
+  .btn-primary {
+    font-size: 0.85rem;
+    padding: 10px 14px;
+  }
+
+  .check-icon,
+  .feature-icon {
+    width: 16px;
+    height: 16px;
+  }
+}

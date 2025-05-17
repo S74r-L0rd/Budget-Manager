@@ -73,39 +73,44 @@
             <div class="chart-section mt-5 pt-5">
                 <h4 class="mb-4">📈 Your Budget Analysis</h4>
 
-                <div class="frequency-switcher text-center mt-5">
-                    <h5 class="mb-3">View By Frequency</h5>
-                    <div class="btn-group" role="group" aria-label="Frequency toggle" id="frequency-toggle-group">
-                        {% for freq in ['daily', 'weekly', 'monthly', 'yearly'] %}
-                            <button
-                                type="button"
-                                class="tool-button {% if freq == active_frequency %}active{% endif %}"
-                                data-frequency="{{ freq }}"
-                            >
-                                {{ freq.capitalize() }}
-                            </button>
-                        {% endfor %}
+                <div class="budget-results-wrapper mt-5">
+                    <div class="frequency-switcher text-center">
+                        <h5 class="mb-3">View By Frequency</h5>
+                        <div class="btn-group" role="group" aria-label="Frequency toggle" id="frequency-toggle-group">
+                            {% for freq in ['daily', 'weekly', 'monthly', 'yearly'] %}
+                                <button
+                                    type="button"
+                                    class="tool-button {% if freq == active_frequency %}active{% endif %}"
+                                    data-frequency="{{ freq }}"
+                                >
+                                    {{ freq.capitalize() }}
+                                </button>
+                            {% endfor %}
+                        </div>
+                    </div>
+                
+
+                    <!-- Step 3: Results Summary -->
+                    <h3 style="margin-top: 4rem;">Expense Summary</h3>
+                    <div class="table-responsive">
+                        <table style="width:100%; margin-top:1rem; text-align:left;">
+                            <thead>
+                                <tr><th>Category</th><th>Limit</th><th>Spent</th><th>Remaining</th><th>Status</th></tr>
+                            </thead>
+                            <tbody>
+                                {% for item in summary %}
+                                <tr class="{{ 'text-danger' if item.status == 'Over' else 'text-success' }}">
+                                    <td>{{ item.category }}</td>
+                                    <td>${{ item.limit }}</td>
+                                    <td>${{ item.spent }}</td>
+                                    <td>${{ item.remaining }}</td>
+                                    <td>{{ item.status }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-
-                <!-- Step 3: Results Summary -->
-                <h3 style="margin-top: 4rem;">Expense Summary</h3>
-                <table style="width:100%; margin-top:1rem; text-align:left;">
-                <thead>
-                    <tr><th>Category</th><th>Limit</th><th>Spent</th><th>Remaining</th><th>Status</th></tr>
-                </thead>
-                <tbody>
-                    {% for item in summary %}
-                    <tr class="{{ 'text-danger' if item.status == 'Over' else 'text-success' }}">
-                        <td>{{ item.category }}</td>
-                        <td>${{ item.limit }}</td>
-                        <td>${{ item.spent }}</td>
-                        <td>${{ item.remaining }}</td>
-                        <td>{{ item.status }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-                </table>
 
                 <div id="budget-planner-results" style="margin-top: 2rem;">
                     {{ chart | safe }}

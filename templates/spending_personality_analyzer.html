@@ -122,7 +122,10 @@
                             var barData = JSON.parse('{{ bar_chart | safe }}');
 
                             if (barData && barData.data) {
-                                Plotly.newPlot('barChart', barData.data, barData.layout);
+                                Plotly.newPlot('barChart', barData.data, barData.layout, {
+                                    autosize: true,
+                                    responsive: true
+                                    });
                                 console.log("Bar chart rendered successfully.");
                             } else {
                                 console.error("Bar chart data is missing or corrupted.");
@@ -136,10 +139,6 @@
             </div>
         </div>
     </section>
-    <!-- Back to toolkit button -->
-    <div style="display: flex; justify-content: center;" class="back-to-toolkit-button">
-        <a href="{{ url_for('analysis') }}" class="tool-button">⬅ Back to Toolkit</a>
-    </div>
 
     <div class="container my-5">
         <!-- Shared By Me -->
@@ -263,6 +262,11 @@
             </div>
         {% endif %}
         </div>
+    </div>
+
+    <!-- Back to toolkit button -->
+    <div style="display: flex; justify-content: center;" class="back-to-toolkit-button">
+        <a href="{{ url_for('analysis') }}" class="tool-button">⬅ Back to Toolkit</a>
     </div>
 
 

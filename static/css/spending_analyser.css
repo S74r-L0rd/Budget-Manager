@@ -11,3 +11,68 @@
   border: none;
   margin-bottom: 4px;
 }
+
+@media screen and (max-width: 768px) {
+  .card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+
+  .card-body p,
+  .card-body ul {
+    font-size: 0.9rem;
+  }
+
+  .list-group-item {
+    font-size: 0.9rem;
+    padding: 0.6rem 1rem;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .card-title {
+    font-size: 1rem;
+  }
+
+  .card-body p,
+  .card-body ul {
+    font-size: 0.85rem;
+  }
+
+  .list-group-item {
+    font-size: 0.85rem;
+    padding: 0.55rem 0.9rem;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  .card-title {
+    font-size: 0.95rem;
+  }
+
+  .card-body p,
+  .card-body ul {
+    font-size: 0.8rem;
+  }
+
+  .list-group-item {
+    font-size: 0.8rem;
+    padding: 0.5rem 0.85rem;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .card-title {
+    font-size: 0.9rem;
+  }
+
+  .card-body p,
+  .card-body ul {
+    font-size: 0.75rem;
+  }
+
+  .list-group-item {
+    font-size: 0.75rem;
+    padding: 0.45rem 0.8rem;
+  }
+}

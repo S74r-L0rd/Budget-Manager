@@ -88,7 +88,10 @@ export function setupBudgetFormToggle() {
 
           // Update chart
           if (chartContainer) {
-            Plotly.newPlot(chartContainer, data.plot_data, data.plot_layout);
+            Plotly.newPlot(chartContainer, data.plot_data, data.plot_layout, {
+              autosize: true,
+              responsive: true
+            });
           }
 
         } catch (error) {

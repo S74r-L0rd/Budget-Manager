@@ -892,3 +892,634 @@
 .checkbox-option input[type="checkbox"] {
   margin-right: 10px;
 }
+
+/* Budget Planner */
+@media screen and (max-width: 598px) {
+  #budget-form-container {
+    padding: 1.5rem 1rem;
+  }
+
+  .budget-form {
+    gap: 1.2rem;
+    font-size: 0.95rem;
+  }
+
+  .budget-form .form-row.full,
+  .form-pair {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .form-grid {
+    gap: 1rem;
+    max-width: 100%;
+  }
+
+  .budget-form input,
+  .budget-form select {
+    font-size: 0.95rem;
+    padding: 0.5rem 0.8rem;
+  }
+
+  .save-budget-btn {
+    width: 100%;
+    padding: 0.6rem;
+    font-size: 0.95rem;
+  }
+
+  .current-budget-box {
+    padding: 1rem;
+  }
+
+  .summary-total {
+    font-size: 0.95rem;
+  }
+
+  .budget-category-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .budget-summary-grid table,
+  .summary-table {
+    width: 100%;
+    font-size: 0.85rem;
+    border-collapse: collapse;
+    min-width: 600px;
+  }
+
+  .budget-summary-grid table th,
+  .budget-summary-grid table td {
+    padding: 6px 8px;
+    white-space: nowrap;
+  }
+
+  .budget-summary-grid table td:last-child {
+    word-break: break-word;
+  }
+
+  .frequency-switcher .btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  #budget-planner-results {
+    width: 100%;
+    overflow-x: auto;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  #budget-form-container {
+    padding: 1.2rem 0.8rem;
+  }
+
+  .budget-form {
+    font-size: 0.9rem;
+  }
+
+  .budget-form input,
+  .budget-form select {
+    font-size: 0.9rem;
+    padding: 0.5rem 0.75rem;
+  }
+
+  .save-budget-btn {
+    width: 100%;
+    padding: 0.55rem;
+    font-size: 0.9rem;
+  }
+
+  .budget-category-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .summary-total {
+    font-size: 0.9rem;
+  }
+
+  .budget-summary-grid table {
+    font-size: 0.8rem;
+    min-width: 550px;
+  }
+
+  .frequency-switcher .btn-group {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+
+  #budget-planner-results {
+    overflow-x: auto;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  #budget-form-container {
+    padding: 1rem 0.7rem;
+  }
+
+  .budget-form {
+    font-size: 0.85rem;
+  }
+
+  .budget-form input,
+  .budget-form select {
+    font-size: 0.85rem;
+    padding: 0.45rem 0.7rem;
+  }
+
+  .save-budget-btn {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 0.85rem;
+  }
+
+  .budget-category-list {
+    grid-template-columns: 1fr;
+  }
+
+  .summary-total {
+    font-size: 0.85rem;
+  }
+
+  .budget-summary-grid table {
+    font-size: 0.75rem;
+    min-width: 520px;
+  }
+
+  .frequency-switcher .btn-group {
+    gap: 0.4rem;
+  }
+
+  #budget-planner-results {
+    overflow-x: auto;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  #budget-form-container {
+    padding: 0.8rem 0.6rem;
+  }
+
+  .budget-form {
+    font-size: 0.8rem;
+  }
+
+  .budget-form input,
+  .budget-form select {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.6rem;
+  }
+
+  .save-budget-btn {
+    width: 100%;
+    padding: 0.45rem;
+    font-size: 0.8rem;
+  }
+
+  .budget-category-list {
+    grid-template-columns: 1fr;
+  }
+
+  .summary-total {
+    font-size: 0.8rem;
+  }
+
+  .budget-summary-grid table {
+    font-size: 0.7rem;
+    min-width: 500px;
+  }
+
+  .frequency-switcher .btn-group {
+    gap: 0.3rem;
+  }
+
+  #budget-planner-results {
+    overflow-x: auto;
+  }
+}
+
+/* Savings Goal Tracker */
+
+@media screen and (max-width: 768px) {
+  .goal-tracker-box {
+    padding: 2rem 1rem;
+  }
+
+  .goal-tracker-box h2 {
+    font-size: 2rem;
+  }
+
+  .goal-tracker-box p,
+  .goal-form label,
+  .goal-form input,
+  .goal-form select,
+  .goal-form button,
+  .goal-card p,
+  .goal-card .badge {
+    font-size: 0.95rem;
+  }
+
+  .goal-form {
+    padding: 1.5rem;
+  }
+
+  .goal-card {
+    padding: 1.2rem;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .goal-tracker-box h2 {
+    font-size: 1.8rem;
+  }
+
+  .goal-tracker-box p,
+  .goal-form label,
+  .goal-form input,
+  .goal-form select,
+  .goal-form button,
+  .goal-card p,
+  .goal-card .badge {
+    font-size: 0.9rem;
+  }
+
+  .goal-form {
+    padding: 1.2rem 0.8rem;
+  }
+
+  .goal-card {
+    padding: 1rem;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  .goal-tracker-box h2 {
+    font-size: 1.7rem;
+  }
+
+  .goal-tracker-box p,
+  .goal-form label,
+  .goal-form input,
+  .goal-form select,
+  .goal-form button,
+  .goal-card p,
+  .goal-card .badge {
+    font-size: 0.85rem;
+  }
+
+  .goal-form {
+    padding: 1rem 0.6rem;
+  }
+
+  .goal-card {
+    padding: 0.9rem;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .goal-tracker-box h2 {
+    font-size: 1.5rem;
+  }
+
+  .goal-tracker-box p,
+  .goal-form label,
+  .goal-form input,
+  .goal-form select,
+  .goal-form button,
+  .goal-card p,
+  .goal-card .badge {
+    font-size: 0.8rem;
+  }
+
+  .goal-form {
+    padding: 0.8rem 0.5rem;
+  }
+
+  .goal-card {
+    padding: 0.8rem;
+  }
+}
+
+/* Future Expense Predictor */
+
+@media screen and (max-width: 768px) {
+  .expense-tracker-box h2 {
+    font-size: 2rem;
+  }
+
+  .expense-tracker-box p,
+  .upload-form label,
+  .upload-form input,
+  .upload-form button,
+  .template-guidelines,
+  .shared-card p,
+  .shared-card h5 {
+    font-size: 0.95rem;
+  }
+
+  .upload-form {
+    padding: 1.5rem 1rem;
+    gap: 1rem;
+  }
+
+  .template-fields {
+    font-size: 0.9rem;
+    gap: 0.5rem;
+  }
+
+  .shared-card {
+    padding: 1.2rem;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .expense-tracker-box h2 {
+    font-size: 1.8rem;
+  }
+
+  .upload-form input,
+  .upload-form button {
+    font-size: 0.9rem;
+    padding: 0.5rem 0.75rem;
+  }
+
+  .shared-card p,
+  .shared-card h5,
+  .template-guidelines,
+  .template-fields li {
+    font-size: 0.85rem;
+  }
+
+  .shared-card {
+    padding: 1rem;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  .expense-tracker-box h2 {
+    font-size: 1.6rem;
+  }
+
+  .upload-form input,
+  .upload-form button {
+    font-size: 0.85rem;
+    padding: 0.45rem 0.7rem;
+  }
+
+  .shared-card p,
+  .shared-card h5 {
+    font-size: 0.8rem;
+  }
+
+  .template-fields {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .shared-card {
+    padding: 0.9rem;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .expense-tracker-box h2 {
+    font-size: 1.4rem;
+  }
+
+  .upload-form input,
+  .upload-form button {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.6rem;
+  }
+
+  .shared-card p,
+  .shared-card h5 {
+    font-size: 0.75rem;
+  }
+
+  .shared-card {
+    padding: 0.8rem;
+  }
+}
+
+/* Spending Personality Analyzer */
+
+@media screen and (max-width: 768px) {
+  .personality-container h2 {
+    font-size: 2rem;
+  }
+
+  .personality-container p,
+  .upload-form label,
+  .upload-form input,
+  .upload-form button,
+  .template-guidelines,
+  .insight-category,
+  .insight-body p {
+    font-size: 0.95rem;
+  }
+
+  .upload-form {
+    padding: 1.5rem 1rem;
+    gap: 1rem;
+  }
+
+  .template-fields {
+    font-size: 0.9rem;
+    gap: 0.5rem;
+  }
+
+  .insight-card {
+    width: 180px;
+    height: auto;
+    padding: 1rem;
+  }
+
+  #barChart {
+    width: 100%;
+    height: 360px;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .personality-container h2 {
+    font-size: 1.8rem;
+  }
+
+  .upload-form input,
+  .upload-form button {
+    font-size: 0.9rem;
+    padding: 0.5rem 0.75rem;
+  }
+
+  .insight-card {
+    width: 100%;
+    padding: 1rem;
+  }
+
+  .template-guidelines,
+  .template-fields li,
+  .insight-body p {
+    font-size: 0.85rem;
+  }
+
+  #barChart {
+    height: 320px;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  .personality-container h2 {
+    font-size: 1.6rem;
+  }
+
+  .upload-form input,
+  .upload-form button {
+    font-size: 0.85rem;
+    padding: 0.45rem 0.7rem;
+  }
+
+  .insight-card {
+    padding: 0.9rem;
+  }
+
+  .template-fields {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .template-guidelines {
+    font-size: 0.8rem;
+  }
+
+  #barChart {
+    height: 300px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .personality-container h2 {
+    font-size: 1.4rem;
+  }
+
+  .upload-form input,
+  .upload-form button {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.6rem;
+  }
+
+  .insight-card {
+    padding: 0.8rem;
+    width: 100%;
+  }
+
+  .insight-category,
+  .insight-body p,
+  .template-fields li {
+    font-size: 0.75rem;
+  }
+
+  #barChart {
+    height: 280px;
+  }
+}
+
+/* Expense Splitter */
+@media screen and (max-width: 768px) {
+  .expense-splitter-box {
+    padding: 2rem 1rem;
+  }
+
+  .expense-splitter-box h2 {
+    font-size: 2rem;
+  }
+
+  .expense-splitter-box p,
+  .expense-details h5,
+  .payment-table th,
+  .payment-table td,
+  .btn-pay,
+  .payment-form input,
+  .expense-card h5,
+  .expense-card p {
+    font-size: 0.95rem;
+  }
+
+  .payment-form input {
+    width: 80px;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .payment-detail {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .payment-detail table {
+    min-width: 500px;
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .payment-detail th,
+  .payment-detail td {
+    white-space: nowrap;
+    text-align: center;
+  }
+
+  .payment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .payment-form input[type="number"] {
+    width: 100%;
+    max-width: 60px;
+  }
+
+  .btn-pay {
+    width: 100%;
+    max-width: 120px;
+    font-size: 0.85rem;
+  }
+
+  .d-flex.justify-content-center.gap-2.mb-3 {
+    flex-direction: column;
+    gap: 0.5rem !important;
+    align-items: center;
+  }
+
+  .btn-share {
+    width: 100%;
+    max-width: 200px;
+    font-size: 0.9rem;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  .payment-detail table {
+    min-width: 480px;
+  }
+
+  .btn-share {
+    font-size: 0.85rem;
+    padding: 0.5rem 1rem;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .btn-share {
+    font-size: 0.8rem;
+    padding: 0.45rem 0.9rem;
+  }
+
+  .btn-pay {
+    font-size: 0.8rem;
+  }
+}

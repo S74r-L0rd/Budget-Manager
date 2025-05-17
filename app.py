@@ -483,12 +483,12 @@ def savings_goal_tracker():
             share = SavingsGoalShare(
                 goal_id=goal.id,
                 shared_with_user_id=int(shared_id),
-                tool_name='savings_goal'  # <---- Add this line
+                tool_name='savings_goal'
             )
             db.session.add(share)
         db.session.commit()
         flash("Goal added and shared!", "success")
-        return redirect(url_for('savings_goal_tracker'))
+        return redirect(url_for("savings_goal_success", goal_id=goal.id))
 
     # Your own goals + goals shared with you
     own_goals = SavingsGoal.query.filter_by(user_id=user_id).all()

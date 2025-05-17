@@ -5,6 +5,7 @@
 {% block styles %}
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/tools.css') }}">
 {% endblock %}
 
 {% block scripts %}
@@ -41,10 +42,10 @@
 
 <!-- Home-Services Section -->
 <section class="container-fluid bg-white d-flex justify-content-center align-items-center text-center text-dark py-5 px-4 home-services-section" id="home-services-section">
-    <div class="row align-items-center home-services-row">
+    <div class="row align-items-center gx-5 home-services-row">
         <!-- BudgetManager Explanation -->
         <div class="col-md-6 text-center text-md-start ps-md-5 order-md-2 order-1">
-            <h1 class="display-3 fw-bold text-start mt-4 mb-5">What we do?</h1>
+            <h1 class="display-3 fw-bold text-start mt-4 mb-5">What We Do?</h1>
             <p class="lead text-start mb-5">BudgetManager helps you to manage your budget and expenses.<br>You simply set your budget and track your spending.<br>
                 We will analyse your financial habits and you just follow our advice.<br><br>With BudgetManager, your dream is not far away!</p>
         </div>
@@ -93,22 +94,132 @@
     </div>
 </section>
 
+<section class="products-scroll-section bg-white pt-3 pb-9">
+  <div class="container">
+    <h2 class="display-3 fw-bold text-start mb-5">Our Products</h2>
+    <div class="product-scroll-wrapper">
+      <div class="product-card-scroll">
+        <div class="product-scroll-card">
+          <h5 class="scroll-product-title">Expense Tracker</h5>
+          <p class="scroll-product-desc">Track all expenses and visualize trends.</p>
+          <a href="/tools#tool-list" class="btn btn-outline-dark btn-sm scroll-learn-btn">Learn More</a>
+        </div>
+        <div class="product-scroll-card">
+          <h5 class="scroll-product-title">Budget Planner</h5>
+          <p class="scroll-product-desc">Plan monthly budgets by category.</p>
+          <a href="/tools#tool-list" class="btn btn-outline-dark btn-sm scroll-learn-btn">Learn More</a>
+        </div>
+        <div class="product-scroll-card">
+          <h5 class="scroll-product-title">Savings Goal Tracker</h5>
+          <p class="scroll-product-desc">Track your savings goals and progress.</p>
+          <a href="/tools#tool-list" class="btn btn-outline-dark btn-sm scroll-learn-btn">Learn More</a>
+        </div>
+        <div class="product-scroll-card">
+          <h5 class="scroll-product-title">Expense Splitter</h5>
+          <p class="scroll-product-desc">Split bills with friends or roommates.</p>
+          <a href="/tools#tool-list" class="btn btn-outline-dark btn-sm scroll-learn-btn">Learn More</a>
+        </div>
+        <div class="product-scroll-card">
+          <h5 class="scroll-product-title">Spending Personality Analyzer</h5>
+          <p class="scroll-product-desc">Discover your financial behavior style.</p>
+          <a href="/tools#tool-list" class="btn btn-outline-dark btn-sm scroll-learn-btn">Learn More</a>
+        </div>
+        <div class="product-scroll-card">
+          <h5 class="scroll-product-title">Future Expense Predictor</h5>
+          <p class="scroll-product-desc">Forecast future spending using AI.</p>
+          <a href="/tools#tool-list" class="btn btn-outline-dark btn-sm scroll-learn-btn">Learn More</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="tools-list-section-deep bg-dark-green pt-5 pb-8 mb-0" id="privacy-section">
+  <div class="container">
+    <h2 class="display-3 fw-bold text-white mt-4 mb-5 pb-4">Privacy Really Matters</h2>
+    <p class="lead text-white mb-5">At BudgetManager, we prioritize your data privacy. Only a select few tools support sharing - those where it adds value. Others remain strictly private to protect your sensitive information.</p>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-5">
+      <div class="col">
+        <div class="tool-card-green p-5 h-100">
+          <h5 class="tool-title-orange mb-3">✅ Savings Goal Tracker</h5>
+          <ul class="tool-points">
+            <li>Share goals with friends, family, or mentors</li>
+            <li>Track progress with visual charts</li>
+            <li>Add personal messages like “Almost there!”</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="tool-card-green p-5 h-100">
+          <h5 class="tool-title-orange mb-3">✅ Expense Splitter</h5>
+          <ul class="tool-points">
+            <li>Ideal for roommates, travel groups, or partners</li>
+            <li>Share balances, summaries, and who owes what</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="tool-card-green p-5 h-100">
+          <h5 class="tool-title-orange mb-3">✅ Spending Personality Analyzer</h5>
+          <ul class="tool-points">
+            <li>Gamified feature — compare your persona</li>
+            <li>Share badges and personality results</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="tool-card-green p-5 h-100">
+          <h5 class="tool-title-orange mb-3">✅ Future Expense Predictor</h5>
+          <ul class="tool-points">
+            <li>Share forecast insights with spouses or mentors</li>
+            <li>Includes graphs and budgeting suggestions</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="tool-card-green p-5 h-100">
+          <h5 class="tool-title-orange mb-3">❌ Budget Planner</h5>
+          <ul class="tool-points">
+            <li>Highly personal — not designed for sharing</li>
+            <li>Focus is on private financial planning</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="tool-card-green p-5 h-100">
+          <h5 class="tool-title-orange mb-3">❌ Expense Tracker</h5>
+          <ul class="tool-points">
+            <li>Raw expense logs contain sensitive data</li>
+            <li>Not suited for sharing outside private context</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- User review section -->
 <section class="container-fluid bg-light d-flex justify-content-center align-items-center text-center text-dark py-5 px-4 user-review-section" id="user-review-section">
     <div class="row align-items-center justify-content-center w-100">
 
         <!-- Heading for user review -->
         <div class="col-12 text-center text-md-start ps-md-5 mb-5">
-            <h1 class="display-3 fw-bold text-start mt-4 mb-5">What our users say?</h1>
+            <h1 class="display-3 fw-bold text-center mt-4 mb-5">What Our Users Say?</h1>
         </div>
 
         <!-- User Review Card 1 -->
         <div class="col-md-6 col-lg-5 mb-4 d-flex justify-content-center">
             <div class="card user-review-card shadow-sm">
-                <div class="card-body text-center d-flex flex-column justify-content-center align-items-center">
+                <div class="card-body-review text-center d-flex flex-column justify-content-center align-items-center">
                     <img src="{{ url_for('static', filename='media/images/user-review1.svg') }}" class="rounded-circle user-review-img mb-3" alt="user-review image 1">
-                    <h5 class="card-title fw-bold mb-1">Harry Potter, 19</h5>
-                    <p class="card-text">"I just started to earn money and I didn't know what to do with it. BudgetManager helped me learn how to manage my money."</p>
+                    <h5 class="card-title-review fw-bold mb-1">Harry Potter, 19</h5>
+                    <p class="card-text-review">"I just started to earn money and I didn't know what to do with it. BudgetManager helped me learn how to manage my money."</p>
                 </div>
             </div>
         </div>
@@ -116,10 +227,10 @@
         <!-- User Review Card 2 -->
         <div class="col-md-6 col-lg-5 mb-4 d-flex justify-content-center">
             <div class="card user-review-card shadow-sm">
-                <div class="card-body text-center d-flex flex-column justify-content-center align-items-center">
+                <div class="card-body-review text-center d-flex flex-column justify-content-center align-items-center">
                     <img src="{{ url_for('static', filename='media/images/user-review2.svg') }}" class="rounded-circle user-review-img mb-3" alt="user-review image 2">
-                    <h5 class="card-title fw-bold mb-1">Hermione Granger, 33</h5>
-                    <p class="card-text">"I was able to achieve my savings goal faster this year thanks to BudgetManager!"</p>
+                    <h5 class="card-title-review fw-bold mb-1">Hermione Granger, 33</h5>
+                    <p class="card-text-review">"I was able to achieve my savings goal faster this year thanks to BudgetManager!"</p>
                 </div>
             </div>
         </div>
